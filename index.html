@@ -13,14 +13,15 @@ body{
     font-family:'Segoe UI',Tahoma;
     background:#fff;
     color:#333;
-    transition:0.5s;
+    transition:0.5s ease;
 }
 body.dark-mode{background:#111;color:#eee}
 
 h1,h2,h3{letter-spacing:3px}
 
+/* TYPING + FADE */
 .typing{border-right:3px solid green;white-space:nowrap;overflow:hidden}
-.fade{opacity:0;transform:translateY(20px);transition:1s}
+.fade{opacity:0;transform:translateY(30px);transition:1s ease}
 .fade.show{opacity:1;transform:none}
 
 /* PROFILE */
@@ -31,7 +32,15 @@ h1,h2,h3{letter-spacing:3px}
 }
 @keyframes glow{
     from{box-shadow:0 0 10px green}
-    to{box-shadow:0 0 25px lime}
+    to{box-shadow:0 0 30px lime}
+}
+
+/* BUTTONS */
+button{
+    transition:0.3s ease;
+}
+button:hover{
+    transform:scale(1.05);
 }
 
 /* YOUTUBE */
@@ -61,6 +70,11 @@ h1,h2,h3{letter-spacing:3px}
     background:#222;color:white;
     padding:15px;border-radius:10px;
     display:none;
+    animation:menuIn 0.3s ease;
+}
+@keyframes menuIn{
+    from{opacity:0;transform:translateY(-10px)}
+    to{opacity:1;transform:none}
 }
 .menu-box button{
     width:100%;margin:5px 0;
@@ -70,8 +84,17 @@ h1,h2,h3{letter-spacing:3px}
 }
 
 /* SECTIONS */
-.section{display:none}
-.section.active{display:block}
+.section{
+    display:none;
+    opacity:0;
+    transform:scale(0.95);
+    transition:0.5s ease;
+}
+.section.active{
+    display:block;
+    opacity:1;
+    transform:scale(1);
+}
 
 /* CONTACT */
 .contact-box{
@@ -86,7 +109,6 @@ input,textarea{
     background:green;color:white;
     padding:12px;width:100%;
     border:none;border-radius:10px;
-    cursor:pointer;
 }
 
 /* BACK */
@@ -111,7 +133,7 @@ input,textarea{
 
 <body>
 
-<!-- 3 DOT MENU -->
+<!-- 3 DOT -->
 <div class="menu" onclick="toggleMenu()">⋮</div>
 <div class="menu-box" id="menuBox">
     <button onclick="openContact()">📞 Contact</button>
@@ -121,7 +143,6 @@ input,textarea{
 
 <!-- HOME -->
 <div id="home" class="section active">
-
 <h1 class="typing fade">- MR7 WORLD -</h1>
 <h2 class="typing fade">- MD -</h2>
 <h3 class="typing fade">- REHAN -</h3>
@@ -133,22 +154,17 @@ input,textarea{
 
 <br><br>
 <img src="rehan.png" class="profile-pic fade">
-
 </div>
 
 <!-- CONTACT -->
 <div id="contact" class="section">
-
 <div class="contact-box">
 <h2>Contact Me</h2>
-
-<input id="name" placeholder="Name" required>
-<input id="mobile" placeholder="Mobile" required>
-<textarea id="message" placeholder="Message" required></textarea>
-
+<input id="name" placeholder="Name">
+<input id="mobile" placeholder="Mobile">
+<textarea id="message" placeholder="Message"></textarea>
 <button class="submit-btn" onclick="sendMail()">Send</button>
 </div>
-
 <button class="back-btn" onclick="goBack()">⬅ Back</button>
 </div>
 
@@ -157,14 +173,21 @@ input,textarea{
 <script>
 /* DARK */
 function toggleDark(){
- document.body.classList.toggle('dark-mode');
+ document.body.classList.toggle("dark-mode");
 }
 
-/* MENU */
+/* MENU TOGGLE */
 function toggleMenu(){
- let box=document.getElementById("menuBox");
+ let box=menuBox;
  box.style.display=box.style.display=="block"?"none":"block";
 }
+
+/* AUTO CLOSE MENU */
+document.addEventListener("click",e=>{
+ if(!e.target.closest(".menu") && !e.target.closest(".menu-box")){
+   menuBox.style.display="none";
+ }
+});
 
 /* PAGE SWITCH */
 function openContact(){
@@ -177,20 +200,13 @@ function goBack(){
  home.classList.add("active");
 }
 
-/* SEND MAIL (GMAIL) */
+/* SEND MAIL */
 function sendMail(){
- let name=document.getElementById("name").value;
- let mobile=document.getElementById("mobile").value;
- let msg=document.getElementById("message").value;
-
- if(!name||!mobile||!msg){
-   alert("Please fill all fields");
-   return;
- }
-
- let body=`Name: ${name}%0A%0AMobile: ${mobile}%0A%0AMessage: ${msg}`;
+ let n=name.value,m=mobile.value,msg=message.value;
+ if(!n||!m||!msg){alert("Fill all fields");return;}
  window.location.href=
- `mailto:mrrehanofficial.1777@gmail.com?subject=Website Contact&body=${body}`;
+ `mailto:mrrehanofficial.1777@gmail.com?subject=Website Contact&body=
+ Name:${n}%0AMobile:${m}%0AMessage:${msg}`;
 }
 
 /* POPUP */

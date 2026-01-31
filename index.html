@@ -6,136 +6,84 @@
 <title>MR7 WORLD</title>
 
 <style>
-/* ===== Base Styles ===== */
 body{
     margin:0; padding:20px;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background:#fff; color:#333;
-    transition:all 0.5s ease;
-    text-align:center;
-    overflow-x:hidden;
+    text-align:center; transition:all 0.5s ease; overflow-x:hidden;
 }
 body.dark-mode{background:#111;color:#eee;}
 h1,h2,h3{letter-spacing:3px;margin:10px 0;}
 
-/* ===== Typing Animation ===== */
+/* Typing animation */
 .typing{
     border-right:3px solid green;
-    white-space:nowrap;
-    overflow:hidden;
+    white-space:nowrap; overflow:hidden;
     display:inline-block;
     animation:blink 0.7s infinite, typing 2s steps(20) forwards;
 }
 @keyframes typing{from{width:0;}to{width:100%;}}
 @keyframes blink{0%,50%,100%{border-color:green;}25%,75%{border-color:transparent;}}
 
-/* ===== YouTube Button ===== */
+/* YouTube button */
 .yt-button{
     background:linear-gradient(135deg,#ff0000,#cc0000);
-    color:white; padding:16px 40px;
-    font-size:18px; border:none; border-radius:50px;
-    cursor:pointer; font-weight:bold;
-    box-shadow:0 0 0 rgba(255,0,0,0.7);
+    color:white; padding:16px 40px; font-size:18px;
+    border:none; border-radius:50px; cursor:pointer;
+    font-weight:bold; box-shadow:0 0 0 rgba(255,0,0,0.7);
     animation:pulse 2s infinite; transition:0.3s;
 }
-.yt-button:hover{
-    transform:scale(1.05);
-    box-shadow:0 0 20px rgba(255,0,0,0.8);
-}
-@keyframes pulse{
-    0%{box-shadow:0 0 0 0 rgba(255,0,0,0.7);}
-    70%{box-shadow:0 0 0 15px rgba(255,0,0,0);}
-    100%{box-shadow:0 0 0 0 rgba(255,0,0,0);}
-}
+.yt-button:hover{transform:scale(1.05); box-shadow:0 0 20px rgba(255,0,0,0.8);}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,0,0,0.7);}70%{box-shadow:0 0 0 15px rgba(255,0,0,0);}100%{box-shadow:0 0 0 0 rgba(255,0,0,0);}}
 
-/* ===== Profile Image ===== */
+/* Profile image */
 .profile-pic{
     width:200px; height:200px; border-radius:50%;
     object-fit:cover; border:5px solid green;
-    animation:glow 2s infinite alternate;
-    transition: transform 0.3s; cursor:pointer;
+    animation:glow 2s infinite alternate; transition: transform 0.3s; cursor:pointer;
 }
 .profile-pic:hover{transform:scale(1.1);}
 @keyframes glow{from{box-shadow:0 0 10px rgba(0,128,0,0.4);}to{box-shadow:0 0 25px rgba(0,128,0,0.8);}}
 
-/* ===== Dark Mode Toggle ===== */
-.dark-toggle{
-    position:fixed; top:20px; right:20px;
-    background:green; color:white; border:none;
-    padding:10px 20px; border-radius:30px; cursor:pointer;
-    font-weight:bold; transition:0.3s;
-}
+/* Dark Mode Toggle */
+.dark-toggle{position:fixed; top:20px; right:20px; background:green; color:white; border:none; padding:10px 20px; border-radius:30px; cursor:pointer; font-weight:bold; transition:0.3s;}
 .dark-toggle:hover{background:limegreen;}
 
-/* ===== 3-dot Menu Left ===== */
-.menu{
-    position:fixed; top:20px; left:20px; font-size:28px;
-    cursor:pointer;
-}
-.menu-box{
-    display:none; position:fixed; top:60px; left:20px;
-    background:#111; color:#fff; border-radius:10px; padding:10px;
-}
-.menu-box a{
-    display:block; color:white; text-decoration:none; padding:8px 15px;
-}
+/* 3-dot menu left */
+.menu{position:fixed; top:20px; left:20px; font-size:28px; cursor:pointer;}
+.menu-box{display:none; position:fixed; top:60px; left:20px; background:#111; color:#fff; border-radius:10px; padding:10px;}
+.menu-box a{display:block; color:white; text-decoration:none; padding:8px 15px;}
 .menu-box a:hover{background:green;}
 
-/* ===== Sections ===== */
+/* Sections */
 section{margin:40px 0; transition:all 0.5s ease; opacity:0; transform:translateY(20px);}
 section.visible{opacity:1; transform:translateY(0); transition:all 0.7s ease;}
 #contactSection{display:none;}
 
-/* ===== Contact Box ===== */
-.contact-box{
-    background:#f9f9f9; padding:30px;
-    border-radius:20px; width:90%; max-width:500px;
-    margin:auto; border:2px solid green;
-    box-shadow:0 15px 35px rgba(0,0,0,0.08); transition:all 0.5s ease;
-}
+/* Contact Box */
+.contact-box{background:#f9f9f9; padding:30px; border-radius:20px; width:90%; max-width:500px; margin:auto; border:2px solid green; box-shadow:0 15px 35px rgba(0,0,0,0.08); transition:all 0.5s ease;}
 body.dark-mode .contact-box{background:#222;border-color:lime;}
-input,textarea{
-    width:90%; padding:12px; margin:10px 0;
-    border-radius:8px; border:1px solid #ccc; font-size:16px;
-    transition:0.3s;
-}
-input:focus,textarea:focus{
-    outline:none; border-color:green; box-shadow:0 0 10px rgba(0,128,0,0.3);
-}
-body.dark-mode input,body.dark-mode textarea{
-    background:#333;color:#eee;border-color:lime;
-}
-.submit-btn{
-    background:linear-gradient(135deg,green,#006400);
-    color:white;padding:14px;border:none;border-radius:10px;
-    cursor:pointer;font-size:18px;font-weight:bold;width:100%;
-    transition:0.3s;
-}
+input,textarea{width:90%; padding:12px; margin:10px 0; border-radius:8px; border:1px solid #ccc; font-size:16px; transition:0.3s;}
+input:focus,textarea:focus{outline:none; border-color:green; box-shadow:0 0 10px rgba(0,128,0,0.3);}
+body.dark-mode input,body.dark-mode textarea{background:#333;color:#eee;border-color:lime;}
+.submit-btn{background:linear-gradient(135deg,green,#006400); color:white; padding:14px; border:none; border-radius:10px; cursor:pointer; font-size:18px; font-weight:bold; width:100%; transition:0.3s;}
 .submit-btn:hover{transform:scale(1.05);}
 
-/* ===== AI Chat ===== */
-.chat-box{margin-top:30px;background:#111;color:white;padding:15px;border-radius:15px;}
-.chat{height:200px;overflow-y:auto;background:#222;padding:10px;margin-bottom:10px;}
+/* AI Chat */
+.chat-box{margin-top:30px; background:#111; color:white; padding:15px; border-radius:15px;}
+.chat{height:200px; overflow-y:auto; background:#222; padding:10px; margin-bottom:10px;}
 .user{color:lime;} .ai{color:cyan;}
 
-/* ===== Floating Popup ===== */
-#popup{
-    position:fixed; bottom:30px; right:30px;
-    background:green; color:white; padding:15px 25px;
-    border-radius:15px; box-shadow:0 5px 20px rgba(0,0,0,0.3);
-    opacity:0; transform:translateY(50px);
-    transition:all 0.5s ease; font-weight:bold;
-}
+/* Floating Popup */
+#popup{position:fixed; bottom:30px; right:30px; background:green; color:white; padding:15px 25px; border-radius:15px; box-shadow:0 5px 20px rgba(0,0,0,0.3); opacity:0; transform:translateY(50px); transition:all 0.5s ease; font-weight:bold;}
 #popup.show{opacity:1; transform:translateY(0);}
 
-/* ===== Back Button ===== */
-.back-btn{
-    background:orange; color:white; border:none; padding:10px 20px;
-    border-radius:20px; cursor:pointer; margin-bottom:15px;
-}
+/* Back button */
+.back-btn{background:orange; color:white; border:none; padding:10px 20px; border-radius:20px; cursor:pointer; margin-bottom:15px;}
 .back-btn:hover{background:darkorange;}
 </style>
 </head>
+
 <body>
 
 <!-- Dark Mode & Menu -->
@@ -154,7 +102,8 @@ body.dark-mode input,body.dark-mode textarea{
     <h2 class="typing">- MD -</h2>
     <h3 class="typing">- REHAN -</h3>
 
-    <img src="rehan.png" class="profile-pic">
+    <!-- TEMP IMAGE: Replace with your rehan.png -->
+    <img src="https://i.ibb.co/3RZ8cXq/rehan-placeholder.png" class="profile-pic">
 
     <div style="margin:40px 0;">
         <p style="font-weight:bold;color:#555;">VISIT MY CHANNEL 👇</p>
@@ -190,16 +139,16 @@ body.dark-mode input,body.dark-mode textarea{
 </section>
 
 <script>
-// ===== Dark Mode =====
+// Dark Mode
 function toggleDarkMode(){document.body.classList.toggle('dark-mode');}
 
-// ===== 3-dot menu =====
+// Menu
 function toggleMenu(){
     let box=document.getElementById("menuBox");
     box.style.display = box.style.display==="block"?"none":"block";
 }
 
-// ===== Open Contact / Back =====
+// Open Contact / Back
 function openContact(){
     document.getElementById("mainContent").style.display="none";
     document.getElementById("contactSection").style.display="block";
@@ -211,14 +160,14 @@ function backToMain(){
     document.getElementById("mainContent").classList.add('visible');
 }
 
-// ===== Floating Popup =====
+// Floating Popup
 window.addEventListener('load',()=>{
     const popup=document.getElementById('popup');
     popup.classList.add('show');
     setTimeout(()=>popup.classList.remove('show'),5000);
 });
 
-// ===== Scroll Animations =====
+// Scroll Animations
 const faders=document.querySelectorAll('.fade-section');
 window.addEventListener('scroll',()=>{
     faders.forEach(f=>{
@@ -228,7 +177,7 @@ window.addEventListener('scroll',()=>{
     });
 });
 
-// ===== MR7 AI Smarter Chat =====
+// MR7 AI Smarter Chat
 function sendMsg(){
     let input=document.getElementById("userInput");
     let chat=document.getElementById("chat");
@@ -245,7 +194,7 @@ function sendMsg(){
     else if(msg.includes("help")) reply="Sure! Main yahan hoon madad ke liye 👍";
     else if(msg.includes("contact")) reply="Aap contact form me apna message bhej sakte ho";
     else if(msg.includes("dark")) reply="Dark mode toggle upar right corner me hai 🌙";
-    
+
     setTimeout(()=>{
         chat.innerHTML+=`<div class="ai">MR7 AI: ${reply}</div>`;
         chat.scrollTop=chat.scrollHeight;

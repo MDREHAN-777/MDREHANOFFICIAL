@@ -1,110 +1,174 @@
-<script>
-/* ELEMENTS */
-const home=document.getElementById("home");
-const contact=document.getElementById("contact");
-const ai=document.getElementById("ai");
-const menuBox=document.getElementById("menuBox");
-const popup=document.getElementById("popup");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MD Rehan Official</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-/* DARK MODE SAVE */
-if(localStorage.getItem("dark")==="on"){
- document.body.classList.add("dark-mode");
+<style>
+:root{
+ --bg:#ffffff;
+ --text:#000000;
+ --card:#f0f0f0;
 }
-function toggleDark(){
- document.body.classList.toggle("dark-mode");
- localStorage.setItem(
-  "dark",
-  document.body.classList.contains("dark-mode")?"on":"off"
- );
+body.dark{
+ --bg:#0f0f0f;
+ --text:#ffffff;
+ --card:#1f1f1f;
+}
+
+body{
+ margin:0;
+ font-family:Arial, sans-serif;
+ background:var(--bg);
+ color:var(--text);
+ transition:0.4s;
+ overflow-x:hidden;
+}
+
+/* 3 DOT */
+#dots{
+ position:fixed;
+ top:15px;
+ left:15px;
+ font-size:26px;
+ cursor:pointer;
+ z-index:1000;
 }
 
 /* MENU */
-function toggleMenu(){
- menuBox.style.display=menuBox.style.display==="block"?"none":"block";
+#menu{
+ position:fixed;
+ top:0;
+ left:-220px;
+ width:200px;
+ height:100%;
+ background:var(--card);
+ padding:20px;
+ transition:0.4s;
+ z-index:999;
 }
-document.addEventListener("click",e=>{
- if(!menuBox.contains(e.target) && !e.target.classList.contains("menu")){
-  menuBox.style.display="none";
- }
-});
-
-/* NAV */
-function hideAll(){
- home.classList.remove("active");
- contact.classList.remove("active");
- ai.classList.remove("active");
-}
-function openHome(){hideAll();home.classList.add("active")}
-function openContact(){hideAll();contact.classList.add("active")}
-function openAI(){hideAll();ai.classList.add("active")}
-
-/* CONTACT */
-function sendMail(){
- let n=name.value,m=mobile.value,msg=message.value;
- if(!n||!m||!msg){alert("Fill all fields");return;}
- window.location.href=
- `mailto:mrrehanofficial.1777@gmail.com?subject=Website Contact&body=Name:${n}%0AMobile:${m}%0AMessage:${msg}`;
+#menu a{
+ display:block;
+ margin:15px 0;
+ cursor:pointer;
 }
 
-/* =========================
-   🤖 MR7 SMART AI
-========================= */
+/* SECTIONS */
+.section{
+ display:none;
+ padding:80px 20px;
+ animation:fade 0.4s;
+}
+.section.active{display:block;}
+
+@keyframes fade{
+ from{opacity:0; transform:translateY(10px);}
+ to{opacity:1; transform:none;}
+}
+
+/* AI */
+#aiBox{
+ background:var(--card);
+ padding:10px;
+ border-radius:10px;
+ max-width:400px;
+}
+#aiMessages div{
+ margin:5px 0;
+}
+input,button{
+ padding:8px;
+ margin-top:5px;
+ width:100%;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 3 DOT -->
+<div id="dots">⋮</div>
+
+<!-- MENU -->
+<div id="menu">
+ <a onclick="show('home')">Home</a>
+ <a onclick="show('contact')">Contact</a>
+ <a onclick="show('ai')">MR7 AI</a>
+ <a onclick="toggleMode()">Dark / Light</a>
+</div>
+
+<!-- HOME -->
+<div id="home" class="section active">
+ <h1>Welcome to MD Rehan Official</h1>
+ <p>This is home page</p>
+</div>
+
+<!-- CONTACT -->
+<div id="contact" class="section">
+ <h2>Contact</h2>
+ <p>Name: __________</p>
+ <p>Number: __________</p>
+ <p>Message: __________</p>
+</div>
+
+<!-- AI -->
+<div id="ai" class="section">
+ <h2>MR7 AI 🤖</h2>
+ <div id="aiBox">
+  <div id="aiMessages"></div>
+  <input id="aiInput" placeholder="Ask anything...">
+  <button onclick="askAI()">Send</button>
+ </div>
+</div>
+
+<script>
+/* SAFE SELECT */
+function $(id){return document.getElementById(id);}
+
+/* MENU */
+const menu=$("menu");
+$("dots").onclick=()=>{
+ menu.style.left = menu.style.left=="0px" ? "-220px":"0px";
+};
+
+/* AUTO CLOSE + NAV */
+function show(id){
+ document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+ $(id).classList.add("active");
+ menu.style.left="-220px";
+}
+
+/* DARK MODE REMEMBER */
+if(localStorage.theme==="dark"){
+ document.body.classList.add("dark");
+}
+function toggleMode(){
+ document.body.classList.toggle("dark");
+ localStorage.theme = document.body.classList.contains("dark")?"dark":"light";
+}
+
+/* MR7 AI */
 function askAI(){
- let q = aiInput.value.trim();
- if(!q) return;
+ const inp=$("aiInput");
+ const msg=$("aiMessages");
+ if(!inp.value.trim())return;
 
- aiMessages.innerHTML += `<div class="ai-user">You: ${q}</div>`;
+ let q=inp.value;
+ msg.innerHTML+=`<div><b>You:</b> ${q}</div>`;
 
- let answer = "";
-
- // Maths detect (10+10, 5*6 etc)
+ let ans="Main samajhne ki koshish kar raha hoon 🙂";
  try{
-   if(/^[0-9+\-*/ ().]+$/.test(q)){
-     answer = eval(q);
-   }
+  if(/^[0-9+\-*/ ().]+$/.test(q)){
+   ans=eval(q);
+  }
  }catch(e){}
 
- // Text replies
- if(answer === ""){
-   let x = q.toLowerCase();
-
-   if(x.includes("hello") || x.includes("hi")){
-     answer = "Hello 👋 main MR7 AI hoon";
-   }
-   else if(x.includes("name")){
-     answer = "Mera naam MR7 AI hai 🤖";
-   }
-   else if(x.includes("who are you")){
-     answer = "Main MR7 World website ka AI assistant hoon";
-   }
-   else if(x.includes("rehan")){
-     answer = "MD Rehan ek creator aur MR7 World ke owner hain 🔥";
-   }
-   else{
-     answer = "Interesting question 🤔 abhi main basic AI hoon, future me aur smart banunga 😎";
-   }
- }
-
- aiMessages.innerHTML += `<div class="ai-bot">MR7: ${answer}</div>`;
- aiInput.value="";
- aiMessages.scrollTop = aiMessages.scrollHeight;
+ msg.innerHTML+=`<div><b>MR7:</b> ${ans}</div>`;
+ inp.value="";
+ msg.scrollTop=msg.scrollHeight;
 }
-
-/* POPUP */
-setTimeout(()=>{
- popup.style.display="block";
- setTimeout(()=>popup.style.display="none",4000);
-},1000);
-
-/* ANIMATION */
-document.querySelectorAll(".fade").forEach((e,i)=>{
- setTimeout(()=>e.classList.add("show"),500*i);
-});
-document.querySelectorAll(".typing").forEach(el=>{
- let t=el.innerText;el.innerText="";
- let i=0;
- (function type(){
-  if(i<t.length){el.innerText+=t[i++];setTimeout(type,100);}
- })();
-});
 </script>
+
+</body>
+</html>

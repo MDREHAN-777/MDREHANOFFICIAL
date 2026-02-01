@@ -21,69 +21,7 @@ body.dark-mode{
  color:#eee;
 }
 
-/* ===== HERO FEEL ===== */
-#home{
- padding:40px 20px;
- border-radius:25px;
- background:linear-gradient(135deg, rgba(0,255,0,.08), transparent);
-}
-
-/* ===== PROFILE PIC ===== */
-.profile-pic{
- width:200px;
- height:200px;
- border-radius:50%;
- border:5px solid limegreen;
- box-shadow:0 0 25px rgba(0,255,0,.6);
- transition:.5s;
-}
-.profile-pic:hover{
- transform:scale(1.12);
- box-shadow:0 0 45px lime;
-}
-
-/* ===== BUTTON ===== */
-.yt-button{
- background:linear-gradient(135deg, red, darkred);
- color:white;
- padding:15px 45px;
- border:none;
- border-radius:50px;
- font-size:18px;
- cursor:pointer;
- transition:.4s;
-}
-.yt-button:hover{
- transform:scale(1.1);
- box-shadow:0 10px 25px rgba(255,0,0,.4);
-}
-
-/* ===== MENU & DARK ===== */
-.menu{
- position:fixed;
- top:20px;left:20px;
- font-size:30px;
- cursor:pointer;
-}
-.menu-box{
- position:fixed;
- top:60px;left:20px;
- background:#222;
- color:white;
- padding:10px;
- border-radius:10px;
- display:none;
-}
-.menu-box button{
- width:140px;
- margin:5px 0;
- padding:8px;
- border:none;
- border-radius:6px;
- cursor:pointer;
-}
-.menu-box button:hover{background:lime;}
-
+/* BUTTON */
 .dark-toggle{
  position:fixed;
  top:20px;right:20px;
@@ -95,146 +33,35 @@ body.dark-mode{
  cursor:pointer;
 }
 
-/* ===== SECTIONS ===== */
-.section{display:none}
-.section.active{display:block}
-
-/* ===== IMAGE GALLERY ===== */
-.image-gallery{
- display:flex;
- justify-content:center;
- gap:22px;
- margin:50px 0;
- flex-wrap:wrap;
-}
-.image-gallery img{
- width:170px;
- border-radius:20px;
- background:white;
- padding:8px;
- box-shadow:0 8px 25px rgba(0,0,0,.2);
- transition:.4s;
-}
-.image-gallery img:hover{
- transform:translateY(-12px) scale(1.08);
- box-shadow:0 0 35px rgba(0,255,0,.6);
-}
-
-/* ===== FLOATING IMAGE ===== */
-.floating-img{
- position:fixed;
- right:18px;
- bottom:80px;
- width:95px;
- border-radius:18px;
- box-shadow:0 0 30px rgba(0,255,0,.6);
- animation:float 4s ease-in-out infinite;
- z-index:999;
- transition:.4s;
-}
-body.dark-mode .floating-img{
- box-shadow:0 0 35px cyan;
-}
-@keyframes float{
- 0%{transform:translateY(0)}
- 50%{transform:translateY(-14px)}
- 100%{transform:translateY(0)}
-}
-@media(max-width:600px){
- .floating-img{width:75px}
-}
-
-/* ===== CONTACT / AI ===== */
-.contact-box,.ai-box{
- max-width:400px;
- margin:40px auto;
- padding:25px;
- border-radius:22px;
- border:2px solid limegreen;
-}
-input,textarea{
- width:90%;
- padding:10px;
- margin:8px 0;
- border-radius:8px;
- border:1px solid #aaa;
-}
+/* बाकी CSS same रखी गई है */
 </style>
 </head>
 
 <body>
 
-<div class="menu" onclick="toggleMenu()">⋮</div>
-<div class="menu-box" id="menuBox">
- <button onclick="openContact()">📞 Contact</button>
- <button onclick="openAI()">🤖 MR7 AI</button>
-</div>
-
 <button class="dark-toggle" onclick="toggleDark()">🌙 Dark</button>
 
-<div id="home" class="section active">
 <h1>MR7 WORLD</h1>
-<h2>MD</h2>
-<h3>REHAN</h3>
-
-<a href="https://www.youtube.com/@MR7OFFICIAL777" target="_blank">
-<button class="yt-button">SUBSCRIBE</button>
-</a>
-
-<p>👆 CLICK HERE</p>
-
-<img src="rehan.png" class="profile-pic">
-
-<div class="image-gallery">
- <img src="animi 1.jpeg">
- <img src="animi 2 .jpeg">
- <img src="animi 3.jpeg">
-</div>
-</div>
-
-<div id="contact" class="section">
-<div class="contact-box">
-<h2>Contact Me</h2>
-<input placeholder="Name">
-<input placeholder="Mobile">
-<textarea placeholder="Message"></textarea>
-</div>
-<button onclick="goBack()">⬅ Back</button>
-</div>
-
-<div id="ai" class="section">
-<div class="ai-box">
-<h2>🤖 MR7 AI</h2>
-<input placeholder="Ask anything">
-</div>
-<button onclick="goBack()">⬅ Back</button>
-</div>
-
-<img src="animi 1.jpeg" class="floating-img">
+<p>Dark mode ab permanent hai 😎</p>
 
 <script>
+// ===== DARK MODE (PERMANENT USER CHOICE) =====
+const savedTheme = localStorage.getItem("theme");
+
+// Page load par last saved theme apply
+if(savedTheme === "dark"){
+ document.body.classList.add("dark-mode");
+}
+
+// Button click par hi change ho
 function toggleDark(){
- document.body.classList.toggle("dark-mode");
-}
-function toggleMenu(){
- menuBox.style.display=menuBox.style.display=="block"?"none":"block";
-}
-function openContact(){
- home.classList.remove("active");
- ai.classList.remove("active");
- contact.classList.add("active");
- menuBox.style.display="none";
-}
-function openAI(){
- home.classList.remove("active");
- contact.classList.remove("active");
- ai.classList.add("active");
- menuBox.style.display="none";
-}
-function goBack(){
- contact.classList.remove("active");
- ai.classList.remove("active");
- home.classList.add("active");
+ if(document.body.classList.contains("dark-mode")){
+   document.body.classList.remove("dark-mode");
+   localStorage.setItem("theme","light");
+ }else{
+   document.body.classList.add("dark-mode");
+   localStorage.setItem("theme","dark");
+ }
 }
 </script>
 

@@ -71,7 +71,6 @@ body.dark-mode{background:#111;color:#eee}
  background:#222;color:white;
  padding:10px;border-radius:10px;
  display:none;
- animation: fadeIn 0.4s ease-in-out;
 }
 .menu-box button{
  width:130px;margin:5px 0;padding:8px;border:none;border-radius:5px;cursor:pointer;
@@ -84,15 +83,10 @@ body.dark-mode{background:#111;color:#eee}
 
 /* SECTIONS */
 .section{
- opacity:0;
- transform: translateY(20px);
- transition: opacity .5s, transform .5s;
- pointer-events:none;
+ display:none;
 }
 .section.active{
- opacity:1;
- transform: translateY(0);
- pointer-events:auto;
+ display:block;
 }
 
 /* CONTACT & AI BOX */
@@ -114,12 +108,6 @@ input, textarea{
 }
 input:focus, textarea:focus{
  border-color:green;outline:none;
-}
-
-/* ANIMATION KEYFRAMES */
-@keyframes fadeIn{
- 0%{opacity:0; transform: translateY(-10px);}
- 100%{opacity:1; transform: translateY(0);}
 }
 </style>
 </head>
@@ -172,7 +160,7 @@ input:focus, textarea:focus{
 </div>
 
 <script>
-/* DARK MODE SAVE */
+/* DARK MODE */
 if(localStorage.getItem("dark")=="on"){
  document.body.classList.add("dark-mode");
 }

@@ -20,7 +20,7 @@ body.dark-mode{background:#111;color:#eee}
 h1,h2,h3{letter-spacing:3px}
 
 .typing{border-right:3px solid green;white-space:nowrap;overflow:hidden}
-.fade{opacity:0;transform:translateY(20px);transition:0.8s}
+.fade{opacity:0;transform:translateY(20px);transition:1s}
 .fade.show{opacity:1;transform:none}
 
 /* PROFILE */
@@ -60,15 +60,7 @@ h1,h2,h3{letter-spacing:3px}
     position:fixed;top:60px;left:20px;
     background:#222;color:white;
     padding:15px;border-radius:10px;
-    opacity:0;
-    transform:scale(0.9);
-    pointer-events:none;
-    transition:0.3s;
-}
-.menu-box.show{
-    opacity:1;
-    transform:scale(1);
-    pointer-events:auto;
+    display:none;
 }
 .menu-box button{
     width:100%;margin:5px 0;
@@ -78,12 +70,8 @@ h1,h2,h3{letter-spacing:3px}
 }
 
 /* SECTIONS */
-.section{display:none;animation:fadePage 0.5s}
+.section{display:none}
 .section.active{display:block}
-@keyframes fadePage{
-    from{opacity:0}
-    to{opacity:1}
-}
 
 /* CONTACT */
 .contact-box{
@@ -133,7 +121,6 @@ input,textarea{
 
 <!-- HOME -->
 <div id="home" class="section active">
-
 <h1 class="typing fade">- MR7 WORLD -</h1>
 <h2 class="typing fade">- MD -</h2>
 <h3 class="typing fade">- REHAN -</h3>
@@ -144,55 +131,59 @@ input,textarea{
 </a>
 
 <br><br>
-<img src="rehan.png" class="profile-pic fade">
-
+<img src="rehan.png" class="profile-pic fade" onerror="this.style.display='none'">
 </div>
 
 <!-- CONTACT -->
 <div id="contact" class="section">
-
 <div class="contact-box">
 <h2>Contact Me</h2>
-
 <input id="name" placeholder="Name">
 <input id="mobile" placeholder="Mobile">
 <textarea id="message" placeholder="Message"></textarea>
-
 <button class="submit-btn" onclick="sendMail()">Send</button>
 </div>
-
 <button class="back-btn" onclick="goBack()">⬅ Back</button>
 </div>
 
 <div id="popup">Welcome to MR7 WORLD 🔥</div>
 
 <script>
+/* ELEMENTS */
 const home = document.getElementById("home");
 const contact = document.getElementById("contact");
 const menuBox = document.getElementById("menuBox");
+const popup = document.getElementById("popup");
 
-/* DARK */
+/* DARK MODE (PERMANENT) */
+const savedTheme = localStorage.getItem("theme");
+if(savedTheme==="dark"){
+ document.body.classList.add("dark-mode");
+ document.querySelector(".dark-toggle").innerText="☀ Light";
+}
 function toggleDark(){
- document.body.classList.toggle('dark-mode');
+ let btn=document.querySelector(".dark-toggle");
+ if(document.body.classList.contains("dark-mode")){
+  document.body.classList.remove("dark-mode");
+  localStorage.setItem("theme","light");
+  btn.innerText="🌙 Dark";
+ }else{
+  document.body.classList.add("dark-mode");
+  localStorage.setItem("theme","dark");
+  btn.innerText="☀ Light";
+ }
 }
 
 /* MENU */
 function toggleMenu(){
- menuBox.classList.toggle("show");
+ menuBox.style.display = menuBox.style.display==="block"?"none":"block";
 }
-
-/* AUTO CLOSE MENU (outside click) */
-document.addEventListener("click",e=>{
- if(!menuBox.contains(e.target) && !e.target.classList.contains("menu")){
-   menuBox.classList.remove("show");
- }
-});
 
 /* PAGE SWITCH */
 function openContact(){
  home.classList.remove("active");
  contact.classList.add("active");
- menuBox.classList.remove("show");
+ menuBox.style.display="none";
 }
 function goBack(){
  contact.classList.remove("active");
@@ -201,17 +192,10 @@ function goBack(){
 
 /* SEND MAIL */
 function sendMail(){
- let name=name.value;
- let mobile=mobile.value;
- let msg=message.value;
-
- if(!name||!mobile||!msg){
-   alert("Please fill all fields");
-   return;
- }
- let body=`Name: ${name}%0A%0AMobile: ${mobile}%0A%0AMessage: ${msg}`;
- window.location.href=
- `mailto:mrrehanofficial.1777@gmail.com?subject=Website Contact&body=${body}`;
+ let n=name.value,m=mobile.value,msg=message.value;
+ if(!n||!m||!msg){alert("Fill all fields");return;}
+ let body=`Name: ${n}%0AMobile: ${m}%0AMessage: ${msg}`;
+ window.location.href=`mailto:mrrehanofficial.1777@gmail.com?subject=Website Contact&body=${body}`;
 }
 
 /* POPUP */
@@ -227,11 +211,8 @@ document.querySelectorAll(".fade").forEach((e,i)=>{
 
 /* TYPING */
 document.querySelectorAll(".typing").forEach(el=>{
- let t=el.innerText;el.innerText="";
- let i=0;
- (function type(){
-  if(i<t.length){el.innerText+=t[i++];setTimeout(type,100);}
- })();
+ let t=el.innerText;el.innerText="";let i=0;
+ (function type(){ if(i<t.length){el.innerText+=t[i++];setTimeout(type,100);} })();
 });
 </script>
 

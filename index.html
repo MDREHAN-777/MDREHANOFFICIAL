@@ -20,7 +20,7 @@ body.dark-mode{background:#111;color:#eee}
 h1,h2,h3{letter-spacing:3px}
 
 .typing{border-right:3px solid green;white-space:nowrap;overflow:hidden}
-.fade{opacity:0;transform:translateY(20px);transition:1s}
+.fade{opacity:0;transform:translateY(20px);transition:0.8s}
 .fade.show{opacity:1;transform:none}
 
 /* PROFILE */
@@ -60,7 +60,15 @@ h1,h2,h3{letter-spacing:3px}
     position:fixed;top:60px;left:20px;
     background:#222;color:white;
     padding:15px;border-radius:10px;
-    display:none;
+    opacity:0;
+    transform:scale(0.9);
+    pointer-events:none;
+    transition:0.3s;
+}
+.menu-box.show{
+    opacity:1;
+    transform:scale(1);
+    pointer-events:auto;
 }
 .menu-box button{
     width:100%;margin:5px 0;
@@ -70,8 +78,12 @@ h1,h2,h3{letter-spacing:3px}
 }
 
 /* SECTIONS */
-.section{display:none}
+.section{display:none;animation:fadePage 0.5s}
 .section.active{display:block}
+@keyframes fadePage{
+    from{opacity:0}
+    to{opacity:1}
+}
 
 /* CONTACT */
 .contact-box{
@@ -142,9 +154,9 @@ input,textarea{
 <div class="contact-box">
 <h2>Contact Me</h2>
 
-<input id="name" placeholder="Name" required>
-<input id="mobile" placeholder="Mobile" required>
-<textarea id="message" placeholder="Message" required></textarea>
+<input id="name" placeholder="Name">
+<input id="mobile" placeholder="Mobile">
+<textarea id="message" placeholder="Message"></textarea>
 
 <button class="submit-btn" onclick="sendMail()">Send</button>
 </div>
@@ -155,6 +167,10 @@ input,textarea{
 <div id="popup">Welcome to MR7 WORLD 🔥</div>
 
 <script>
+const home = document.getElementById("home");
+const contact = document.getElementById("contact");
+const menuBox = document.getElementById("menuBox");
+
 /* DARK */
 function toggleDark(){
  document.body.classList.toggle('dark-mode');
@@ -162,32 +178,37 @@ function toggleDark(){
 
 /* MENU */
 function toggleMenu(){
- let box=document.getElementById("menuBox");
- box.style.display=box.style.display=="block"?"none":"block";
+ menuBox.classList.toggle("show");
 }
+
+/* AUTO CLOSE MENU (outside click) */
+document.addEventListener("click",e=>{
+ if(!menuBox.contains(e.target) && !e.target.classList.contains("menu")){
+   menuBox.classList.remove("show");
+ }
+});
 
 /* PAGE SWITCH */
 function openContact(){
  home.classList.remove("active");
  contact.classList.add("active");
- menuBox.style.display="none";
+ menuBox.classList.remove("show");
 }
 function goBack(){
  contact.classList.remove("active");
  home.classList.add("active");
 }
 
-/* SEND MAIL (GMAIL) */
+/* SEND MAIL */
 function sendMail(){
- let name=document.getElementById("name").value;
- let mobile=document.getElementById("mobile").value;
- let msg=document.getElementById("message").value;
+ let name=name.value;
+ let mobile=mobile.value;
+ let msg=message.value;
 
  if(!name||!mobile||!msg){
    alert("Please fill all fields");
    return;
  }
-
  let body=`Name: ${name}%0A%0AMobile: ${mobile}%0A%0AMessage: ${msg}`;
  window.location.href=
  `mailto:mrrehanofficial.1777@gmail.com?subject=Website Contact&body=${body}`;
@@ -201,7 +222,7 @@ setTimeout(()=>{
 
 /* FADE */
 document.querySelectorAll(".fade").forEach((e,i)=>{
- setTimeout(()=>e.classList.add("show"),500*i);
+ setTimeout(()=>e.classList.add("show"),400*i);
 });
 
 /* TYPING */

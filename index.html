@@ -8,119 +8,92 @@
 <style>
 body{
  margin:0;padding:20px;text-align:center;
- font-family:'Segoe UI',sans-serif;
- background:#fff;color:#333;
- transition:.5s;
- overflow-x:hidden;
+ font-family:Segoe UI, sans-serif;
+ background:#f5f5f5;color:#222;
+ transition:.4s;
 }
-body.dark-mode{background:#0f0f0f;color:#eee}
-
-/* ===== PREMIUM GLASS CARD ===== */
-.card{
- background:rgba(255,255,255,.7);
- backdrop-filter:blur(12px);
- border-radius:25px;
- padding:25px;
- box-shadow:0 10px 40px rgba(0,0,0,.2);
-}
-body.dark-mode .card{
- background:rgba(20,20,20,.7);
-}
+body.dark{background:#0e0e0e;color:#eee}
 
 /* PROFILE */
 .profile-pic{
  width:200px;height:200px;border-radius:50%;
- border:5px solid lime;
- box-shadow:0 0 25px lime;
+ border:5px solid #00ff6a;
+ box-shadow:0 0 25px #00ff6a;
  transition:.4s;
 }
-.profile-pic:hover{transform:scale(1.12) rotate(4deg)}
+.profile-pic:hover{
+ transform:scale(1.08);
+ box-shadow:0 0 40px lime;
+}
 
 /* BUTTON */
-button{
- cursor:pointer;border:none;
- transition:.3s;
-}
 .yt-button{
- background:linear-gradient(45deg,#ff0000,#cc0000);
- color:white;padding:16px 45px;
+ background:red;color:#fff;
+ padding:14px 38px;border:none;
  border-radius:50px;font-size:18px;
+ cursor:pointer;
 }
-.yt-button:hover{transform:scale(1.1);box-shadow:0 0 20px red}
+.yt-button:hover{transform:scale(1.1)}
 
-.submit-btn{
- background:linear-gradient(45deg,green,lime);
- color:white;padding:12px;width:100%;
- border-radius:12px;
+/* MENU */
+.menu{
+ position:fixed;top:15px;left:15px;
+ font-size:30px;cursor:pointer;
 }
-.back-btn{
- margin-top:20px;padding:10px 30px;
- background:#666;color:white;
- border-radius:30px;
+.menu-box{
+ position:fixed;top:60px;left:15px;
+ background:#111;color:white;
+ padding:12px;border-radius:12px;
+ display:none;
+}
+.menu-box button{
+ background:none;border:none;
+ color:white;font-size:16px;
+ padding:8px;cursor:pointer;
 }
 
 /* DARK */
 .dark-toggle{
- position:fixed;top:20px;right:20px;
- background:lime;color:black;
- padding:10px 20px;border-radius:30px;
+ position:fixed;top:15px;right:15px;
+ padding:8px 18px;border:none;
+ border-radius:30px;
+ background:#00ff6a;
+ cursor:pointer;
 }
 
-/* MENU */
-.menu{
- position:fixed;top:20px;left:20px;
- font-size:32px;cursor:pointer;
- z-index:1000;
-}
-.menu-box{
- position:fixed;top:65px;left:20px;
- background:#111;color:white;
- padding:12px;border-radius:15px;
- display:none;
- box-shadow:0 10px 30px rgba(0,0,0,.6);
-}
-.menu-box button{
- width:150px;margin:6px 0;
- padding:10px;border-radius:8px;
- background:#222;color:white;
-}
-.menu-box button:hover{background:lime;color:black}
-
-/* SECTIONS */
+/* SECTION */
 .section{display:none}
 .section.active{display:block}
 
+/* BOX */
+.box{
+ max-width:420px;margin:40px auto;
+ padding:25px;border-radius:20px;
+ border:2px solid #00ff6a;
+ background:rgba(255,255,255,.05);
+}
+
 /* INPUT */
 input,textarea{
- width:90%;padding:12px;margin:8px 0;
- border-radius:10px;border:1px solid #aaa;
+ width:90%;padding:10px;
+ margin:8px;border-radius:8px;
+ border:1px solid #aaa;
 }
 
 /* GALLERY */
-.image-gallery{
- display:flex;gap:20px;flex-wrap:wrap;
- justify-content:center;margin-top:30px;
+.gallery{
+ display:flex;gap:15px;
+ justify-content:center;
+ flex-wrap:wrap;margin-top:30px;
 }
-.image-gallery img{
- width:160px;border-radius:20px;
+.gallery img{
+ width:150px;border-radius:16px;
+ box-shadow:0 8px 20px rgba(0,0,0,.3);
  transition:.4s;
- box-shadow:0 10px 30px rgba(0,0,0,.4);
 }
-.image-gallery img:hover{
- transform:scale(1.1) translateY(-10px);
- box-shadow:0 0 35px lime;
-}
-
-/* FLOAT */
-.floating-img{
- position:fixed;right:15px;bottom:80px;
- width:90px;border-radius:16px;
- animation:float 4s infinite;
-}
-@keyframes float{
- 0%{transform:translateY(0)}
- 50%{transform:translateY(-15px)}
- 100%{transform:translateY(0)}
+.gallery img:hover{
+ transform:scale(1.08);
+ box-shadow:0 0 30px lime;
 }
 </style>
 </head>
@@ -129,18 +102,16 @@ input,textarea{
 
 <div class="menu" onclick="toggleMenu()">⋮</div>
 <div class="menu-box" id="menuBox">
- <button onclick="openContact()">📞 Contact</button>
+ <button onclick="openContact()">📞 Contact</button><br>
  <button onclick="openAI()">🤖 MR7 AI</button>
 </div>
 
-<button class="dark-toggle" onclick="toggleDark()">🌙 Dark</button>
+<button class="dark-toggle" onclick="toggleDark()">🌙</button>
 
 <!-- HOME -->
 <div id="home" class="section active">
-<div class="card">
-<h1>- MR7 WORLD -</h1>
-<h2>- MD -</h2>
-<h3>- REHAN -</h3>
+<h1>MR7 WORLD</h1>
+<h2>MD REHAN</h2>
 
 <a href="https://www.youtube.com/@MR7OFFICIAL777" target="_blank">
 <button class="yt-button">SUBSCRIBE</button>
@@ -149,57 +120,46 @@ input,textarea{
 <br><br>
 <img src="rehan.png" class="profile-pic">
 
-<div class="image-gallery">
+<div class="gallery">
  <img src="animi 1.jpeg">
  <img src="animi 2 .jpeg">
  <img src="animi 3.jpeg">
 </div>
 </div>
-</div>
 
 <!-- CONTACT -->
 <div id="contact" class="section">
-<div class="card">
-<h2>Contact Me</h2>
-<input id="name" placeholder="Name">
-<input id="mobile" placeholder="Mobile">
-<textarea id="message" placeholder="Message"></textarea>
-<button class="submit-btn" onclick="sendMail()">Send</button>
+<div class="box">
+<h2>📞 Contact Me</h2>
+<input placeholder="Name">
+<input placeholder="Mobile">
+<textarea placeholder="Message"></textarea>
+<button onclick="sendMail()">Send Email</button>
 </div>
-<button class="back-btn" onclick="goBack()">⬅ Back</button>
+<button onclick="goHome()">⬅ Back</button>
 </div>
 
 <!-- AI -->
 <div id="ai" class="section">
-<div class="card">
+<div class="box">
 <h2>🤖 MR7 AI</h2>
-<input id="aiInput" placeholder="Ask anything">
-<button class="submit-btn" onclick="askAI()">Ask</button>
-<div id="aiOutput" style="margin-top:15px;font-weight:bold"></div>
+<input id="aiInput" placeholder="Ask me anything">
+<button onclick="askAI()">Ask</button>
+<p id="aiOutput"></p>
 </div>
-<button class="back-btn" onclick="goBack()">⬅ Back</button>
+<button onclick="goHome()">⬅ Back</button>
 </div>
-
-<img src="animi 1.jpeg" class="floating-img">
 
 <script>
-/* DARK SAVE */
-if(localStorage.getItem("dark")==="on"){
- document.body.classList.add("dark-mode");
-}
-function toggleDark(){
- document.body.classList.toggle("dark-mode");
- localStorage.setItem("dark",
- document.body.classList.contains("dark-mode")?"on":"off");
-}
+const home=document.getElementById("home");
+const contact=document.getElementById("contact");
+const ai=document.getElementById("ai");
+const menuBox=document.getElementById("menuBox");
 
-/* MENU */
 function toggleMenu(){
- let m=menuBox;
- m.style.display=m.style.display==="block"?"none":"block";
+ menuBox.style.display=
+ menuBox.style.display=="block"?"none":"block";
 }
-
-/* PAGE */
 function openContact(){
  home.classList.remove("active");
  ai.classList.remove("active");
@@ -212,52 +172,21 @@ function openAI(){
  ai.classList.add("active");
  menuBox.style.display="none";
 }
-function goBack(){
+function goHome(){
  contact.classList.remove("active");
  ai.classList.remove("active");
  home.classList.add("active");
 }
-
-/* MAIL */
-function sendMail(){
- if(!name.value||!mobile.value||!message.value){
-  alert("Fill all");return;
- }
- location.href=
- `mailto:mrrehanofficial.1777@gmail.com?subject=Website Contact&body=Name:${name.value}%0AMobile:${mobile.value}%0AMessage:${message.value}`;
+function toggleDark(){
+ document.body.classList.toggle("dark");
 }
-
-/* SMART AI */
+function sendMail(){
+ location.href="mailto:mrrehanofficial.1777@gmail.com";
+}
 function askAI(){
- let q=aiInput.value.toLowerCase();
- let r="🤖 MR7 AI: samajh nahi aaya 😅";
-
- if(q.match(/^[0-9+\-*/. ]+$/)){
-  try{r="Answer: "+eval(q)}catch{r="Calculation error ❌"}
- }
- else if(q.includes("joke")){
-  let jokes=[
-   "Phone gir gaya 😱 screen bach gayi 😌",
-   "Teacher: silent class! Student: ok sir 🤐",
-   "Life jab WiFi slow ho 😭"
-  ];
-  r=jokes[Math.floor(Math.random()*jokes.length)];
- }
- else if(q.includes("hello")||q.includes("hi")){
-  r="Hello 👋 main MR7 AI hoon";
- }
- else if(q.includes("time")){
-  r="Time: "+new Date().toLocaleTimeString();
- }
- else if(q.includes("date")){
-  r="Date: "+new Date().toDateString();
- }
- else if(q.includes("your name")){
-  r="Mera naam MR7 AI 🤖";
- }
-
- aiOutput.innerHTML=r;
- aiInput.value="";
+ const q=document.getElementById("aiInput").value;
+ document.getElementById("aiOutput").innerText=
+ q ? "🤖 Soon smart AI ready!" : "Ask something 😄";
 }
 </script>
 

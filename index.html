@@ -2,299 +2,173 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>MR7 WORLD | MD REHAN</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MR7 WORLD</title>
 
 <style>
-*{box-sizing:border-box}
+:root{
+  --bg:#000;
+  --card:rgba(255,255,255,0.08);
+  --neon:#00ff88;
+  --text:#fff;
+}
+
 body{
- margin:0;
- font-family:Segoe UI,Arial;
- background:#050505;
- color:#eee;
- text-align:center;
- transition:.4s;
- overflow-x:hidden;
-}
-body.light{
- background:#f5f5f5;
- color:#111;
+  margin:0;
+  font-family:Segoe UI, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
 }
 
-/* ===== TOP ===== */
-.top{
- position:fixed;
- top:0;left:0;
- width:100%;
- padding:15px 20px;
- display:flex;
- justify-content:space-between;
- align-items:center;
- z-index:999;
+/* LOCK DARK MODE */
+html{color-scheme: dark;}
+
+header{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  padding:15px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  z-index:10;
 }
+
+.menu-btn{
+  font-size:26px;
+  cursor:pointer;
+}
+
 .menu{
- font-size:30px;
- cursor:pointer;
-}
-.mode{
- background:#00ff66;
- border:none;
- padding:8px 16px;
- border-radius:20px;
- cursor:pointer;
-}
-
-/* ===== MENU BOX ===== */
-.menu-box{
- position:fixed;
- top:65px;left:15px;
- background:#121212;
- padding:12px;
- border-radius:18px;
- display:none;
- box-shadow:0 0 30px rgba(0,255,0,.4);
-}
-.menu-box button{
- width:160px;
- margin:6px 0;
- padding:10px;
- border:none;
- border-radius:14px;
- background:#1f1f1f;
- color:#fff;
- cursor:pointer;
- font-size:15px;
-}
-.menu-box button:hover{
- background:#00ff66;
- color:#000;
+  position:fixed;
+  top:0;
+  left:-260px;
+  width:250px;
+  height:100%;
+  background:#050505;
+  padding:20px;
+  transition:.3s;
+  box-shadow:0 0 20px #000;
 }
 
-/* ===== SECTION ===== */
+.menu a{
+  display:block;
+  color:white;
+  text-decoration:none;
+  margin:15px 0;
+  font-size:18px;
+}
+
+.menu.show{left:0;}
+
+.main{
+  padding-top:120px;
+  text-align:center;
+}
+
+.logo{
+  width:220px;
+  height:220px;
+  border-radius:50%;
+  margin:auto;
+  box-shadow:0 0 40px var(--neon);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:40px;
+  font-weight:bold;
+}
+
+.btn{
+  margin-top:30px;
+  padding:15px 40px;
+  background:red;
+  border:none;
+  border-radius:40px;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+  box-shadow:0 0 20px red;
+}
+
 .section{
- display:none;
- padding-top:120px;
- animation:fade .4s ease;
-}
-.section.active{display:block}
-@keyframes fade{
- from{opacity:0;transform:translateY(15px)}
- to{opacity:1;transform:none}
+  margin:60px auto;
+  max-width:900px;
+  background:var(--card);
+  border-radius:20px;
+  padding:25px;
+  backdrop-filter:blur(10px);
 }
 
-/* ===== LOGO AREA ===== */
-.logo-wrap{
- width:240px;
- height:340px;
- margin:0 auto 25px;
- border-radius:50%;
- display:flex;
- align-items:center;
- justify-content:center;
- box-shadow:
- 0 0 40px #00ff66,
- inset 0 0 25px #00ff66;
- animation:pulse 3s infinite;
-}
-@keyframes pulse{
- 0%{box-shadow:0 0 25px #00ff66}
- 50%{box-shadow:0 0 55px #00ff66}
- 100%{box-shadow:0 0 25px #00ff66}
-}
-.logo-wrap img{
- width:190px;
- border-radius:50%;
+input{
+  width:80%;
+  padding:12px;
+  border-radius:25px;
+  border:none;
+  outline:none;
+  font-size:16px;
 }
 
-/* ===== BUTTON ===== */
-.sub{
- padding:15px 50px;
- border:none;
- border-radius:40px;
- background:#ff0000;
- color:#fff;
- font-size:18px;
- cursor:pointer;
- box-shadow:0 10px 35px rgba(255,0,0,.6);
-}
-
-/* ===== GALLERY ===== */
-.gallery{
- display:flex;
- justify-content:center;
- gap:22px;
- margin:50px 0;
- flex-wrap:wrap;
-}
-.gallery img{
- width:160px;
- border-radius:22px;
- box-shadow:0 15px 40px rgba(0,0,0,.6);
- transition:.4s;
-}
-.gallery img:hover{
- transform:translateY(-12px) scale(1.08);
- box-shadow:0 0 35px #00ff66;
-}
-
-/* ===== BOX ===== */
-.box{
- max-width:420px;
- margin:30px auto;
- padding:25px;
- border-radius:22px;
- background:rgba(0,0,0,.6);
- border:2px solid #00ff66;
- backdrop-filter:blur(10px);
-}
-body.light .box{
- background:#fff;
-}
-input,textarea{
- width:92%;
- padding:10px;
- margin:8px 0;
- border-radius:10px;
- border:1px solid #aaa;
-}
-.send{
- width:100%;
- padding:12px;
- border:none;
- border-radius:14px;
- background:#00ff66;
- cursor:pointer;
-}
-.back{
- margin-top:15px;
- padding:8px 25px;
- border:none;
- border-radius:20px;
- background:#555;
- color:#fff;
- cursor:pointer;
-}
-
-/* AI */
-#aiOutput{
- margin-top:15px;
- font-weight:bold;
+.ai-box{
+  margin-top:20px;
+  font-size:16px;
+  opacity:.9;
 }
 </style>
 </head>
 
 <body>
 
-<div class="top">
- <div class="menu" onclick="toggleMenu()">⋮</div>
- <button class="mode" onclick="toggleMode()">🌙</button>
+<header>
+  <div class="menu-btn" onclick="toggleMenu()">⋮</div>
+  <div>MR7 WORLD</div>
+</header>
+
+<div class="menu" id="menu">
+  <a href="#home">🏠 Home</a>
+  <a href="#ai">🤖 AI</a>
+  <a href="#contact">📞 Contact</a>
 </div>
 
-<div class="menu-box" id="menuBox">
- <button onclick="openSec('contact')">📞 Contact</button>
- <button onclick="openSec('ai')">🤖 MR7 AI</button>
+<div class="main" id="home">
+  <div class="logo">RA</div>
+  <h1>MD REHAN</h1>
+  <button class="btn">SUBSCRIBE</button>
 </div>
 
-<!-- HOME -->
-<div id="home" class="section active">
- <h1>MR7 WORLD</h1>
- <h3>MD REHAN</h3>
-
- <div class="logo-wrap">
-  <img src="rehan.png">
- </div>
-
- <a href="https://www.youtube.com/@MR7OFFICIAL777" target="_blank">
-  <button class="sub">SUBSCRIBE</button>
- </a>
-
- <div class="gallery">
-  <img src="animi 1.jpeg">
-  <img src="animi 2 .jpeg">
-  <img src="animi 3.jpeg">
- </div>
-</div>
-
-<!-- CONTACT -->
-<div id="contact" class="section">
- <div class="box">
-  <h2>Contact Me</h2>
-  <input placeholder="Name">
-  <input placeholder="Mobile">
-  <textarea placeholder="Message"></textarea>
-  <button class="send" onclick="sendMail()">Send</button>
- </div>
- <button class="back" onclick="goHome()">⬅ Back</button>
-</div>
-
-<!-- AI -->
-<div id="ai" class="section">
- <div class="box">
+<div class="section" id="ai">
   <h2>🤖 MR7 AI</h2>
-  <input id="aiInput" placeholder="Ask anything">
-  <button class="send" onclick="askAI()">Ask</button>
-  <div id="aiOutput"></div>
- </div>
- <button class="back" onclick="goHome()">⬅ Back</button>
+  <input id="aiInput" placeholder="Type something..." />
+  <div class="ai-box" id="aiReply"></div>
+</div>
+
+<div class="section" id="contact">
+  <h2>📞 Contact</h2>
+  <p>Email: mdrehanofficial@gmail.com</p>
+  <p>Instagram: @mr7world</p>
 </div>
 
 <script>
-const menuBox=document.getElementById("menuBox");
-const sections=document.querySelectorAll(".section");
-
-/* THEME FIX */
-if(localStorage.getItem("theme")==="light"){
- document.body.classList.add("light");
-}
-function toggleMode(){
- document.body.classList.toggle("light");
- localStorage.setItem(
-  "theme",
-  document.body.classList.contains("light")?"light":"dark"
- );
-}
-
-/* MENU */
 function toggleMenu(){
- menuBox.style.display=
- menuBox.style.display==="block"?"none":"block";
+  document.getElementById("menu").classList.toggle("show");
 }
 
-/* SECTIONS */
-function openSec(id){
- sections.forEach(s=>s.classList.remove("active"));
- document.getElementById(id).classList.add("active");
- menuBox.style.display="none";
-}
-function goHome(){
- sections.forEach(s=>s.classList.remove("active"));
- home.classList.add("active");
-}
+/* SIMPLE AI */
+document.getElementById("aiInput").addEventListener("keydown",e=>{
+  if(e.key==="Enter"){
+    let v=e.target.value.toLowerCase();
+    let r="I am learning...";
 
-/* MAIL */
-function sendMail(){
- location.href="mailto:mrrehanofficial.1777@gmail.com";
-}
+    if(v.includes("hello")) r="Hello Rehan 👋";
+    if(v.includes("joke")) r="Why JavaScript broke up with HTML? Too many tags 😄";
+    if(v.includes("who are you")) r="I am MR7 AI 🤖";
 
-/* AI */
-function askAI(){
- let q=aiInput.value.toLowerCase();
- let r="🤖 Samajh nahi aaya";
-
- if(q.includes("joke"))
-  r="😂 Website banana easy hai… client ko khush rakhna hard!";
- else if(q.match(/^\d+[\+\-\*\/]\d+$/))
-  r="Answer: "+eval(q);
- else if(q.includes("name"))
-  r="Mera naam MR7 AI hai 🔥";
- else if(q.includes("hello")||q.includes("hi"))
-  r="Hello MD Rehan 👋";
- else if(q)
-  r="Ultra AI update coming 🚀";
-
- aiOutput.innerText=r;
- aiInput.value="";
-}
+    document.getElementById("aiReply").innerText=r;
+    e.target.value="";
+  }
+});
 </script>
 
 </body>

@@ -3,190 +3,259 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MR7 - OFFICIAL</title>
+<title>MR7 OFFICIAL</title>
 
 <style>
+*{box-sizing:border-box}
 body{
- margin:0;padding:20px;text-align:center;
- font-family:Segoe UI, sans-serif;
- background:#f5f5f5;color:#222;
+ margin:0;
+ font-family:Segoe UI,Arial;
+ text-align:center;
+ background:#fff;
+ color:#111;
  transition:.4s;
 }
-body.dark{background:#0e0e0e;color:#eee}
-
-/* PROFILE */
-.profile-pic{
- width:200px;height:200px;border-radius:50%;
- border:5px solid #00ff6a;
- box-shadow:0 0 25px #00ff6a;
- transition:.4s;
-}
-.profile-pic:hover{
- transform:scale(1.08);
- box-shadow:0 0 40px lime;
+body.dark{
+ background:#0f0f0f;
+ color:#eee;
 }
 
-/* BUTTON */
-.yt-button{
- background:red;color:#fff;
- padding:14px 38px;border:none;
- border-radius:50px;font-size:18px;
+/* ===== TOP BAR ===== */
+.topbar{
+ position:fixed;
+ top:0;left:0;
+ width:100%;
+ display:flex;
+ justify-content:space-between;
+ padding:15px 20px;
+ z-index:999;
+}
+.menu{
+ font-size:28px;
  cursor:pointer;
 }
-.yt-button:hover{transform:scale(1.1)}
-
-/* MENU */
-.menu{
- position:fixed;top:15px;left:15px;
- font-size:30px;cursor:pointer;
+.dark-btn{
+ border:none;
+ padding:8px 18px;
+ border-radius:20px;
+ background:green;
+ color:#fff;
+ cursor:pointer;
 }
+
+/* ===== MENU BOX ===== */
 .menu-box{
- position:fixed;top:60px;left:15px;
- background:#111;color:white;
- padding:12px;border-radius:12px;
+ position:fixed;
+ top:60px;left:15px;
+ background:#222;
+ color:#fff;
+ border-radius:12px;
+ padding:10px;
  display:none;
+ animation:pop .3s ease;
 }
 .menu-box button{
- background:none;border:none;
- color:white;font-size:16px;
- padding:8px;cursor:pointer;
+ width:150px;
+ margin:6px 0;
+ padding:10px;
+ border:none;
+ border-radius:8px;
+ background:#333;
+ color:#fff;
+ cursor:pointer;
+}
+@keyframes pop{
+ from{transform:scale(.7);opacity:0}
+ to{transform:scale(1);opacity:1}
 }
 
-/* DARK */
-.dark-toggle{
- position:fixed;top:15px;right:15px;
- padding:8px 18px;border:none;
- border-radius:30px;
- background:#00ff6a;
+/* ===== SECTIONS ===== */
+.section{display:none;padding-top:90px}
+.section.active{display:block}
+
+/* ===== HOME ===== */
+.profile{
+ width:180px;
+ border-radius:50%;
+ border:4px solid lime;
+ box-shadow:0 0 25px lime;
+ transition:.4s;
+}
+.profile:hover{transform:scale(1.08)}
+.yt{
+ margin-top:20px;
+ padding:14px 40px;
+ background:red;
+ color:white;
+ border:none;
+ border-radius:40px;
+ font-size:18px;
  cursor:pointer;
 }
 
-/* SECTION */
-.section{display:none}
-.section.active{display:block}
-
-/* BOX */
-.box{
- max-width:420px;margin:40px auto;
- padding:25px;border-radius:20px;
- border:2px solid #00ff6a;
- background:rgba(255,255,255,.05);
-}
-
-/* INPUT */
-input,textarea{
- width:90%;padding:10px;
- margin:8px;border-radius:8px;
- border:1px solid #aaa;
-}
-
-/* GALLERY */
+/* ===== GALLERY ===== */
 .gallery{
- display:flex;gap:15px;
+ display:flex;
+ gap:20px;
  justify-content:center;
- flex-wrap:wrap;margin-top:30px;
+ flex-wrap:wrap;
+ margin:40px 0;
 }
 .gallery img{
- width:150px;border-radius:16px;
- box-shadow:0 8px 20px rgba(0,0,0,.3);
+ width:150px;
+ border-radius:18px;
  transition:.4s;
+ box-shadow:0 10px 20px rgba(0,0,0,.4);
 }
 .gallery img:hover{
- transform:scale(1.08);
- box-shadow:0 0 30px lime;
+ transform:translateY(-8px) scale(1.05);
 }
+
+/* ===== CONTACT / AI ===== */
+.box{
+ max-width:420px;
+ margin:30px auto;
+ padding:20px;
+ border-radius:18px;
+ border:2px solid lime;
+}
+input,textarea{
+ width:90%;
+ padding:10px;
+ margin:8px 0;
+ border-radius:8px;
+ border:1px solid #aaa;
+}
+.send{
+ background:green;
+ color:white;
+ border:none;
+ padding:12px;
+ width:100%;
+ border-radius:10px;
+ cursor:pointer;
+}
+.back{
+ margin-top:15px;
+ padding:8px 22px;
+ border:none;
+ border-radius:20px;
+ background:#666;
+ color:#fff;
+ cursor:pointer;
+}
+
+/* ===== AI ===== */
+#aiOutput{
+ margin-top:15px;
+ font-weight:bold;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="menu" onclick="toggleMenu()">⋮</div>
-<div class="menu-box" id="menuBox">
- <button onclick="openContact()">📞 Contact</button><br>
- <button onclick="openAI()">🤖 MR7 AI</button>
+<!-- TOP BAR -->
+<div class="topbar">
+ <div class="menu" onclick="toggleMenu()">⋮</div>
+ <button class="dark-btn" onclick="toggleDark()">🌙</button>
 </div>
 
-<button class="dark-toggle" onclick="toggleDark()">🌙</button>
+<!-- MENU -->
+<div class="menu-box" id="menuBox">
+ <button onclick="openSection('contact')">📞 Contact</button>
+ <button onclick="openSection('ai')">🤖 MR7 AI</button>
+</div>
 
 <!-- HOME -->
 <div id="home" class="section active">
-<h1>MR7 WORLD</h1>
-<h2>MD REHAN</h2>
+ <h1>MR7 WORLD</h1>
+ <h3>MD REHAN</h3>
 
-<a href="https://www.youtube.com/@MR7OFFICIAL777" target="_blank">
-<button class="yt-button">SUBSCRIBE</button>
-</a>
+ <img src="rehan.png" class="profile"><br>
 
-<br><br>
-<img src="rehan.png" class="profile-pic">
+ <a href="https://www.youtube.com/@MR7OFFICIAL777" target="_blank">
+  <button class="yt">SUBSCRIBE</button>
+ </a>
 
-<div class="gallery">
- <img src="animi 1.jpeg">
- <img src="animi 2 .jpeg">
- <img src="animi 3.jpeg">
-</div>
+ <div class="gallery">
+  <img src="animi 1.jpeg">
+  <img src="animi 2 .jpeg">
+  <img src="animi 3.jpeg">
+ </div>
 </div>
 
 <!-- CONTACT -->
 <div id="contact" class="section">
-<div class="box">
-<h2>📞 Contact Me</h2>
-<input placeholder="Name">
-<input placeholder="Mobile">
-<textarea placeholder="Message"></textarea>
-<button onclick="sendMail()">Send Email</button>
-</div>
-<button onclick="goHome()">⬅ Back</button>
+ <div class="box">
+  <h2>Contact Me</h2>
+  <input placeholder="Name">
+  <input placeholder="Mobile">
+  <textarea placeholder="Message"></textarea>
+  <button class="send" onclick="sendMail()">Send</button>
+ </div>
+ <button class="back" onclick="goHome()">⬅ Back</button>
 </div>
 
 <!-- AI -->
 <div id="ai" class="section">
-<div class="box">
-<h2>🤖 MR7 AI</h2>
-<input id="aiInput" placeholder="Ask me anything">
-<button onclick="askAI()">Ask</button>
-<p id="aiOutput"></p>
-</div>
-<button onclick="goHome()">⬅ Back</button>
+ <div class="box">
+  <h2>🤖 MR7 AI</h2>
+  <input id="aiInput" placeholder="Ask anything">
+  <button class="send" onclick="askAI()">Ask</button>
+  <div id="aiOutput"></div>
+ </div>
+ <button class="back" onclick="goHome()">⬅ Back</button>
 </div>
 
 <script>
-const home=document.getElementById("home");
-const contact=document.getElementById("contact");
-const ai=document.getElementById("ai");
 const menuBox=document.getElementById("menuBox");
+const sections=document.querySelectorAll(".section");
 
+/* DARK MODE SAVE */
+if(localStorage.getItem("theme")==="dark"){
+ document.body.classList.add("dark");
+}
+function toggleDark(){
+ document.body.classList.toggle("dark");
+ localStorage.setItem("theme",
+ document.body.classList.contains("dark")?"dark":"light");
+}
+
+/* MENU */
 function toggleMenu(){
  menuBox.style.display=
  menuBox.style.display=="block"?"none":"block";
 }
-function openContact(){
- home.classList.remove("active");
- ai.classList.remove("active");
- contact.classList.add("active");
- menuBox.style.display="none";
-}
-function openAI(){
- home.classList.remove("active");
- contact.classList.remove("active");
- ai.classList.add("active");
+
+/* SECTION OPEN */
+function openSection(id){
+ sections.forEach(s=>s.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
  menuBox.style.display="none";
 }
 function goHome(){
- contact.classList.remove("active");
- ai.classList.remove("active");
+ sections.forEach(s=>s.classList.remove("active"));
  home.classList.add("active");
 }
-function toggleDark(){
- document.body.classList.toggle("dark");
-}
+
+/* CONTACT */
 function sendMail(){
  location.href="mailto:mrrehanofficial.1777@gmail.com";
 }
+
+/* AI SMART */
 function askAI(){
- const q=document.getElementById("aiInput").value;
- document.getElementById("aiOutput").innerText=
- q ? "🤖 Soon smart AI ready!" : "Ask something 😄";
+ let q=aiInput.value.toLowerCase();
+ let a="🤖 I am learning…";
+
+ if(q.includes("10+10")) a="10 + 10 = 20 😄";
+ else if(q.includes("joke")) a="😂 Programmer ka favourite place? CTRL + C!";
+ else if(q.includes("name")) a="Mera naam MR7 AI hai 🔥";
+ else if(q) a="Smart AI coming very soon 🚀";
+
+ aiOutput.innerText=a;
 }
 </script>
 

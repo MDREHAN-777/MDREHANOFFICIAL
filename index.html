@@ -14,25 +14,26 @@ body{
 }
 body.dark{background:#111;color:#eee}
 
-/* LOGIN */
-.login-box{
- max-width:350px;margin:80px auto;
+/* AUTH BOX */
+.auth-box{
+ max-width:360px;margin:80px auto;
  padding:25px;border-radius:20px;
  border:2px solid green;
  box-shadow:0 0 25px rgba(0,255,0,.3);
 }
-.login-box input{
- width:90%;padding:12px;margin:10px 0;
+.auth-box input{
+ width:90%;padding:12px;margin:8px 0;
  border-radius:10px;border:1px solid #aaa;
 }
-.login-box button{
- width:100%;padding:12px;
+.auth-box button{
+ width:100%;padding:12px;margin-top:10px;
  background:green;color:#fff;
  border:none;border-radius:12px;
  cursor:pointer;font-size:16px;
 }
+.auth-box p{cursor:pointer;color:lime}
 
-/* HEADER */
+/* MENU */
 .menu{position:fixed;top:15px;left:15px;font-size:30px;cursor:pointer}
 .menu-box{
  position:fixed;top:55px;left:15px;
@@ -40,7 +41,7 @@ body.dark{background:#111;color:#eee}
  padding:10px;border-radius:10px;display:none;
 }
 .menu-box button{
- width:140px;margin:5px 0;padding:8px;
+ width:150px;margin:5px 0;padding:8px;
  border:none;border-radius:6px;cursor:pointer;
 }
 
@@ -72,10 +73,7 @@ body.dark{background:#111;color:#eee}
  padding:15px;
 }
 body.dark .chat-box{background:#222}
-.chat{
- max-height:300px;overflow-y:auto;
- text-align:left;
-}
+.chat{max-height:300px;overflow-y:auto;text-align:left}
 .msg{
  margin:8px 0;padding:10px 14px;
  border-radius:14px;max-width:80%;
@@ -85,10 +83,7 @@ body.dark .chat-box{background:#222}
 body.dark .ai{background:#333;color:#fff}
 .status{font-size:13px;color:lime}
 
-/* INPUT */
-.ai-input{
- display:flex;gap:8px;margin-top:10px;
-}
+.ai-input{display:flex;gap:8px;margin-top:10px}
 .ai-input input{
  flex:1;padding:10px;border-radius:10px;border:1px solid #aaa;
 }
@@ -102,12 +97,21 @@ body.dark .ai{background:#333;color:#fff}
 <body>
 
 <!-- LOGIN -->
-<div id="login" class="login-box">
+<div id="loginBox" class="auth-box">
 <h2>🔐 Login</h2>
-<input id="user" placeholder="Username">
-<input id="pass" type="password" placeholder="Password">
+<input id="loginUser" placeholder="Username">
+<input id="loginPass" type="password" placeholder="Password">
 <button onclick="login()">Login</button>
-<p style="font-size:13px">Default: admin / 1234</p>
+<p onclick="showSignup()">New user? Signup</p>
+</div>
+
+<!-- SIGNUP -->
+<div id="signupBox" class="auth-box" style="display:none">
+<h2>📝 Signup</h2>
+<input id="signupUser" placeholder="Create username">
+<input id="signupPass" type="password" placeholder="Create password">
+<button onclick="signup()">Signup</button>
+<p onclick="showLogin()">Already have account? Login</p>
 </div>
 
 <!-- MENU -->
@@ -115,7 +119,7 @@ body.dark .ai{background:#333;color:#fff}
 <div class="menu-box" id="menuBox">
 <button onclick="openHome()">🏠 Home</button>
 <button onclick="openAI()">🤖 MR7 AI</button>
-<button onclick="openContact()">📩 Contact</button>
+<button onclick="changePass()">🔑 Change Password</button>
 <button onclick="logout()">🔓 Logout</button>
 </div>
 
@@ -124,14 +128,8 @@ body.dark .ai{background:#333;color:#fff}
 <!-- HOME -->
 <div id="home" class="section">
 <h1>- MR7 WORLD -</h1>
-<h3>MD REHAN</h3>
+<h3 id="welcome"></h3>
 <img src="rehan.png" class="profile-pic">
-<br><br>
-<a href="https://www.youtube.com/@MR7OFFICIAL777" target="_blank">
-<button style="padding:12px 35px;border-radius:30px;background:red;color:white;border:none">
-SUBSCRIBE
-</button>
-</a>
 </div>
 
 <!-- AI -->
@@ -141,21 +139,12 @@ SUBSCRIBE
 
 <div class="chat-box">
 <div id="chat" class="chat"></div>
-
 <div class="ai-input">
 <input id="q" placeholder="Type message...">
 <button onclick="ask()">Send</button>
 </div>
 </div>
 </div>
-
-<!-- CONTACT -->
-<div id="contact" class="section">
-<h2>Contact Me</h2>
-<button onclick="mail()">📧 Send Email</button>
-</div>
-
-<audio id="ping" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
 
 <script>
 /* DARK */
@@ -165,19 +154,60 @@ function dark(){
  localStorage.dark=document.body.classList.contains("dark")?"on":"off";
 }
 
-/* LOGIN */
-if(localStorage.login=="yes")showMain();
+/* AUTH */
+let users = JSON.parse(localStorage.users || "{}");
+
+if(localStorage.logged){
+ showMain(localStorage.logged);
+}
+
+function signup(){
+ let u=signupUser.value.trim();
+ let p=signupPass.value.trim();
+ if(!u||!p)return alert("Fill all");
+ if(users[u])return alert("User already exists");
+ users[u]=p;
+ localStorage.users=JSON.stringify(users);
+ alert("Signup success, login now");
+ showLogin();
+}
+
 function login(){
- if(user.value=="admin" && pass.value=="1234"){
-  localStorage.login="yes";showMain();
+ let u=loginUser.value.trim();
+ let p=loginPass.value.trim();
+ if(users[u] && users[u]==p){
+  localStorage.logged=u;
+  showMain(u);
  }else alert("Wrong login");
 }
+
 function logout(){
- localStorage.login="no";location.reload();
+ localStorage.removeItem("logged");
+ location.reload();
 }
-function showMain(){
- login.style.display="none";
+
+function changePass(){
+ let np=prompt("Enter new password");
+ if(!np)return;
+ users[localStorage.logged]=np;
+ localStorage.users=JSON.stringify(users);
+ alert("Password changed");
+}
+
+function showMain(u){
+ loginBox.style.display="none";
+ signupBox.style.display="none";
  home.classList.add("active");
+ welcome.innerText="Welcome "+u;
+}
+
+function showSignup(){
+ loginBox.style.display="none";
+ signupBox.style.display="block";
+}
+function showLogin(){
+ signupBox.style.display="none";
+ loginBox.style.display="block";
 }
 
 /* MENU */
@@ -186,47 +216,35 @@ function toggleMenu(){
 }
 function openHome(){hide();home.classList.add("active")}
 function openAI(){hide();ai.classList.add("active")}
-function openContact(){hide();contact.classList.add("active")}
 function hide(){
  home.classList.remove("active");
  ai.classList.remove("active");
- contact.classList.remove("active");
  menuBox.style.display="none";
-}
-
-/* MAIL */
-function mail(){
- location.href="mailto:mrrehanofficial.1777@gmail.com";
 }
 
 /* AI */
 const jokes=[
 "Life is short, use Python 😄",
-"Why computer cold? It forgot to close Windows 😂",
-"Aaj mood full fresh hai 😎",
-"Tu bole to joke, tu bole to answer 😁"
+"Why computer cold? Windows open thi 😂",
+"Aaj mood mast hai 😎",
+"Tu bole, MR7 AI ready 😁"
 ];
 
 function ask(){
- let text=q.value.trim();
- if(!text)return;
- add(text,"user");
+ let t=q.value.trim();
+ if(!t)return;
+ add(t,"user");
  q.value="";
- document.getElementById("ping").play();
-
  setTimeout(()=>{
   let r;
-  if(text.toLowerCase().includes("joke")){
+  if(t.toLowerCase().includes("joke")){
    r=jokes[Math.floor(Math.random()*jokes.length)];
-  }else if(text.match(/\d+[\+\-\*\/]\d+/)){
-   r=eval(text);
   }else{
-   r="Samajh gaya 👍 AI hoon, try again 😄";
+   r="Samajh gaya 👍 bolo aur";
   }
   add(r,"ai");
- },600);
+ },500);
 }
-
 function add(t,type){
  let d=document.createElement("div");
  d.className="msg "+type;

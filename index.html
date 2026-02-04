@@ -5,305 +5,201 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MR7 - OFFICIAL</title>
 
+<!-- ===== PREMIUM STYLES ===== -->
 <style>
+:root{
+ --main:#00ff88;
+ --dark:#0b0f14;
+ --glass:rgba(255,255,255,0.08);
+}
+*{box-sizing:border-box}
 body{
  margin:0;padding:20px;
  text-align:center;
- font-family:'Segoe UI',Arial,sans-serif;
- background:#fff;color:#333;
- transition:.4s;
- overflow-x:hidden;
+ font-family:"Segoe UI",sans-serif;
+ background:linear-gradient(135deg,#ffffff,#f2f2f2);
+ color:#222;overflow-x:hidden;
+ transition:.5s;
 }
-body.dark-mode{background:#0f0f0f;color:#eee}
-
-/* ===== HEADINGS ===== */
-h1,h2,h3{
- letter-spacing:2px;
- margin:6px 0;
-}
-h1{
- text-shadow:0 0 12px rgba(0,255,0,.35);
+body.dark-mode{
+ background:linear-gradient(135deg,#050505,#121212);
+ color:#eee;
 }
 
-/* ===== MENU ===== */
-.menu{
- position:fixed;top:20px;left:20px;
- font-size:30px;cursor:pointer;
- z-index:1000;
-}
-.menu-box{
- position:fixed;top:65px;left:20px;
- background:#222;color:white;
- padding:12px;
- border-radius:14px;
- display:none;
- box-shadow:0 10px 30px rgba(0,0,0,.4);
- animation:fade .25s ease;
-}
-@keyframes fade{
- from{opacity:0;transform:translateY(-8px)}
- to{opacity:1;transform:none}
-}
-.menu-box button{
- width:150px;
- margin:6px 0;
- padding:9px;
- border:none;
- border-radius:10px;
- cursor:pointer;
- background:#333;
- color:white;
-}
-.menu-box button:hover{
- background:limegreen;
- color:black;
-}
-
-/* ===== DARK MODE ===== */
-.dark-toggle{
- position:fixed;top:20px;right:20px;
- background:green;color:white;
- border:none;
- padding:10px 18px;
- border-radius:30px;
- cursor:pointer;
-}
+/* ===== HEADER ===== */
+h1,h2,h3{margin:5px 0}
+h1{letter-spacing:3px}
 
 /* ===== PROFILE ===== */
 .profile-pic{
- width:200px;height:200px;
- border-radius:50%;
- border:5px solid green;
- box-shadow:0 0 22px green;
+ width:190px;height:190px;border-radius:50%;
+ border:4px solid var(--main);
+ box-shadow:0 0 25px var(--main);
  transition:.4s;
- margin-top:20px;
 }
-.profile-pic:hover{
- transform:scale(1.06) rotate(3deg);
- box-shadow:0 0 38px lime;
-}
+.profile-pic:hover{transform:scale(1.1)}
 
-/* ===== BUTTON ===== */
+/* ===== BUTTONS ===== */
+button{
+ font-size:16px;cursor:pointer;
+}
 .yt-button{
- background:red;color:#fff;
- padding:14px 42px;
- border:none;border-radius:50px;
- font-size:17px;
- cursor:pointer;
+ background:linear-gradient(45deg,red,#ff4d4d);
+ color:#fff;padding:14px 45px;
+ border:none;border-radius:40px;
+ box-shadow:0 10px 25px rgba(0,0,0,.3);
  transition:.3s;
 }
-.yt-button:hover{
- transform:scale(1.08);
- box-shadow:0 8px 20px rgba(0,0,0,.35);
+.yt-button:hover{transform:translateY(-4px)}
+
+.submit-btn{
+ background:linear-gradient(45deg,#00cc66,#00ff99);
+ color:#000;padding:12px;width:100%;
+ border:none;border-radius:12px;
+ font-weight:600;
+}
+.back-btn{
+ margin-top:20px;padding:10px 30px;
+ background:#555;color:#fff;
+ border:none;border-radius:30px;
+}
+
+/* ===== TOGGLES ===== */
+.dark-toggle{
+ position:fixed;top:20px;right:20px;
+ background:var(--main);color:#000;
+ border:none;padding:10px 20px;
+ border-radius:30px;font-weight:600;
+}
+.menu{position:fixed;top:20px;left:20px;font-size:30px;cursor:pointer}
+.menu-box{
+ position:fixed;top:65px;left:20px;
+ background:var(--dark);color:#fff;
+ padding:12px;border-radius:14px;display:none;
+}
+.menu-box button{
+ background:none;color:white;border:none;
+ padding:8px 5px;font-size:16px;
 }
 
 /* ===== SECTIONS ===== */
-.section{display:none}
+.section{display:none;animation:fade .5s}
 .section.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(15px)}to{opacity:1}}
 
-/* ===== CARD BOX ===== */
-.card{
- max-width:430px;
- margin:40px auto;
- padding:22px;
- border-radius:22px;
- background:rgba(255,255,255,.9);
- border:2px solid green;
- box-shadow:0 12px 35px rgba(0,0,0,.15);
-}
-body.dark-mode .card{
- background:#161616;
+/* ===== BOXES ===== */
+.contact-box,.ai-box{
+ max-width:420px;margin:40px auto;
+ padding:25px;border-radius:20px;
+ background:var(--glass);
+ backdrop-filter:blur(10px);
+ border:1px solid var(--main);
+ box-shadow:0 0 30px rgba(0,255,150,.2);
 }
 
-/* ===== INPUT ===== */
 input,textarea{
- width:92%;
- padding:11px;
- margin:9px 0;
- border-radius:10px;
- border:1px solid #aaa;
- font-size:15px;
-}
-input:focus,textarea:focus{
- outline:none;
- border-color:green;
-}
-
-/* ===== ACTION BUTTON ===== */
-.action-btn{
- width:100%;
- padding:12px;
- border:none;
- border-radius:14px;
- cursor:pointer;
- background:green;
- color:white;
- font-size:15px;
-}
-.back-btn{
- margin-top:18px;
- background:#555;
+ width:95%;padding:12px;margin:8px 0;
+ border-radius:10px;border:none;outline:none;
 }
 
 /* ===== GALLERY ===== */
 .image-gallery{
- display:flex;
- justify-content:center;
- gap:22px;
- flex-wrap:wrap;
- margin-top:35px;
+ display:flex;justify-content:center;gap:20px;
+ margin:40px 0;flex-wrap:wrap;
 }
 .image-gallery img{
- width:155px;
- border-radius:20px;
- box-shadow:0 8px 22px rgba(0,0,0,.35);
- transition:.35s;
+ width:150px;border-radius:18px;
+ transition:.4s;box-shadow:0 5px 20px rgba(0,0,0,.4);
 }
-.image-gallery img:hover{
- transform:translateY(-8px) scale(1.06);
- box-shadow:0 0 30px lime;
-}
+.image-gallery img:hover{transform:scale(1.1)}
 
 /* ===== FLOAT IMAGE ===== */
 .floating-img{
- position:fixed;
- right:15px;
- bottom:70px;
- width:90px;
- border-radius:16px;
- animation:float 4s infinite;
- box-shadow:0 0 22px rgba(0,255,0,.5);
+ position:fixed;right:20px;bottom:80px;
+ width:90px;border-radius:16px;
+ animation:float 4s ease-in-out infinite;
+ box-shadow:0 0 25px var(--main);
 }
-@keyframes float{
- 0%{transform:translateY(0)}
- 50%{transform:translateY(-12px)}
- 100%{transform:translateY(0)}
-}
+@keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-12px)}100%{transform:translateY(0)}}
 </style>
 </head>
-
 <body>
 
-<div class="menu" onclick="toggleMenu()">⋮</div>
+<div class="menu" onclick="toggleMenu()">☰</div>
 <div class="menu-box" id="menuBox">
- <button onclick="openContact()">📞 Contact</button>
+ <button onclick="openContact()">📞 Contact</button><br>
  <button onclick="openAI()">🤖 MR7 AI</button>
 </div>
+<button class="dark-toggle" onclick="toggleDark()">🌙 Dark</button>
 
-<button class="dark-toggle" onclick="toggleDark()">🌙</button>
-
-<!-- HOME -->
+<!-- ===== HOME ===== -->
 <div id="home" class="section active">
-<h1>- MR7 WORLD -</h1>
-<h2>- MD -</h2>
-<h3>- REHAN -</h3>
+ <h1>MR7 WORLD</h1>
+ <h2>MD</h2>
+ <h3>REHAN</h3>
 
-<br>
-<a href="https://www.youtube.com/@MR7OFFICIAL777" target="_blank">
-<button class="yt-button">SUBSCRIBE</button>
-</a>
+ <a href="https://www.youtube.com/@MR7OFFICIAL777" target="_blank">
+ <button class="yt-button">SUBSCRIBE</button></a>
+ <p>🔥 Official Channel</p>
 
-<img src="rehan.png" class="profile-pic">
+ <img src="rehan.png" class="profile-pic">
 
-<div class="image-gallery">
- <img src="animi 1.jpeg">
- <img src="animi 2 .jpeg">
- <img src="animi 3.jpeg">
+ <div class="image-gallery">
+  <img src="animi 1.jpeg">
+  <img src="animi 2 .jpeg">
+  <img src="animi 3.jpeg">
+ </div>
 </div>
-</div>
 
-<!-- CONTACT -->
+<!-- ===== CONTACT ===== -->
 <div id="contact" class="section">
-<div class="card">
-<h2>Contact Me</h2>
-<input id="name" placeholder="Name">
-<input id="mobile" placeholder="Mobile">
-<textarea id="message" placeholder="Message"></textarea>
-<button class="action-btn" onclick="sendMail()">Send</button>
-</div>
-<button class="action-btn back-btn" onclick="goBack()">⬅ Back</button>
+ <div class="contact-box">
+ <h2>Contact Me</h2>
+ <input placeholder="Your Name">
+ <input placeholder="Mobile">
+ <textarea placeholder="Message"></textarea>
+ <button class="submit-btn" onclick="sendMail()">Send</button>
+ </div>
+ <button class="back-btn" onclick="goBack()">⬅ Back</button>
 </div>
 
-<!-- AI -->
+<!-- ===== AI ===== -->
 <div id="ai" class="section">
-<div class="card">
-<h2>🤖 MR7 AI</h2>
-<input id="aiInput" placeholder="Ask anything">
-<button class="action-btn" onclick="askAI()">Ask</button>
-<div id="aiOutput" style="margin-top:12px;font-weight:bold;"></div>
-</div>
-<button class="action-btn back-btn" onclick="goBack()">⬅ Back</button>
+ <div class="ai-box">
+ <h2>🤖 MR7 AI</h2>
+ <input id="aiInput" placeholder="Ask something">
+ <button class="submit-btn" onclick="askAI()">Ask</button>
+ <div id="aiOutput" style="margin-top:15px"></div>
+ </div>
+ <button class="back-btn" onclick="goBack()">⬅ Back</button>
 </div>
 
 <img src="animi 1.jpeg" class="floating-img">
 
+<!-- ===== SCRIPT ===== -->
 <script>
-/* DARK MODE */
+const home=document.getElementById("home");
+const contact=document.getElementById("contact");
+const ai=document.getElementById("ai");
+const aiOutput=document.getElementById("aiOutput");
+const menuBox=document.getElementById("menuBox");
+
 if(localStorage.getItem("dark")==="on"){
  document.body.classList.add("dark-mode");
 }
 function toggleDark(){
  document.body.classList.toggle("dark-mode");
- localStorage.setItem("dark",
- document.body.classList.contains("dark-mode")?"on":"off");
+ localStorage.setItem("dark",document.body.classList.contains("dark-mode")?"on":"off");
 }
-
-/* MENU */
-function toggleMenu(){
- const m=document.getElementById("menuBox");
- m.style.display=m.style.display==="block"?"none":"block";
-}
-
-/* NAV */
-function openContact(){
- home.classList.remove("active");
- ai.classList.remove("active");
- contact.classList.add("active");
- menuBox.style.display="none";
-}
-function openAI(){
- home.classList.remove("active");
- contact.classList.remove("active");
- ai.classList.add("active");
- menuBox.style.display="none";
-}
-function goBack(){
- contact.classList.remove("active");
- ai.classList.remove("active");
- home.classList.add("active");
-}
-
-/* MAIL */
-function sendMail(){
- if(!name.value||!mobile.value||!message.value){
-  alert("Fill all fields");return;
- }
- location.href=`mailto:mrrehanofficial.1777@gmail.com?subject=Contact&body=${message.value}`;
-}
-
-/* SMART AI */
+function toggleMenu(){menuBox.style.display=menuBox.style.display==="block"?"none":"block"}
+function openContact(){home.classList.remove("active");ai.classList.remove("active");contact.classList.add("active");menuBox.style.display="none"}
+function openAI(){home.classList.remove("active");contact.classList.remove("active");ai.classList.add("active");menuBox.style.display="none"}
+function goBack(){contact.classList.remove("active");ai.classList.remove("active");home.classList.add("active")}
+function sendMail(){location.href="mailto:mrrehanofficial.1777@gmail.com"}
 function askAI(){
- let q=aiInput.value.toLowerCase();
- let a="🤖 I'm learning…";
-
- if(/^[0-9+\-*/.\s]+$/.test(q)){
-  try{a=eval(q)}catch{a="Math error"}
- }
- else if(q.includes("joke")){
-  a="😂 Computer thak gaya tha… isliye crash ho gaya!";
- }
- else if(q.includes("hi")||q.includes("hello")){
-  a="Hello 👋 I am MR7 AI";
- }
- else if(q.includes("time")){
-  a=new Date().toLocaleTimeString();
- }
- else if(q.includes("name")){
-  a="My name is MR7 AI 🤖";
- }
-
- aiOutput.innerHTML=a;
- aiInput.value="";
+ const q=document.getElementById("aiInput").value;
+ if(!q){aiOutput.innerHTML="❌ Please type something";return}
+ aiOutput.innerHTML="🤖 MR7 AI: Main seekh raha hoon, jaldi smart banunga!";
 }
 </script>
 

@@ -8,249 +8,194 @@
 <style>
 body{
  margin:0;padding:20px;text-align:center;
- font-family:Segoe UI,Arial;
+ font-family:Segoe UI;
  background:#fff;color:#333;
  transition:.4s;
 }
 body.dark{background:#111;color:#eee}
 
-/* AUTH BOX */
-.auth-box{
- max-width:360px;margin:80px auto;
- padding:25px;border-radius:20px;
+.hidden{display:none}
+input,button{padding:10px;margin:6px;border-radius:8px}
+button{cursor:pointer}
+
+.box{
+ max-width:350px;
+ margin:60px auto;
+ padding:20px;
  border:2px solid green;
- box-shadow:0 0 25px rgba(0,255,0,.3);
-}
-.auth-box input{
- width:90%;padding:12px;margin:8px 0;
- border-radius:10px;border:1px solid #aaa;
-}
-.auth-box button{
- width:100%;padding:12px;margin-top:10px;
- background:green;color:#fff;
- border:none;border-radius:12px;
- cursor:pointer;font-size:16px;
-}
-.auth-box p{cursor:pointer;color:lime}
-
-/* MENU */
-.menu{position:fixed;top:15px;left:15px;font-size:30px;cursor:pointer}
-.menu-box{
- position:fixed;top:55px;left:15px;
- background:#222;color:white;
- padding:10px;border-radius:10px;display:none;
-}
-.menu-box button{
- width:150px;margin:5px 0;padding:8px;
- border:none;border-radius:6px;cursor:pointer;
+ border-radius:15px;
 }
 
-/* DARK */
-.dark-btn{
- position:fixed;top:15px;right:15px;
- background:green;color:white;
- border:none;padding:8px 18px;
- border-radius:20px;cursor:pointer;
+.chat{
+ max-width:400px;
+ margin:auto;
+ border:2px solid green;
+ border-radius:15px;
+ padding:10px;
+ height:420px;
+ display:flex;
+ flex-direction:column;
 }
-
-/* SECTIONS */
-.section{display:none}
-.section.active{display:block}
-
-/* PROFILE */
-.profile-pic{
- width:200px;height:200px;border-radius:50%;
- border:5px solid green;
- box-shadow:0 0 20px green;
- transition:.4s;
+.messages{
+ flex:1;
+ overflow-y:auto;
+ text-align:left;
 }
-.profile-pic:hover{transform:scale(1.1) rotate(4deg)}
-
-/* CHAT */
-.chat-box{
- max-width:420px;margin:20px auto;
- background:#f1f1f1;border-radius:20px;
- padding:15px;
-}
-body.dark .chat-box{background:#222}
-.chat{max-height:300px;overflow-y:auto;text-align:left}
 .msg{
- margin:8px 0;padding:10px 14px;
- border-radius:14px;max-width:80%;
+ padding:8px 12px;
+ margin:6px;
+ border-radius:12px;
+ max-width:80%;
 }
-.user{background:#4caf50;color:#fff;margin-left:auto}
-.ai{background:#ddd}
-body.dark .ai{background:#333;color:#fff}
-.status{font-size:13px;color:lime}
+.user{background:#4caf50;color:white;margin-left:auto}
+.bot{background:#ddd;color:black}
+body.dark .bot{background:#333;color:#fff}
 
-.ai-input{display:flex;gap:8px;margin-top:10px}
-.ai-input input{
- flex:1;padding:10px;border-radius:10px;border:1px solid #aaa;
-}
-.ai-input button{
- padding:10px 15px;border:none;border-radius:10px;
- background:green;color:white;cursor:pointer;
-}
+.status{font-size:13px;color:lime;margin-bottom:5px}
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
-<div id="loginBox" class="auth-box">
-<h2>🔐 Login</h2>
-<input id="loginUser" placeholder="Username">
-<input id="loginPass" type="password" placeholder="Password">
-<button onclick="login()">Login</button>
-<p onclick="showSignup()">New user? Signup</p>
-</div>
-
-<!-- SIGNUP -->
-<div id="signupBox" class="auth-box" style="display:none">
-<h2>📝 Signup</h2>
-<input id="signupUser" placeholder="Create username">
-<input id="signupPass" type="password" placeholder="Create password">
+<!-- 🔐 LOGIN / SIGNUP -->
+<div id="authBox" class="box">
+<h2>🔐 Login / Signup</h2>
+<input id="email" placeholder="Email"><br>
+<input id="password" type="password" placeholder="Password"><br>
 <button onclick="signup()">Signup</button>
-<p onclick="showLogin()">Already have account? Login</p>
+<button onclick="login()">Login</button>
 </div>
 
-<!-- MENU -->
-<div class="menu" onclick="toggleMenu()">⋮</div>
-<div class="menu-box" id="menuBox">
-<button onclick="openHome()">🏠 Home</button>
-<button onclick="openAI()">🤖 MR7 AI</button>
-<button onclick="changePass()">🔑 Change Password</button>
-<button onclick="logout()">🔓 Logout</button>
-</div>
-
-<button class="dark-btn" onclick="dark()">🌙</button>
-
-<!-- HOME -->
-<div id="home" class="section">
-<h1>- MR7 WORLD -</h1>
-<h3 id="welcome"></h3>
-<img src="rehan.png" class="profile-pic">
-</div>
-
-<!-- AI -->
-<div id="ai" class="section">
-<h2>🤖 MR7 AI</h2>
+<!-- 🤖 AI CHAT -->
+<div id="chatBox" class="hidden">
 <div class="status">🟢 Online</div>
 
-<div class="chat-box">
-<div id="chat" class="chat"></div>
-<div class="ai-input">
-<input id="q" placeholder="Type message...">
-<button onclick="ask()">Send</button>
+<div class="chat">
+<div class="messages" id="messages"></div>
+<input id="chatInput" placeholder="Type message..."
+ onkeydown="if(event.key==='Enter')sendMsg()">
+<button onclick="sendMsg()">Send</button>
 </div>
+
+<br>
+<button onclick="logout()">Logout</button>
+<button onclick="toggleDark()">🌙 Dark</button>
 </div>
-</div>
+
+<!-- 🔊 notification sound -->
+<audio id="ping">
+<source src="https://assets.mixkit.co/sfx/preview/mixkit-message-pop-alert-2354.mp3">
+</audio>
+
+<!-- 🔥 FIREBASE -->
+<script type="module">
+import { initializeApp } from
+"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+ getAuth,
+ createUserWithEmailAndPassword,
+ signInWithEmailAndPassword,
+ signOut,
+ onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+/* 🔴 अपना Firebase config यहां डालना */
+const firebaseConfig = {
+ apiKey: "YOUR_API_KEY",
+ authDomain: "YOUR_PROJECT.firebaseapp.com",
+ projectId: "YOUR_PROJECT_ID",
+ appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+window.signup = () =>{
+ createUserWithEmailAndPassword(
+  auth,
+  email.value,
+  password.value
+ ).then(()=>alert("Signup successful"))
+ .catch(e=>alert(e.message));
+};
+
+window.login = () =>{
+ signInWithEmailAndPassword(
+  auth,
+  email.value,
+  password.value
+ ).catch(()=>alert("Wrong login"));
+};
+
+window.logout = () => signOut(auth);
+
+onAuthStateChanged(auth,user=>{
+ if(user){
+  authBox.classList.add("hidden");
+  chatBox.classList.remove("hidden");
+ }else{
+  authBox.classList.remove("hidden");
+  chatBox.classList.add("hidden");
+ }
+});
+</script>
 
 <script>
-/* DARK */
+/* 🌙 DARK MODE */
 if(localStorage.dark=="on")document.body.classList.add("dark");
-function dark(){
+function toggleDark(){
  document.body.classList.toggle("dark");
- localStorage.dark=document.body.classList.contains("dark")?"on":"off";
+ localStorage.dark=
+ document.body.classList.contains("dark")?"on":"off";
 }
 
-/* AUTH */
-let users = JSON.parse(localStorage.users || "{}");
+/* 🤖 AI LOGIC */
+function sendMsg(){
+ let q=chatInput.value.trim();
+ if(!q)return;
 
-if(localStorage.logged){
- showMain(localStorage.logged);
-}
+ addMsg(q,"user");
+ chatInput.value="";
 
-function signup(){
- let u=signupUser.value.trim();
- let p=signupPass.value.trim();
- if(!u||!p)return alert("Fill all");
- if(users[u])return alert("User already exists");
- users[u]=p;
- localStorage.users=JSON.stringify(users);
- alert("Signup success, login now");
- showLogin();
-}
-
-function login(){
- let u=loginUser.value.trim();
- let p=loginPass.value.trim();
- if(users[u] && users[u]==p){
-  localStorage.logged=u;
-  showMain(u);
- }else alert("Wrong login");
-}
-
-function logout(){
- localStorage.removeItem("logged");
- location.reload();
-}
-
-function changePass(){
- let np=prompt("Enter new password");
- if(!np)return;
- users[localStorage.logged]=np;
- localStorage.users=JSON.stringify(users);
- alert("Password changed");
-}
-
-function showMain(u){
- loginBox.style.display="none";
- signupBox.style.display="none";
- home.classList.add("active");
- welcome.innerText="Welcome "+u;
-}
-
-function showSignup(){
- loginBox.style.display="none";
- signupBox.style.display="block";
-}
-function showLogin(){
- signupBox.style.display="none";
- loginBox.style.display="block";
-}
-
-/* MENU */
-function toggleMenu(){
- menuBox.style.display=menuBox.style.display=="block"?"none":"block";
-}
-function openHome(){hide();home.classList.add("active")}
-function openAI(){hide();ai.classList.add("active")}
-function hide(){
- home.classList.remove("active");
- ai.classList.remove("active");
- menuBox.style.display="none";
-}
-
-/* AI */
-const jokes=[
-"Life is short, use Python 😄",
-"Why computer cold? Windows open thi 😂",
-"Aaj mood mast hai 😎",
-"Tu bole, MR7 AI ready 😁"
-];
-
-function ask(){
- let t=q.value.trim();
- if(!t)return;
- add(t,"user");
- q.value="";
  setTimeout(()=>{
-  let r;
-  if(t.toLowerCase().includes("joke")){
-   r=jokes[Math.floor(Math.random()*jokes.length)];
-  }else{
-   r="Samajh gaya 👍 bolo aur";
-  }
-  add(r,"ai");
- },500);
+  let a = smartReply(q);
+  addMsg(a,"bot");
+  ping.play();
+ },600);
 }
-function add(t,type){
+
+function addMsg(text,cls){
  let d=document.createElement("div");
- d.className="msg "+type;
- d.innerText=t;
- chat.appendChild(d);
- chat.scrollTop=chat.scrollHeight;
+ d.className="msg "+cls;
+ d.innerText=text;
+ messages.appendChild(d);
+ messages.scrollTop=messages.scrollHeight;
+}
+
+/* 🧠 SMART AI (Hindi + English) */
+function smartReply(q){
+ q=q.toLowerCase();
+
+ if(q.includes("hello")||q.includes("hi"))
+  return "Hello 👋 main MR7 AI hoon";
+
+ if(q.includes("kaise")||q.includes("how are"))
+  return "Main bilkul theek hoon 😄";
+
+ if(q.includes("joke")){
+  const jokes=[
+   "Why did the computer sneeze? 🤧 Virus!",
+   "Teacher: error kya hai? Student: sir aap 😅",
+   "Life without coding is like phone without charger 🔋"
+  ];
+  return jokes[Math.floor(Math.random()*jokes.length)];
+ }
+
+ if(q.match(/[\d+\-*/. ]+/)){
+  try{return eval(q)}catch{return "Calculation error"};
+ }
+
+ return "Samajh raha hoon 🤔 thoda aur clear bolo";
 }
 </script>
 

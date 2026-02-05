@@ -97,9 +97,18 @@ input,textarea{
  max-height:300px;
  overflow-y:auto;
  margin-bottom:10px;
+ padding:10px;
+ border:1px solid #aaa;
+ border-radius:10px;
+ background:#f5f5f5;
 }
-.user{color:#00c853}
-.bot{color:#2196f3}
+.user{color:#00c853;margin:5px 0;padding:8px;background:#e8f5e9;border-radius:10px;}
+.bot{color:#2196f3;margin:5px 0;padding:8px;background:#e3f2fd;border-radius:10px;}
+
+/* Typing indicator */
+#typing{
+ color:gray;font-style:italic;margin:5px 0;
+}
 
 /* IMAGES */
 .image-gallery{
@@ -128,6 +137,10 @@ input,textarea{
  50%{transform:translateY(-12px)}
  100%{transform:translateY(0)}
 }
+
+/* Scrollbar for chat */
+#chat::-webkit-scrollbar{width:6px;}
+#chat::-webkit-scrollbar-thumb{background:green;border-radius:10px;}
 </style>
 </head>
 
@@ -178,8 +191,10 @@ input,textarea{
 <div class="ai-box">
 <h2>🤖 MR7 AI</h2>
 <div id="chat"></div>
+<div id="typing" style="display:none;">AI typing...</div>
 <input id="aiInput" placeholder="Ask anything">
 <button class="ai-btn" onclick="askAI()">Send</button>
+<button class="ai-btn" onclick="clearChat()">Clear Chat</button>
 </div>
 <button class="back-btn" onclick="goBack()">⬅ Back</button>
 </div>
@@ -218,8 +233,12 @@ function typeText(text,cls){
  let div=document.createElement("div");
  div.className=cls;
  chat.appendChild(div);
- let t=setInterval(()=>{ div.innerHTML+=text.charAt(i); i++; chat.scrollTop=chat.scrollHeight; if(i>=text.length)clearInterval(t); },20);
+ chat.scrollTop=chat.scrollHeight;
+ let t=setInterval(()=>{ div.innerHTML+=text.charAt(i); i++; chat.scrollTop=chat.scrollHeight; if(i>=text.length){clearInterval(t); chat.scrollTop=chat.scrollHeight;} },20);
 }
+
+// Clear chat
+function clearChat(){ chat.innerHTML=""; localStorage.removeItem("chat"); }
 
 // Math
 function calculateMath(text){ try{ let expr=text.replace(/[^0-9\+\-\*\/\.\(\) ]/g,''); if(expr.length>0 && expr.match(/[0-9]/)){ return eval(expr); } }catch{} return null; }
@@ -249,8 +268,11 @@ async function askAI(){
  if(!q)return;
  typeText("You: "+q,"user");
  aiInput.value="";
+ typing.style.display="block";
  let reply="";
  let text=q.toLowerCase();
+
+ await new Promise(r=>setTimeout(r,300)); // small delay for realism
 
  // Name
  if(text.includes("mera name") || text.includes("my name is")){
@@ -306,8 +328,11 @@ async function askAI(){
  // Default
  else{ reply="Main MR7 AI hoon 🤖, thoda aur clear bolo 😌"; }
 
- setTimeout(()=>typeText("AI: "+reply,"bot"),300);
- setTimeout(()=>{ localStorage.chat=chat.innerHTML; },500);
+ setTimeout(()=>{
+   typing.style.display="none";
+   typeText("AI: "+reply,"bot");
+   localStorage.chat=chat.innerHTML;
+ },500);
 }
 </script>
 

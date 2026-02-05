@@ -27,7 +27,7 @@ body.dark-mode{background:#111;color:#eee}
  box-shadow:0 0 30px lime;
 }
 
-/* BUTTON */
+/* BUTTONS */
 .yt-button{
  background:red;color:#fff;
  padding:15px 40px;border:none;
@@ -36,7 +36,6 @@ body.dark-mode{background:#111;color:#eee}
  transition:.3s;
 }
 .yt-button:hover{transform:scale(1.1)}
-
 .submit-btn,.ai-btn{
  background:green;color:white;
  padding:12px;width:100%;
@@ -104,11 +103,7 @@ input,textarea{
 }
 .user{color:#00c853;margin:5px 0;padding:8px;background:#e8f5e9;border-radius:10px;}
 .bot{color:#2196f3;margin:5px 0;padding:8px;background:#e3f2fd;border-radius:10px;}
-
-/* Typing indicator */
-#typing{
- color:gray;font-style:italic;margin:5px 0;
-}
+#typing{ color:gray;font-style:italic;margin:5px 0; display:none; }
 
 /* IMAGES */
 .image-gallery{
@@ -137,8 +132,6 @@ input,textarea{
  50%{transform:translateY(-12px)}
  100%{transform:translateY(0)}
 }
-
-/* Scrollbar for chat */
 #chat::-webkit-scrollbar{width:6px;}
 #chat::-webkit-scrollbar-thumb{background:green;border-radius:10px;}
 </style>
@@ -191,7 +184,7 @@ input,textarea{
 <div class="ai-box">
 <h2>🤖 MR7 AI</h2>
 <div id="chat"></div>
-<div id="typing" style="display:none;">AI typing...</div>
+<div id="typing">AI typing...</div>
 <input id="aiInput" placeholder="Ask anything">
 <button class="ai-btn" onclick="askAI()">Send</button>
 <button class="ai-btn" onclick="clearChat()">Clear Chat</button>
@@ -223,6 +216,7 @@ let currentQuiz=null;
 let currentGame=null;
 let userName="";
 let chatMemory=localStorage.chat||"";
+let weatherPending=false;
 
 // Load chat memory
 chat.innerHTML=chatMemory;
@@ -274,8 +268,17 @@ async function askAI(){
 
  await new Promise(r=>setTimeout(r,300)); // small delay for realism
 
+ // WEATHER CITY FLOW
+ if(weatherPending){
+   weatherPending=false;
+   let city=q.trim();
+   reply="Fetching weather for "+city+"...";
+   typeText("AI: "+reply,"bot");
+   let w=await getWeather(city);
+   reply=w;
+ }
  // Name
- if(text.includes("mera name") || text.includes("my name is")){
+ else if(text.includes("mera name") || text.includes("my name is")){
    let parts=q.split("hai");
    userName=(parts[1]?parts[1].trim():text.split("name")[1].trim());
    reply="Nice to meet you "+userName+"! 😄";
@@ -299,13 +302,9 @@ async function askAI(){
  // Translator
  else if(text.includes("translate")){ let words=q.split("translate")[1].trim(); reply=translate(words); }
  // Weather
- else if(text.includes("weather") || text.includes("mausam")){ 
-   let city=q.split("in")[1] || q.split("mein")[1] || "Delhi"; 
-   city=city.trim(); 
-   reply="Fetching weather for "+city+"..."; 
-   typeText("AI: "+reply,"bot"); 
-   let w=await getWeather(city); 
-   reply=w; 
+ else if(text.includes("weather") || text.includes("mausam")){
+   weatherPending=true;
+   reply="Kaunsi city ka weather chahiye? 🌤️";
  }
  // Quiz start
  else if(text.includes("quiz")){ currentQuiz=quiz[Math.floor(Math.random()*quiz.length)]; reply="Quiz Time! 😎 "+currentQuiz.q; }

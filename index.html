@@ -618,4 +618,277 @@ function downloadChat(){
  let text=chat.innerText;
  let blob=new Blob([text],{type:"text/plain"});
  let a=document.createElement("a");
- a.href=URL.createObjectURL
+ a.href=URL.createObjectURL(blob);
+ a.download="MR7_AI_CHAT.txt";
+ a.click();
+}
+
+// quick ask
+function quickAsk(txt){
+ aiInput.value=txt;
+ askAI();
+}
+
+// safe math
+function safeMath(expression){
+ try{
+   expression = expression.replace(/[^0-9+\-*/(). ]/g, "");
+   if(!expression) return null;
+   let result = Function('"use strict";return (' + expression + ')')();
+   if(result===Infinity || result===-Infinity) return "Infinity";
+   if(isNaN(result)) return null;
+   return result;
+ }catch{
+   return null;
+ }
+}
+
+// translator
+function translate(text){
+ text=text.toLowerCase().trim();
+ let dict={
+  "hello":"नमस्ते","hi":"हाय","how are you":"कैसे हो","good morning":"सुप्रभात",
+  "good night":"शुभ रात्रि","thank you":"धन्यवाद","bye":"अलविदा",
+  "football":"फुटबॉल","subscribe":"सब्सक्राइब","love":"प्यार"
+ };
+ if(dict[text]) return dict[text];
+ return "Translation not found 😅";
+}
+
+// youtube tools
+function youtubeTitle(topic){
+ let arr=[
+  `🔥 ${topic} Skills in Real Match 😱`,
+  `${topic} Skills That Shocked Everyone 😳`,
+  `Top 5 ${topic} Moves You Must Try ⚽🔥`,
+  `${topic} Edit | Viral Shorts 🔥`,
+  `Best ${topic} Moments 😍⚽`,
+  `${topic} vs Defender 😱🔥`
+ ];
+ return arr[Math.floor(Math.random()*arr.length)];
+}
+
+function hashtagGen(topic){
+ topic=topic.replace(/\s+/g,"");
+ return `#${topic} #football #skills #viral #shorts #edit #ronaldo #messi #mr7world #trending`;
+}
+
+function descriptionGen(topic){
+ return `🔥 ${topic} skills edit by MR7 WORLD 😎\n\n⚽ Football Shorts\n🔥 Viral Edit\n💚 Subscribe for more!\n\n#football #shorts #viral #mr7world`;
+}
+
+function footballCoach(){
+ let arr=[
+  "⚽ Tip: Daily 50 toe taps practice karo",
+  "⚽ Tip: Sprint + dribble practice 20 min",
+  "⚽ Tip: Fake shot skill practice",
+  "⚽ Tip: Weak foot shooting improve karo",
+  "⚽ Tip: Ball control wall passing practice"
+ ];
+ return arr[Math.floor(Math.random()*arr.length)];
+}
+
+// quiz + game
+let jokes=["Why phone went to school? To improve its cell 😆","Teacher: Homework done? Yes sir but at home 😄"];
+let facts=["Honey never spoils 🍯","Sharks existed before trees 🌲","Octopus has 3 hearts 🐙"];
+let quiz=[{q:"Capital of India?",a:"New Delhi"},{q:"5+7=?",a:"12"},{q:"HTML stands for?",a:"Hypertext Markup Language"}];
+let currentQuiz=null;
+let currentGame=null;
+let currentGameMode="";
+
+// help
+function aiHelp(){
+ return `🤖 MR7 AI PRO Commands:
+- help
+- joke / fact
+- time / date
+- quiz / game
+- translate hello
+- math 5+5*2
+- study mode on
+- youtube mode on
+- football mode on
+- normal mode on
+- youtube title ronaldo
+- hashtags ronaldo
+- description ronaldo
+- football tip
+- repeat`;
+}
+
+function containsAny(text,words){
+ return words.some(w=>text.includes(w));
+}
+
+// SMART RESPONSE
+function smartReply(text){
+  let replies=[
+    "Hmm interesting 🤔 thoda aur detail me bolo.",
+    "Achha 😄 ab mujhe batao tum exactly kya chahte ho?",
+    "Main samajh gaya 😎 ab main help karta hoon.",
+    "Nice! 🔥 tum isko aur improve kar sakte ho.",
+    "Okay boss 😄 main ready hoon."
+  ];
+  return replies[Math.floor(Math.random()*replies.length)];
+}
+
+// MAIN AI
+async function askAI(){
+ let q=aiInput.value.trim();
+ if(!q)return;
+
+ typeText("You: "+q,"user");
+ aiInput.value="";
+ typing.style.display="block";
+
+ let reply="";
+ let text=q.toLowerCase().trim();
+
+ await new Promise(r=>setTimeout(r,200));
+
+ // QUIZ ANSWER (Fixed)
+ if(currentQuiz){
+   let userAnswer = text.toLowerCase().trim();
+   let correctAnswer = currentQuiz.a.toLowerCase().trim();
+   
+   if(userAnswer === correctAnswer){
+       reply="✅ Correct! 🎉🔥 Fun Fact: Learning is fun! 💡";
+   } else {
+       reply="❌ Wrong 😅 Correct answer: "+currentQuiz.a;
+   }
+   currentQuiz=null;
+ }
+
+ // GAME GUESS
+ else if(currentGameMode==="number" && currentGame){
+   let guess=parseInt(text);
+   if(isNaN(guess)) reply="Please enter number 1 to 20 😅";
+   else if(guess>currentGame) reply="Too high 📈 Try again!";
+   else if(guess<currentGame) reply="Too low 📉 Try again!";
+   else{
+     reply="🎉 Congrats! You guessed right 😎🔥";
+     currentGame=null;
+     currentGameMode="";
+   }
+ }
+
+ // MODES
+ else if(text.includes("study mode on")){
+   aiMode="study"; localStorage.aiMode=aiMode; updateModeTag();
+   reply="📚 Study Mode ON ✅\nAb main sirf padhai aur learning help dunga.";
+ }
+ else if(text.includes("youtube mode on")){
+   aiMode="youtube"; localStorage.aiMode=aiMode; updateModeTag();
+   reply="📺 YouTube Mode ON ✅\nAb main viral title, tags, description help karunga 😎";
+ }
+ else if(text.includes("football mode on")){
+   aiMode="football"; localStorage.aiMode=aiMode; updateModeTag();
+   reply="⚽ Football Mode ON ✅\nAb main football training aur edit ideas dunga 🔥";
+ }
+ else if(text.includes("normal mode on")){
+   aiMode="normal"; localStorage.aiMode=aiMode; updateModeTag();
+   reply="🤖 Normal Mode ON ✅";
+ }
+
+ // HELP
+ else if(text=="help" || text=="commands"){ reply=aiHelp(); }
+
+ // NAME
+ else if(text.includes("mera name") || text.includes("my name is") || text.startsWith("i am")){
+   if(text.includes("mera name")) userName=q.split("mera name")[1].trim();
+   else if(text.includes("my name is")) userName=q.split("my name is")[1].trim();
+   else userName=q.split("i am")[1].trim();
+   if(userName.length<2) userName="Friend";
+   localStorage.userName=userName;
+   reply="Nice to meet you "+userName+" 😄🔥";
+ }
+
+ // GREET
+ else if(containsAny(text,["hello","hi","hey","namaste","assalam"])){
+   reply="Hello "+(userName?userName:"Friend")+" 😄\nMain MR7 AI PRO hoon 🤖🔥";
+ }
+
+ // TIME
+ else if(containsAny(text,["time","samay"])){ reply="⏰ Time: "+new Date().toLocaleTimeString(); }
+
+ // DATE
+ else if(containsAny(text,["date","aaj ki date"])){ reply="📅 Date: "+new Date().toLocaleDateString(); }
+
+ // JOKE
+ else if(text.includes("joke")){ reply=jokes[Math.floor(Math.random()*jokes.length)]; }
+
+ // FACT
+ else if(text.includes("fact")){ reply=facts[Math.floor(Math.random()*facts.length)]; }
+
+ // QUIZ
+ else if(text.includes("quiz")){
+   currentQuiz=quiz[Math.floor(Math.random()*quiz.length)];
+   reply="🧠 Quiz Time! "+currentQuiz.q;
+ }
+
+ // GAME
+ else if(text.includes("game")){
+   currentGame=Math.floor(Math.random()*20)+1;
+   currentGameMode="number";
+   reply="🎮 Number Guessing Game started! Guess 1 to 20.";
+ }
+
+ // TRANSLATE
+ else if(text.includes("translate")){
+   let words=text.split("translate")[1].trim();
+   reply="Translation: "+translate(words);
+ }
+
+ // YOUTUBE TOOLS
+ else if(text.includes("youtube title")){
+   let topic=q.split("youtube title")[1].trim();
+   if(!topic) topic="Football";
+   reply="🔥 Viral Title:\n"+youtubeTitle(topic);
+ }
+ else if(text.includes("hashtags")){
+   let topic=q.split("hashtags")[1].trim();
+   if(!topic) topic="football";
+   reply="📌 Hashtags:\n"+hashtagGen(topic);
+ }
+ else if(text.includes("description")){
+   let topic=q.split("description")[1].trim();
+   if(!topic) topic="football";
+   reply="📝 YouTube Description:\n"+descriptionGen(topic);
+ }
+
+ // FOOTBALL COACH
+ else if(text.includes("football tip")){ reply=footballCoach(); }
+
+ // REPEAT
+ else if(text=="repeat"){ reply=lastBotReply ? ("🔁 Last Reply:\n"+lastBotReply) : "Nothing to repeat 😅"; }
+
+ // MATH
+ else if(safeMath(text)!==null){ reply="🧮 Answer: "+safeMath(text); }
+
+ // DEFAULT SMART
+ else{
+   if(aiMode==="study"){ reply="📚 Study Mode:\nTopic bolo main easy language me samjha dunga 😎"; }
+   else if(aiMode==="youtube"){ reply="📺 YouTube Mode:\nTopic batao main title + hashtags + description bana dunga 🔥"; }
+   else if(aiMode==="football"){ reply="⚽ Football Mode:\nTraining ya edit idea chahiye? Main help karunga 😎🔥"; }
+   else{ reply=smartReply(text); }
+ }
+
+ setTimeout(()=>{
+   typing.style.display="none";
+   typeText("AI: "+reply,"bot");
+   speakText(reply);
+   lastBotReply=reply;
+   localStorage.lastBotReply=reply;
+   localStorage.chat=chat.innerHTML;
+ },350);
+}
+
+// Auto welcome
+if(!localStorage.welcomeDone){
+ setTimeout(()=>{ typeText("AI: Welcome to MR7 AI PRO 🤖🔥\nType 'help' to see commands 😎","bot");
+ localStorage.welcomeDone="yes"; localStorage.chat=chat.innerHTML; },500);
+}
+</script>
+
+</body>
+</html>

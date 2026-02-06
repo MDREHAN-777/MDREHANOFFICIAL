@@ -15,6 +15,16 @@ body{
 }
 body.dark-mode{background:#111;color:#eee}
 
+/* PARTICLES CANVAS */
+#particles{
+ position:fixed;
+ top:0;left:0;
+ width:100%;
+ height:100%;
+ z-index:-1;
+ opacity:.35;
+}
+
 /* LOADER */
 #loader{
  position:fixed;
@@ -70,6 +80,24 @@ body.dark-mode{background:#111;color:#eee}
  overflow:hidden;
 }
 .yt-button:hover{transform:scale(1.1)}
+
+/* BUTTON RIPPLE */
+.yt-button::after{
+ content:"";
+ position:absolute;
+ top:50%;
+ left:50%;
+ width:0;height:0;
+ background:rgba(255,255,255,.4);
+ border-radius:50%;
+ transform:translate(-50%,-50%);
+ transition:.6s;
+}
+.yt-button:active::after{
+ width:250px;
+ height:250px;
+ opacity:0;
+}
 
 .submit-btn,.ai-btn{
  background:green;color:white;
@@ -149,6 +177,30 @@ input:focus,textarea:focus{
  box-shadow:0 0 10px rgba(0,255,0,.6);
 }
 
+/* CONTACT EXTRA BUTTONS */
+.contact-actions{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+ justify-content:center;
+ margin-top:10px;
+}
+.contact-actions button{
+ width:130px;
+ background:#111;
+ color:white;
+ border:1px solid lime;
+ padding:10px;
+ border-radius:12px;
+ cursor:pointer;
+ transition:.3s;
+ font-size:14px;
+}
+.contact-actions button:hover{
+ background:green;
+ transform:scale(1.05);
+}
+
 /* AI CHAT */
 #chat{
  text-align:left;
@@ -160,6 +212,10 @@ input:focus,textarea:focus{
  border-radius:10px;
  background:#f5f5f5;
 }
+body.dark-mode #chat{
+ background:#222;
+ border:1px solid #555;
+}
 .user{
  color:#00c853;margin:5px 0;padding:8px;
  background:#e8f5e9;border-radius:10px;
@@ -170,6 +226,15 @@ input:focus,textarea:focus{
  background:#e3f2fd;border-radius:10px;
  animation:pop .2s ease;
 }
+body.dark-mode .user{
+ background:#133a20;
+ color:#00ff88;
+}
+body.dark-mode .bot{
+ background:#0e2b44;
+ color:#6bbcff;
+}
+
 @keyframes pop{
  from{transform:scale(.9);opacity:.6}
  to{transform:scale(1);opacity:1}
@@ -240,10 +305,20 @@ input:focus,textarea:focus{
 
 #chat::-webkit-scrollbar{width:6px;}
 #chat::-webkit-scrollbar-thumb{background:green;border-radius:10px;}
+
+/* TYPING TITLE */
+#typingTitle{
+ font-size:34px;
+ font-weight:bold;
+ color:green;
+ text-shadow:0 0 10px rgba(0,255,0,.5);
+}
 </style>
 </head>
 
 <body>
+
+<canvas id="particles"></canvas>
 
 <!-- LOADER -->
 <div id="loader">
@@ -261,7 +336,7 @@ input:focus,textarea:focus{
 
 <!-- HOME -->
 <div id="home" class="section active">
-<h1>- MR7 WORLD -</h1>
+<h1 id="typingTitle"></h1>
 <h2>- MD -</h2>
 <h3>- REHAN -</h3>
 
@@ -283,10 +358,19 @@ input:focus,textarea:focus{
 <div id="contact" class="section">
 <div class="contact-box">
 <h2>Contact Me</h2>
+
 <input id="name" placeholder="Name">
 <input id="mobile" placeholder="Mobile">
 <textarea id="message" placeholder="Message"></textarea>
-<button class="submit-btn" onclick="sendMail()">Send</button>
+
+<button class="submit-btn" onclick="sendMail()">Send Email</button>
+
+<div class="contact-actions">
+  <button onclick="openWhatsApp()">WhatsApp</button>
+  <button onclick="callNow()">Call</button>
+  <button onclick="openMap()">Map</button>
+</div>
+
 </div>
 <button class="back-btn" onclick="goBack()">⬅ Back</button>
 </div>
@@ -317,7 +401,7 @@ input:focus,textarea:focus{
   <button onclick="quickAsk('fact')">Fact</button>
   <button onclick="quickAsk('quiz')">Quiz</button>
   <button onclick="quickAsk('game')">Game</button>
-  <button onclick="quickAsk('football ideas')">Football</button>
+  <button onclick="quickAsk('football tip')">Football</button>
   <button onclick="quickAsk('youtube title ronaldo')">Title</button>
   <button onclick="quickAsk('hashtags ronaldo')">Hashtags</button>
   <button onclick="quickAsk('motivation')">Motivation</button>
@@ -333,12 +417,71 @@ input:focus,textarea:focus{
 <img src="animi 1.jpeg" class="floating-img">
 
 <script>
+// PARTICLES BACKGROUND
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+let particles = [];
+function resizeCanvas(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+function createParticles(){
+  particles=[];
+  for(let i=0;i<60;i++){
+    particles.push({
+      x:Math.random()*canvas.width,
+      y:Math.random()*canvas.height,
+      r:Math.random()*3+1,
+      dx:(Math.random()-0.5)*1.2,
+      dy:(Math.random()-0.5)*1.2
+    });
+  }
+}
+createParticles();
+
+function drawParticles(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="lime";
+  particles.forEach(p=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fill();
+
+    p.x += p.dx;
+    p.y += p.dy;
+
+    if(p.x<0||p.x>canvas.width) p.dx*=-1;
+    if(p.y<0||p.y>canvas.height) p.dy*=-1;
+  });
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+
 // LOADER
 window.onload=function(){
   setTimeout(()=>{
     document.getElementById("loader").style.display="none";
+    startTypingTitle();
   },1200);
 };
+
+// TYPING TITLE
+function startTypingTitle(){
+  let text="- MR7 WORLD -";
+  let i=0;
+  let el=document.getElementById("typingTitle");
+  el.innerHTML="";
+  let t=setInterval(()=>{
+    el.innerHTML += text.charAt(i);
+    i++;
+    if(i>=text.length) clearInterval(t);
+  },120);
+}
 
 // DARK MODE
 if(localStorage.dark=="on"){ document.body.classList.add("dark-mode"); }
@@ -358,14 +501,53 @@ function sendMail(){
   let n=document.getElementById("name").value.trim();
   let m=document.getElementById("mobile").value.trim();
   let msg=document.getElementById("message").value.trim();
-  if(!n || !msg){ alert("Please enter Name and Message 😅"); return; }
-  location.href=`mailto:mrrehanofficial.1777@gmail.com?subject=MR7 Contact from ${n}&body=Name: ${n}%0D%0AMobile: ${m}%0D%0A%0D%0AMessage: ${msg}`;
+
+  if(!n || !msg){
+    alert("Please enter Name and Message 😅");
+    return;
+  }
+
+  let subject = encodeURIComponent("MR7 Contact from " + n);
+  let body = encodeURIComponent("Name: " + n + "\nMobile: " + m + "\n\nMessage:\n" + msg);
+
+  location.href="mailto:mrrehanofficial.1777@gmail.com?subject="+subject+"&body="+body;
 }
+
+// WhatsApp
+function openWhatsApp(){
+  let n=document.getElementById("name").value.trim();
+  let msg=document.getElementById("message").value.trim();
+
+  if(!msg){
+    alert("Please write message first 😅");
+    return;
+  }
+
+  let phone="917000000000"; 
+  // IMPORTANT: Replace this number with your WhatsApp number
+
+  let text = `Hello MR7 👋\n\nName: ${n}\nMessage: ${msg}`;
+  let url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(text);
+
+  window.open(url,"_blank");
+}
+
+// Call
+function callNow(){
+  let phone="+917000000000"; 
+  // IMPORTANT: Replace this number with your real phone number
+  location.href="tel:"+phone;
+}
+
+// Map
+function openMap(){
+  window.open("https://www.google.com/maps","_blank");
+}
+
 
 // CHAT MEMORY
 let userName=localStorage.userName || "";
 let lastBotReply=localStorage.lastBotReply || "";
-let lastTopic=localStorage.lastTopic || "";
 let aiMode=localStorage.aiMode || "normal";
 let speakOn = localStorage.speakOn ? JSON.parse(localStorage.speakOn) : true;
 
@@ -417,7 +599,7 @@ function toggleSpeak(){
 // voice input
 function startVoice(){
   if(!('webkitSpeechRecognition' in window)){
-    alert("Voice not supported in this browser 😅");
+    alert("Voice not supported 😅");
     return;
   }
   let rec = new webkitSpeechRecognition();
@@ -432,9 +614,11 @@ function startVoice(){
 
 // clear chat
 function clearChat(){
- chat.innerHTML="";
- localStorage.removeItem("chat");
- localStorage.removeItem("lastBotReply");
+ if(confirm("Clear full chat?")){
+   chat.innerHTML="";
+   localStorage.removeItem("chat");
+   localStorage.removeItem("lastBotReply");
+ }
 }
 
 // copy chat
@@ -525,13 +709,6 @@ let quiz=[{q:"Capital of India?",a:"new delhi"},{q:"5+7=?",a:"12"},{q:"HTML stan
 let currentQuiz=null;
 let currentGame=null;
 let currentGameMode="";
-let weatherPending=false;
-
-function startNumberGame(){
- currentGame=Math.floor(Math.random()*20)+1;
- currentGameMode="number";
- return "🎮 Number Guessing Game started! Guess 1 to 20.";
-}
 
 // help
 function aiHelp(){
@@ -555,6 +732,18 @@ function aiHelp(){
 
 function containsAny(text,words){
  return words.some(w=>text.includes(w));
+}
+
+// SMART RESPONSE (NEW)
+function smartReply(text){
+  let replies=[
+    "Hmm interesting 🤔 thoda aur detail me bolo.",
+    "Achha 😄 ab mujhe batao tum exactly kya chahte ho?",
+    "Main samajh gaya 😎 ab main help karta hoon.",
+    "Nice! 🔥 tum isko aur improve kar sakte ho.",
+    "Okay boss 😄 main ready hoon."
+  ];
+  return replies[Math.floor(Math.random()*replies.length)];
 }
 
 // MAIN AI
@@ -630,6 +819,7 @@ async function askAI(){
    if(text.includes("mera name")) userName=q.split("mera name")[1].trim();
    else if(text.includes("my name is")) userName=q.split("my name is")[1].trim();
    else userName=q.split("i am")[1].trim();
+
    if(userName.length<2) userName="Friend";
    localStorage.userName=userName;
    reply="Nice to meet you "+userName+" 😄🔥";
@@ -668,7 +858,9 @@ async function askAI(){
 
  // GAME
  else if(text.includes("game")){
-   reply=startNumberGame();
+   currentGame=Math.floor(Math.random()*20)+1;
+   currentGameMode="number";
+   reply="🎮 Number Guessing Game started! Guess 1 to 20.";
  }
 
  // TRANSLATE
@@ -711,7 +903,7 @@ async function askAI(){
    reply="🧮 Answer: "+safeMath(text);
  }
 
- // SMART MODE RESPONSE
+ // DEFAULT SMART
  else{
    if(aiMode==="study"){
      reply="📚 Study Mode:\nTopic bolo main easy language me samjha dunga 😎";
@@ -723,7 +915,7 @@ async function askAI(){
      reply="⚽ Football Mode:\nTraining ya edit idea chahiye? Main help karunga 😎🔥";
    }
    else{
-     reply="🤖 Main MR7 AI PRO hoon 😎\nType 'help' to see commands 🔥";
+     reply=smartReply(text);
    }
  }
 

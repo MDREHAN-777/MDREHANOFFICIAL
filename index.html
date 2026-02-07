@@ -333,7 +333,7 @@ body.dark-mode .bot{
 <!-- CONTACT -->
 <div id="contact" class="section">
 <div class="contact-box">
-<h2>CONTACT</h2>
+<h2>Contact Me</h2>
 
 <input id="name" placeholder="Name">
 <input id="mobile" placeholder="Mobile">
@@ -378,6 +378,7 @@ body.dark-mode .bot{
   <button onclick="quickAsk('study mode on')">Study Mode</button>
   <button onclick="quickAsk('youtube mode on')">YouTube Mode</button>
   <button onclick="quickAsk('football mode on')">Football Mode</button>
+  <button onclick="quickAsk('normal mode on')">Normal Mode</button>
 </div>
 
 </div>
@@ -690,7 +691,7 @@ function containsAny(text,words){
  return words.some(w=>text.includes(w));
 }
 
-// AI SMART REPLY (UPGRADED)
+// AI SMART REPLY
 function smartReply(text){
   text=text.toLowerCase();
 
@@ -718,14 +719,6 @@ function smartReply(text){
     return "Hello boss 😄🔥 MR7 AI ready hai!";
   }
 
-  // Topic memory save
-  if(text.includes("python")) return "🐍 Python best language hai! Tum kya sikhna chahte ho?";
-  if(text.includes("html")) return "🌐 HTML easy hai! Main tumko full website banane me help kar dunga 😎";
-  if(text.includes("css")) return "🎨 CSS se website stylish banta hai. Tumko animation chahiye kya?";
-  if(text.includes("javascript")) return "⚡ JavaScript se website smart banti hai. Tum AI aur powerful bana sakte ho 🔥";
-  if(text.includes("youtube")) return "📺 YouTube ke liye main title + hashtags + description ready kar dunga 😎";
-  if(text.includes("football") || text.includes("ronaldo")) return "⚽ Ronaldo style edit? Bhai super 🔥 Main ideas deta hoon!";
-
   let replies=[
     "Hmm interesting 🤔 thoda aur detail me bolo.",
     "Achha 😄 tum exactly kya chahte ho? main help karta hoon.",
@@ -750,13 +743,10 @@ async function askAI(){
  let reply="";
  let text=q.toLowerCase().trim();
 
- // save last user msg
- lastUserMsg=q;
- localStorage.lastUserMsg=lastUserMsg;
+ localStorage.lastUserMsg=q;
 
  await new Promise(r=>setTimeout(r,200));
 
- // CLEAR MEMORY
  if(text.includes("clear memory")){
    localStorage.removeItem("userName");
    localStorage.removeItem("lastTopic");
@@ -765,7 +755,6 @@ async function askAI(){
    reply="🧠 Memory cleared ✅";
  }
 
- // QUIZ ANSWER
  else if(currentQuiz){
    if(text === currentQuiz.a){
      reply="✅ Correct! 🎉🔥";
@@ -775,7 +764,6 @@ async function askAI(){
    currentQuiz=null;
  }
 
- // GAME GUESS
  else if(currentGameMode==="number" && currentGame){
    let guess=parseInt(text);
    if(isNaN(guess)) reply="Please enter number 1 to 20 😅";
@@ -788,24 +776,23 @@ async function askAI(){
    }
  }
 
- // MODES
  else if(text.includes("study mode on")){
    aiMode="study";
    localStorage.aiMode=aiMode;
    updateModeTag();
-   reply="📚 Study Mode ON ✅\nAb main sirf padhai aur learning help dunga.";
+   reply="📚 Study Mode ON ✅";
  }
  else if(text.includes("youtube mode on")){
    aiMode="youtube";
    localStorage.aiMode=aiMode;
    updateModeTag();
-   reply="📺 YouTube Mode ON ✅\nAb main viral title, tags, description help karunga 😎";
+   reply="📺 YouTube Mode ON ✅";
  }
  else if(text.includes("football mode on")){
    aiMode="football";
    localStorage.aiMode=aiMode;
    updateModeTag();
-   reply="⚽ Football Mode ON ✅\nAb main football training aur edit ideas dunga 🔥";
+   reply="⚽ Football Mode ON ✅";
  }
  else if(text.includes("normal mode on")){
    aiMode="normal";
@@ -814,67 +801,42 @@ async function askAI(){
    reply="🤖 Normal Mode ON ✅";
  }
 
- // HELP
  else if(text=="help" || text=="commands"){
    reply=aiHelp();
  }
 
- // NAME
- else if(text.includes("mera name") || text.includes("my name is") || text.startsWith("i am")){
-   if(text.includes("mera name")) userName=q.split("mera name")[1].trim();
-   else if(text.includes("my name is")) userName=q.split("my name is")[1].trim();
-   else userName=q.split("i am")[1].trim();
-
-   if(userName.length<2) userName="Friend";
-   localStorage.userName=userName;
-   reply="Nice to meet you "+userName+" 😄🔥";
- }
-
- // GREET
- else if(containsAny(text,["hello","hi","hey","namaste","assalam"])){
-   reply="Hello "+(userName?userName:"Friend")+" 😄\nMain MR7 AI PRO hoon 🤖🔥";
- }
-
- // TIME
  else if(containsAny(text,["time","samay"])){
    reply="⏰ Time: "+new Date().toLocaleTimeString();
  }
 
- // DATE
  else if(containsAny(text,["date","aaj ki date"])){
    reply="📅 Date: "+new Date().toLocaleDateString();
  }
 
- // JOKE
  else if(text.includes("joke")){
    reply=jokes[Math.floor(Math.random()*jokes.length)];
  }
 
- // FACT
  else if(text.includes("fact")){
    reply=facts[Math.floor(Math.random()*facts.length)];
  }
 
- // QUIZ
  else if(text.includes("quiz")){
    currentQuiz=quiz[Math.floor(Math.random()*quiz.length)];
    reply="🧠 Quiz Time! "+currentQuiz.q;
  }
 
- // GAME
  else if(text.includes("game")){
    currentGame=Math.floor(Math.random()*20)+1;
    currentGameMode="number";
-   reply="🎮 Number Guessing Game started! Guess 1 to 20.";
+   reply="🎮 Guess 1 to 20.";
  }
 
- // TRANSLATE
  else if(text.includes("translate")){
    let words=text.split("translate")[1].trim();
    reply="Translation: "+translate(words);
  }
 
- // YOUTUBE TOOLS
  else if(text.includes("youtube title")){
    let topic=q.split("youtube title")[1].trim();
    if(!topic) topic="Football";
@@ -893,50 +855,20 @@ async function askAI(){
    reply="📝 YouTube Description:\n"+descriptionGen(topic);
  }
 
- // FOOTBALL COACH
  else if(text.includes("football tip")){
    reply=footballCoach();
  }
 
- // REPEAT
  else if(text=="repeat"){
    reply=lastBotReply ? ("🔁 Last Reply:\n"+lastBotReply) : "Nothing to repeat 😅";
  }
 
- // MATH
  else if(safeMath(text)!==null){
    reply="🧮 Answer: "+safeMath(text);
  }
 
- // DEFAULT SMART
  else{
-   // save topic memory
-   if(text.includes("python")) lastTopic="python";
-   else if(text.includes("html")) lastTopic="html";
-   else if(text.includes("css")) lastTopic="css";
-   else if(text.includes("javascript")) lastTopic="javascript";
-   else if(text.includes("football")) lastTopic="football";
-   else if(text.includes("youtube")) lastTopic="youtube";
-
-   if(lastTopic) localStorage.lastTopic=lastTopic;
-
-   if(aiMode==="study"){
-     reply="📚 Study Mode:\nTopic bolo main easy language me samjha dunga 😎";
-   }
-   else if(aiMode==="youtube"){
-     reply="📺 YouTube Mode:\nTopic batao main title + hashtags + description bana dunga 🔥";
-   }
-   else if(aiMode==="football"){
-     reply="⚽ Football Mode:\nTraining ya edit idea chahiye? Main help karunga 😎🔥";
-   }
-   else{
-     reply=smartReply(text);
-
-     // extra memory response
-     if(lastTopic && text.includes("what") && text.includes("next")){
-       reply += "\n\n🔥 Last topic was: "+lastTopic.toUpperCase()+"\nBolo main next step batata hoon 😎";
-     }
-   }
+   reply=smartReply(text);
  }
 
  setTimeout(()=>{

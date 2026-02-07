@@ -192,7 +192,7 @@ body.dark-mode{background:#111;color:#eee}
  box-shadow:0 0 20px rgba(0,255,0,.5);
 }
 .menu-box button{
- width:160px;margin:5px;
+ width:180px;margin:5px;
  border:none;border-radius:8px;
  padding:10px;cursor:pointer;
  background:#333;color:white;
@@ -212,8 +212,8 @@ body.dark-mode{background:#111;color:#eee}
 }
 
 /* CONTACT / AI */
-.contact-box,.ai-box{
- max-width:450px;margin:40px auto;
+.contact-box,.ai-box,.game-box{
+ max-width:520px;margin:40px auto;
  padding:0;
  border-radius:20px;
  box-shadow:0 0 20px rgba(0,255,0,.3);
@@ -243,18 +243,21 @@ input:focus,textarea:focus{
  background:#f5f5f5;
 }
 body.dark-mode #chat{
- background:#222;
+ background:#111;
  border:1px solid #555;
 }
+
 .user{
- color:#00c853;margin:5px 0;padding:8px;
- background:#e8f5e9;border-radius:10px;
+ color:#00c853;margin:5px 0;padding:10px;
+ background:#e8f5e9;border-radius:12px;
  animation:pop .2s ease;
+ font-weight:500;
 }
 .bot{
- color:#2196f3;margin:5px 0;padding:8px;
- background:#e3f2fd;border-radius:10px;
+ color:#2196f3;margin:5px 0;padding:10px;
+ background:#e3f2fd;border-radius:12px;
  animation:pop .2s ease;
+ font-weight:500;
 }
 body.dark-mode .user{
  background:#133a20;
@@ -324,19 +327,6 @@ body.dark-mode .bot{
  cursor:pointer;
  background:green;
  color:white;
-}
-
-/* FLOAT */
-.floating-img{
- position:fixed;right:15px;bottom:70px;
- width:100px;border-radius:16px;
- box-shadow:0 0 25px rgba(0,255,0,.6);
- animation:float 4s infinite;
-}
-@keyframes float{
- 0%{transform:translateY(0)}
- 50%{transform:translateY(-12px)}
- 100%{transform:translateY(0)}
 }
 
 /* SLIDER */
@@ -468,6 +458,46 @@ body.dark-mode .bot{
  color:white;
  transform:scale(1.05);
 }
+
+/* GAME UI */
+.game-select{
+ display:flex;
+ gap:10px;
+ justify-content:center;
+ flex-wrap:wrap;
+ margin:15px 0;
+}
+.game-select button{
+ padding:10px 16px;
+ border:none;
+ border-radius:12px;
+ cursor:pointer;
+ background:#111;
+ color:lime;
+ border:1px solid lime;
+ transition:.3s;
+ font-weight:bold;
+}
+.game-select button:hover{
+ background:green;
+ color:white;
+ transform:scale(1.05);
+}
+
+canvas{
+ background:#000;
+ border:2px solid lime;
+ border-radius:12px;
+ box-shadow:0 0 20px rgba(0,255,0,.5);
+ margin-top:10px;
+}
+
+#gameStatus{
+ margin-top:10px;
+ color:lime;
+ font-weight:bold;
+ text-shadow:0 0 10px rgba(0,255,0,.5);
+}
 </style>
 </head>
 
@@ -483,13 +513,14 @@ body.dark-mode .bot{
 </div>
 
 <div id="notify">🔥 New Update Added!</div>
-
 <div id="liveVisitors">👥 0 people online</div>
 
 <div class="menu" onclick="toggleMenu()">⋮</div>
 <div class="menu-box" id="menuBox">
+ <button onclick="openHome()">🏠 Home</button>
  <button onclick="openContact()">📞 Contact</button>
  <button onclick="openAI()">🤖 MR7 AI</button>
+ <button onclick="openGame()">🎮 Games</button>
 </div>
 
 <button class="dark-toggle" onclick="toggleDark()">🌙 Dark</button>
@@ -509,7 +540,7 @@ body.dark-mode .bot{
 
 <!-- NEWS BAR -->
 <div id="newsBar">
-  <div id="newsText">🔥 WELCOME TO MR7 WORLD | SUBSCRIBE NOW | NEW UPDATE LIVE | MR7 AI SMART MODE ACTIVE 🔥</div>
+  <div id="newsText">🔥 WELCOME TO MR7 WORLD | SUBSCRIBE NOW | NEW UPDATE LIVE | MR7 AI SMART MODE ACTIVE | PLAY GAMES NOW 🎮 🔥</div>
 </div>
 
 <!-- QUOTES -->
@@ -533,6 +564,12 @@ body.dark-mode .bot{
  <img src="animi 2 .jpeg" onclick="openPopup(this.src)">
  <img src="animi 3.jpeg" onclick="openPopup(this.src)">
 </div>
+
+<div style="margin-top:25px;">
+  <button class="ai-btn" onclick="openAI()">🤖 Open MR7 AI</button>
+  <button class="ai-btn" onclick="openGame()">🎮 Play Games</button>
+</div>
+
 </div>
 
 <!-- CONTACT -->
@@ -562,29 +599,52 @@ body.dark-mode .bot{
   <button onclick="autoAsk('time')">Time</button>
   <button onclick="autoAsk('date')">Date</button>
   <button onclick="autoAsk('tell me a joke')">Joke</button>
-  <button onclick="autoAsk('motivate me')">Motivation</button>
+  <button onclick="autoAsk('fact')">Fact</button>
   <button onclick="autoAsk('football tips')">Football Tips</button>
-  <button onclick="autoAsk('youtube title ronaldo skills')">YouTube Title</button>
+  <button onclick="autoAsk('youtube title ronaldo skills')">YT Title</button>
   <button onclick="autoAsk('hashtags football')">Hashtags</button>
+  <button onclick="autoAsk('help')">Help</button>
 </div>
 
 <div id="chat"></div>
 <div id="typing">AI typing...</div>
 
-<input id="aiInput" placeholder="Ask anything">
+<input id="aiInput" placeholder="Ask anything...">
 
 <button class="ai-btn" onclick="askAI()">Send</button>
 <button class="ai-btn" onclick="clearChat()">Clear Chat</button>
 <button class="ai-btn" onclick="copyChat()">Copy Chat</button>
 <button class="ai-btn" onclick="downloadChat()">Download Chat</button>
-<button class="ai-btn" onclick="toggleVoice()">🔊 Voice: OFF</button>
+<button class="ai-btn" onclick="showMemory()">Show Memory</button>
+<button class="ai-btn" onclick="resetMemory()">Reset Memory</button>
 
 </div>
 </div>
 <button class="back-btn" onclick="goBack()">⬅ Back</button>
 </div>
 
-<img src="animi 1.jpeg" class="floating-img">
+<!-- GAMES -->
+<div id="game" class="section">
+<div class="game-box neon-box">
+<div class="neon-inner">
+<h2>🎮 MR7 GAMES ZONE</h2>
+<p style="color:lime;font-weight:bold;">Choose a game and enjoy 😎🔥</p>
+
+<div class="game-select">
+  <button onclick="startSnake()">🐍 Snake Game</button>
+  <button onclick="startGuess()">🔢 Guess Number</button>
+  <button onclick="stopGame()">❌ Stop Game</button>
+</div>
+
+<div id="gameArea" style="display:none;">
+  <canvas id="gameCanvas" width="320" height="320"></canvas>
+  <div id="gameStatus">Game Ready...</div>
+</div>
+
+</div>
+</div>
+<button class="back-btn" onclick="goBack()">⬅ Back</button>
+</div>
 
 <!-- IMAGE POPUP -->
 <div id="imgPopup">
@@ -605,7 +665,6 @@ if(savedTheme){
     document.body.classList.remove("dark-mode");
   }
 }else{
-  // Default always dark
   document.body.classList.add("dark-mode");
   localStorage.setItem("mr7_theme","dark");
 }
@@ -666,21 +725,38 @@ window.onscroll=function(){
 function toggleMenu(){
   menuBox.style.display=menuBox.style.display=="block"?"none":"block";
 }
+function openHome(){
+  home.classList.add("active");
+  contact.classList.remove("active");
+  ai.classList.remove("active");
+  game.classList.remove("active");
+  menuBox.style.display="none";
+}
 function openContact(){
   home.classList.remove("active");
   ai.classList.remove("active");
+  game.classList.remove("active");
   contact.classList.add("active");
   menuBox.style.display="none";
 }
 function openAI(){
   home.classList.remove("active");
   contact.classList.remove("active");
+  game.classList.remove("active");
   ai.classList.add("active");
+  menuBox.style.display="none";
+}
+function openGame(){
+  home.classList.remove("active");
+  contact.classList.remove("active");
+  ai.classList.remove("active");
+  game.classList.add("active");
   menuBox.style.display="none";
 }
 function goBack(){
   contact.classList.remove("active");
   ai.classList.remove("active");
+  game.classList.remove("active");
   home.classList.add("active");
 }
 
@@ -832,32 +908,25 @@ function downloadChat(){
 }
 
 /* ==========================
-   VOICE SYSTEM
-========================== */
-let voiceOn = false;
-
-function toggleVoice(){
-  voiceOn = !voiceOn;
-  let btns = document.querySelectorAll(".ai-btn");
-  btns[btns.length-1].innerText = voiceOn ? "🔊 Voice: ON" : "🔊 Voice: OFF";
-}
-
-function speak(text){
-  if(!voiceOn) return;
-  let speech = new SpeechSynthesisUtterance(text);
-  speech.rate = 1;
-  speech.pitch = 1;
-  speech.lang = "en-IN";
-  window.speechSynthesis.speak(speech);
-}
-
-/* ==========================
    SMART AI MEMORY SYSTEM
 ========================== */
 let memory = JSON.parse(localStorage.aiMemory || "{}");
 
 function saveMemory(){
   localStorage.aiMemory = JSON.stringify(memory);
+}
+
+function showMemory(){
+  let data = JSON.stringify(memory,null,2);
+  alert("MR7 AI Memory:\n\n" + data);
+}
+
+function resetMemory(){
+  if(confirm("Reset AI Memory?")){
+    localStorage.removeItem("aiMemory");
+    memory = {};
+    alert("Memory Reset Done ✅");
+  }
 }
 
 /* ==========================
@@ -924,41 +993,51 @@ function footballTips(){
 }
 
 /* ==========================
-   SMART AI LOGIC (UPGRADED)
+   SMART AI LOGIC (SUPER UPGRADED)
 ========================== */
 function smartAIReply(text){
   let originalText = text;
   text = text.toLowerCase();
 
-  // NAME DETECT
+  let bossName = memory.userName ? memory.userName : "Boss";
+
+  /* HELP COMMAND */
+  if(text === "help"){
+    return "🔥 MR7 AI Commands:\n\n" +
+    "1) hello\n2) time\n3) date\n4) joke\n5) fact\n" +
+    "6) football tips\n7) youtube title <topic>\n8) hashtags <topic>\n" +
+    "9) remember <message>\n10) what did you remember\n" +
+    "11) clear chat\n12) 2+2 (calculator)\n\n" +
+    "😎 Example: youtube title ronaldo skills";
+  }
+
+  /* NAME DETECT */
   if(text.includes("mera naam") && text.includes("hai")){
     let name = originalText.split("mera naam")[1];
     name = name.replace("hai","").trim();
     if(name.length > 1){
       memory.userName = name;
       saveMemory();
-      return "🔥 Wow Boss! Ab main yaad rakhunga tumhara naam: " + name + " 😎";
+      return "🔥 Okay! Ab main yaad rakhunga tumhara naam: " + name + " 😎";
     }
   }
 
-  let bossName = memory.userName ? memory.userName : "Boss";
-
-  // HELLO
+  /* HELLO */
   if(text.includes("hello") || text.includes("hi") || text.includes("namaste")){
     return "Hello " + bossName + " 😄🔥 MR7 WORLD me welcome!";
   }
 
-  // WHO ARE YOU
+  /* WHO ARE YOU */
   if(text.includes("who are you") || text.includes("tum kaun ho")){
     return "Main MR7 AI SMART hoon 🤖🔥 Main tumhari help karne ke liye bana hoon!";
   }
 
-  // OWNER
+  /* OWNER */
   if(text.includes("owner") || text.includes("tumhara malik")){
     return "Mera owner MD REHAN hai 😎🔥 MR7 WORLD ka king!";
   }
 
-  // TIME / DATE
+  /* TIME / DATE */
   if(text.includes("time")){
     return "⏰ Time: " + new Date().toLocaleTimeString();
   }
@@ -966,7 +1045,7 @@ function smartAIReply(text){
     return "📅 Date: " + new Date().toLocaleDateString();
   }
 
-  // JOKE
+  /* JOKE */
   if(text.includes("joke")){
     let jokes=[
       "😂 Teacher: Homework kiya? Student: Sir, laptop hang ho gaya 😭",
@@ -976,46 +1055,37 @@ function smartAIReply(text){
     return jokes[Math.floor(Math.random()*jokes.length)];
   }
 
-  // MOTIVATION
-  if(text.includes("motivate") || text.includes("motivation") || text.includes("inspire")){
-    let mot=[
-      "🔥 " + bossName + ", tu ek din top pe hoga! Bas rukna nahi 💪",
-      "⚡ Fail hona normal hai, give up karna galat hai!",
-      "🏆 Jo mehnat karta hai wahi legend banta hai 😎"
-    ];
-    return mot[Math.floor(Math.random()*mot.length)];
-  }
-
-  // FACT
+  /* FACT */
   if(text.includes("fact")){
     let facts=[
       "🧠 Fact: Brain 1 second me millions of signals process karta hai!",
       "🌍 Fact: Football duniya ka #1 popular sport hai!",
-      "⚡ Fact: Ronaldo ka speed 33 km/h tak ja chuka hai!"
+      "⚡ Fact: Ronaldo ka speed 33 km/h tak ja chuka hai!",
+      "🔥 Fact: JavaScript se website ke andar AI aur games ban sakte hain!"
     ];
     return facts[Math.floor(Math.random()*facts.length)];
   }
 
-  // FOOTBALL TIPS
+  /* FOOTBALL TIPS */
   if(text.includes("football") || text.includes("dribbling") || text.includes("shooting")){
     return footballTips();
   }
 
-  // YOUTUBE TITLE
+  /* YOUTUBE TITLE */
   if(text.includes("youtube title")){
     let topic = originalText.replace(/youtube title/i,"").trim();
     if(!topic) topic = "MR7 Video";
     return "🎬 Viral Title: " + youtubeTitle(topic);
   }
 
-  // HASHTAGS
+  /* HASHTAGS */
   if(text.includes("hashtags") || text.includes("hashtag")){
     let topic = originalText.replace(/hashtags|hashtag/gi,"").trim();
     if(!topic) topic = "mr7";
     return hashtagGenerator(topic);
   }
 
-  // MEMORY SAVE
+  /* MEMORY SAVE */
   if(text.startsWith("remember")){
     let msg = originalText.replace("remember","").trim();
     memory.saved = msg;
@@ -1027,20 +1097,20 @@ function smartAIReply(text){
     return memory.saved ? ("📌 Mujhe yaad hai: " + memory.saved) : "😅 Abhi kuch yaad nahi hai.";
   }
 
-  // CALCULATOR
+  /* CALCULATOR */
   if(isMathExpression(originalText)){
     return solveMath(originalText);
   }
 
-  // BYE
+  /* BYE */
   if(text.includes("bye")){
     return "Bye " + bossName + " 😄🔥 MR7 WORLD always with you!";
   }
 
-  // DEFAULT SMART REPLY
+  /* SMART DEFAULT */
   let replies=[
     "Hmm " + bossName + " 🤔 thoda aur clear bolo.",
-    "Boss 😎 ye idea bahut strong hai!",
+    "Boss 😎 tumhara idea bahut strong hai!",
     "🔥 MR7 WORLD style me bolu? Tu legend banega!",
     "Okay 😄 main samajh gaya.",
     "Acha! ab next command do boss 😎",
@@ -1067,7 +1137,6 @@ function askAI(){
    typing.style.display="none";
    typeText("AI: "+reply,"bot");
    localStorage.chat=chat.innerHTML;
-   speak(reply);
  },500);
 }
 
@@ -1075,6 +1144,131 @@ function askAI(){
 function autoAsk(text){
   aiInput.value = text;
   askAI();
+}
+
+/* ==========================
+   GAMES SYSTEM
+========================== */
+let gameRunning = false;
+let snakeInterval = null;
+
+function stopGame(){
+  gameRunning = false;
+  clearInterval(snakeInterval);
+  document.getElementById("gameArea").style.display="none";
+  document.getElementById("gameStatus").innerText="Game Stopped ❌";
+}
+
+/* ==========================
+   SNAKE GAME
+========================== */
+function startSnake(){
+  document.getElementById("gameArea").style.display="block";
+  document.getElementById("gameStatus").innerText="🐍 Snake Game Started! Use Arrow Keys";
+
+  const canvas = document.getElementById("gameCanvas");
+  const ctx = canvas.getContext("2d");
+
+  let box = 20;
+  let snake = [{x: 160, y: 160}];
+  let dir = "RIGHT";
+
+  let food = {
+    x: Math.floor(Math.random()*16)*box,
+    y: Math.floor(Math.random()*16)*box
+  };
+
+  let score = 0;
+
+  document.onkeydown = function(e){
+    if(e.key==="ArrowLeft" && dir!=="RIGHT") dir="LEFT";
+    if(e.key==="ArrowUp" && dir!=="DOWN") dir="UP";
+    if(e.key==="ArrowRight" && dir!=="LEFT") dir="RIGHT";
+    if(e.key==="ArrowDown" && dir!=="UP") dir="DOWN";
+  };
+
+  function draw(){
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0,0,320,320);
+
+    for(let i=0;i<snake.length;i++){
+      ctx.fillStyle = (i==0) ? "lime" : "green";
+      ctx.fillRect(snake[i].x,snake[i].y,box,box);
+    }
+
+    ctx.fillStyle="red";
+    ctx.fillRect(food.x,food.y,box,box);
+
+    let headX = snake[0].x;
+    let headY = snake[0].y;
+
+    if(dir==="LEFT") headX -= box;
+    if(dir==="UP") headY -= box;
+    if(dir==="RIGHT") headX += box;
+    if(dir==="DOWN") headY += box;
+
+    if(headX===food.x && headY===food.y){
+      score++;
+      food = {
+        x: Math.floor(Math.random()*16)*box,
+        y: Math.floor(Math.random()*16)*box
+      };
+    }else{
+      snake.pop();
+    }
+
+    let newHead = {x: headX, y: headY};
+
+    if(headX<0 || headY<0 || headX>=320 || headY>=320){
+      clearInterval(snakeInterval);
+      document.getElementById("gameStatus").innerText="💀 Game Over! Score: "+score;
+      return;
+    }
+
+    for(let i=1;i<snake.length;i++){
+      if(headX===snake[i].x && headY===snake[i].y){
+        clearInterval(snakeInterval);
+        document.getElementById("gameStatus").innerText="💀 Game Over! Score: "+score;
+        return;
+      }
+    }
+
+    snake.unshift(newHead);
+    document.getElementById("gameStatus").innerText="🐍 Score: "+score;
+  }
+
+  clearInterval(snakeInterval);
+  snakeInterval = setInterval(draw,120);
+}
+
+/* ==========================
+   GUESS NUMBER GAME
+========================== */
+function startGuess(){
+  document.getElementById("gameArea").style.display="none";
+  let number = Math.floor(Math.random()*50)+1;
+  let tries = 0;
+
+  while(true){
+    let user = prompt("Guess Number (1 to 50)\nType cancel to exit");
+
+    if(user===null){
+      alert("Game Exit ❌");
+      break;
+    }
+
+    tries++;
+    user = Number(user);
+
+    if(user===number){
+      alert("🎉 Correct! Number was "+number+"\nTries: "+tries);
+      break;
+    }else if(user>number){
+      alert("📉 Too High! Try again.");
+    }else{
+      alert("📈 Too Low! Try again.");
+    }
+  }
 }
 </script>
 

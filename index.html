@@ -234,10 +234,10 @@ canvas{
 
 <div class="menu" onclick="toggleMenu()">☰</div>
 <div class="menu-box" id="menuBox">
-  <button onclick="openSection('home')">🏠 Home</button>
-  <button onclick="openSection('ai')">🤖 MR7 AI</button>
-  <button onclick="openSection('games')">🎮 Games</button>
-  <button onclick="openSection('contact')">📩 Contact</button>
+  <button onclick="openSectionSecure('home')">🏠 Home</button>
+  <button onclick="openSectionSecure('ai')">🤖 MR7 AI</button>
+  <button onclick="openSectionSecure('games')">🎮 Games</button>
+  <button onclick="openSectionSecure('contact')">📩 Contact</button>
   <button onclick="openSection('login')">🔐 Login</button>
 </div>
 
@@ -260,6 +260,7 @@ canvas{
   <div class="box">
     <h2>🔥 MR7 WORLD Updates</h2>
     <p>Welcome to MR7 WORLD - Gaming + AI + Cool Features 😎</p>
+    <p id="welcomeUser" style="margin-top:10px;color:lime;font-weight:bold;"></p>
   </div>
 </div>
 
@@ -268,12 +269,30 @@ canvas{
   <div class="box">
     <h2>🔐 Login System</h2>
     <input id="username" placeholder="Enter Username">
-    <input id="password" placeholder="Enter Password">
+    <input id="password" placeholder="Enter Password" type="password">
     <button class="btn" onclick="loginUser()">Login</button>
     <button class="btn" onclick="logoutUser()">Logout</button>
     <p id="loginStatus" style="margin-top:10px;color:lime;"></p>
   </div>
   <button class="btn back-btn" onclick="openSection('home')">⬅ Back</button>
+</div>
+
+<!-- PROFILE EDIT -->
+<div id="profile" class="section">
+  <div class="box">
+    <h2>👤 Create / Edit Profile</h2>
+    <p style="color:lime;">Profile save karna zaroori hai tabhi website unlock hogi ✅</p>
+
+    <input id="pname" placeholder="Full Name">
+    <input id="page" placeholder="Age">
+    <input id="pcity" placeholder="City">
+    <textarea id="pbio" placeholder="Write your bio..."></textarea>
+
+    <button class="btn" onclick="saveProfile()">Save Profile</button>
+    <button class="btn back-btn" onclick="openSection('login')">⬅ Back</button>
+
+    <p id="profileStatus" style="margin-top:10px;color:lime;font-weight:bold;"></p>
+  </div>
 </div>
 
 <!-- CONTACT -->
@@ -285,7 +304,7 @@ canvas{
     <textarea id="message" placeholder="Message"></textarea>
     <button class="btn" onclick="sendMail()">Send Email</button>
   </div>
-  <button class="btn back-btn" onclick="openSection('home')">⬅ Back</button>
+  <button class="btn back-btn" onclick="openSectionSecure('home')">⬅ Back</button>
 </div>
 
 <!-- AI -->
@@ -303,7 +322,7 @@ canvas{
     <p style="margin-top:10px;color:lime;">💡 Tip: Type "calc 50+20" for calculator mode</p>
   </div>
 
-  <button class="btn back-btn" onclick="openSection('home')">⬅ Back</button>
+  <button class="btn back-btn" onclick="openSectionSecure('home')">⬅ Back</button>
 </div>
 
 <!-- GAMES -->
@@ -346,7 +365,7 @@ canvas{
     <button class="btn back-btn" onclick="closeGames()">⬅ Back</button>
   </div>
 
-  <button class="btn back-btn" onclick="openSection('home')">⬅ Back Home</button>
+  <button class="btn back-btn" onclick="openSectionSecure('home')">⬅ Back Home</button>
 </div>
 
 <script>
@@ -356,11 +375,36 @@ function toggleMenu(){
   box.style.display = box.style.display==="block" ? "none" : "block";
 }
 
-/* OPEN SECTION */
+/* OPEN SECTION NORMAL */
 function openSection(id){
   document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
   document.getElementById("menuBox").style.display="none";
+}
+
+/* SECURITY CHECK */
+function isLoggedIn(){
+  return localStorage.getItem("mr7User") ? true : false;
+}
+function isProfileDone(){
+  return localStorage.getItem("mr7Profile") ? true : false;
+}
+
+/* OPEN SECTION SECURE */
+function openSectionSecure(id){
+  if(!isLoggedIn()){
+    alert("❌ Pehle Login karo boss!");
+    openSection("login");
+    return;
+  }
+
+  if(!isProfileDone()){
+    alert("⚠ Profile create karo tabhi website unlock hogi!");
+    openSection("profile");
+    return;
+  }
+
+  openSection(id);
 }
 
 /* TYPING TITLE */
@@ -419,25 +463,93 @@ function sendMail(){
 function loginUser(){
   let u=document.getElementById("username").value.trim();
   let p=document.getElementById("password").value.trim();
+
   if(!u || !p){
     alert("Enter username and password!");
     return;
   }
+
   localStorage.setItem("mr7User",u);
   document.getElementById("loginStatus").innerText="✅ Logged in as: "+u;
+
+  // login ke baad profile open
+  setTimeout(()=>{
+    openSection("profile");
+  },500);
 }
 
 function logoutUser(){
   localStorage.removeItem("mr7User");
+  localStorage.removeItem("mr7Profile");
   document.getElementById("loginStatus").innerText="❌ Logged out!";
+  alert("Logout Successful ❌");
+  openSection("home");
 }
 
-/* SHOW LOGIN STATUS */
+/* PROFILE SAVE */
+function saveProfile(){
+  let name=document.getElementById("pname").value.trim();
+  let age=document.getElementById("page").value.trim();
+  let city=document.getElementById("pcity").value.trim();
+  let bio=document.getElementById("pbio").value.trim();
+
+  if(!name || !age || !city){
+    alert("⚠ Name, Age, City fill karo boss!");
+    return;
+  }
+
+  let profileData={
+    name:name,
+    age:age,
+    city:city,
+    bio:bio
+  };
+
+  localStorage.setItem("mr7Profile", JSON.stringify(profileData));
+  document.getElementById("profileStatus").innerText="✅ Profile Saved Successfully!";
+
+  setTimeout(()=>{
+    alert("🔥 Profile done! Website unlocked!");
+    openSection("home");
+    showWelcomeUser();
+  },700);
+}
+
+/* LOAD PROFILE INTO INPUT */
+function loadProfile(){
+  let data=localStorage.getItem("mr7Profile");
+  if(data){
+    let p=JSON.parse(data);
+    document.getElementById("pname").value=p.name || "";
+    document.getElementById("page").value=p.age || "";
+    document.getElementById("pcity").value=p.city || "";
+    document.getElementById("pbio").value=p.bio || "";
+  }
+}
+
+/* SHOW WELCOME */
+function showWelcomeUser(){
+  let user=localStorage.getItem("mr7User");
+  let profile=localStorage.getItem("mr7Profile");
+
+  if(user && profile){
+    let p=JSON.parse(profile);
+    document.getElementById("welcomeUser").innerText =
+      "👋 Welcome " + p.name + " ("+p.city+") 😎🔥";
+  }else{
+    document.getElementById("welcomeUser").innerText = "";
+  }
+}
+
+/* ON LOAD */
 window.onload=()=>{
   let u=localStorage.getItem("mr7User");
   if(u){
     document.getElementById("loginStatus").innerText="✅ Logged in as: "+u;
   }
+
+  loadProfile();
+  showWelcomeUser();
 };
 
 /* AI CHATGPT STYLE OFFLINE */
@@ -563,11 +675,9 @@ function resetSnake(){
 function drawSnake(){
   sctx.clearRect(0,0,320,320);
 
-  // food
   sctx.fillStyle="red";
   sctx.fillRect(food.x,food.y,20,20);
 
-  // snake
   sctx.fillStyle="lime";
   snake.forEach(part=>{
     sctx.fillRect(part.x,part.y,20,20);
@@ -582,14 +692,12 @@ function moveSnake(){
   if(dir==="UP") head.y-=20;
   if(dir==="DOWN") head.y+=20;
 
-  // wall collision
   if(head.x<0||head.y<0||head.x>=320||head.y>=320){
     clearInterval(snakeInterval);
     alert("Game Over 😭");
     return;
   }
 
-  // body collision
   for(let i=1;i<snake.length;i++){
     if(snake[i].x===head.x && snake[i].y===head.y){
       clearInterval(snakeInterval);
@@ -600,7 +708,6 @@ function moveSnake(){
 
   snake.unshift(head);
 
-  // food eat
   if(head.x===food.x && head.y===food.y){
     food={
       x:Math.floor(Math.random()*16)*20,
@@ -663,11 +770,9 @@ function resetCar(){
 function drawCarGame(){
   cctx.clearRect(0,0,320,400);
 
-  // road
   cctx.fillStyle="#222";
   cctx.fillRect(0,0,320,400);
 
-  // road lines
   cctx.strokeStyle="white";
   cctx.lineWidth=4;
   cctx.setLineDash([15,15]);
@@ -677,17 +782,14 @@ function drawCarGame(){
   cctx.stroke();
   cctx.setLineDash([]);
 
-  // player car
   cctx.fillStyle="lime";
   cctx.fillRect(carX,carY,40,60);
 
-  // enemy cars
   cctx.fillStyle="red";
   enemyCars.forEach(e=>{
     cctx.fillRect(e.x,e.y,40,60);
   });
 
-  // score
   cctx.fillStyle="yellow";
   cctx.font="18px Arial";
   cctx.fillText("Score: "+score,10,25);
@@ -697,13 +799,11 @@ function updateCarGame(){
   enemyCars.forEach(e=>{
     e.y += 6;
 
-    // collision
     if(carX < e.x+40 && carX+40 > e.x && carY < e.y+60 && carY+60 > e.y){
       clearInterval(carInterval);
       alert("Crash 💥 Game Over! Score: "+score);
     }
 
-    // reset enemy
     if(e.y>400){
       e.y=-80;
       e.x=Math.random()*260;

@@ -1,5 +1,436 @@
-<script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MR7 - OFFICIAL</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:Segoe UI;
+  background:#111;
+  color:white;
+  text-align:center;
+  transition:0.4s;
+  overflow-x:hidden;
+  padding:15px;
+}
+
 /* PRELOADER */
+#preloader{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:100%;
+  background:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:99999;
+  flex-direction:column;
+}
+.loader{
+  width:70px;
+  height:70px;
+  border:6px solid rgba(0,255,0,0.2);
+  border-top:6px solid lime;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+}
+@keyframes spin{
+  0%{transform:rotate(0deg)}
+  100%{transform:rotate(360deg)}
+}
+#preloader p{
+  margin-top:15px;
+  color:lime;
+  font-weight:bold;
+  font-size:18px;
+  text-shadow:0 0 15px lime;
+}
+
+/* PARTICLES */
+.particle{
+  position:fixed;
+  width:6px;
+  height:6px;
+  background:lime;
+  border-radius:50%;
+  opacity:0.25;
+  animation:floatUp 6s infinite linear;
+  z-index:-1;
+}
+@keyframes floatUp{
+  0%{transform:translateY(0px);}
+  100%{transform:translateY(-800px);}
+}
+
+/* BACKGROUND ANIMATION */
+body::before{
+  content:"";
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  z-index:-2;
+  background:linear-gradient(120deg,#0f0f0f,#003300,#000,#001a00);
+  background-size:400% 400%;
+  animation:bgMove 10s infinite alternate;
+  opacity:.30;
+}
+@keyframes bgMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+body.light{
+  background:#fff;
+  color:#111;
+}
+
+/* DARK TOGGLE */
+.dark-toggle{
+  position:fixed;
+  top:15px;
+  right:15px;
+  padding:10px 20px;
+  border:none;
+  border-radius:30px;
+  background:lime;
+  color:black;
+  font-weight:bold;
+  cursor:pointer;
+  z-index:999;
+}
+
+/* 3 DOT MENU */
+.dots{
+  position:fixed;
+  top:15px;
+  left:15px;
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  border:none;
+  cursor:pointer;
+  background:rgba(0,255,0,0.2);
+  color:lime;
+  font-size:25px;
+  font-weight:bold;
+  z-index:999;
+  border:1px solid lime;
+  box-shadow:0 0 15px rgba(0,255,0,0.4);
+}
+.dots-menu{
+  position:fixed;
+  top:70px;
+  left:15px;
+  width:180px;
+  padding:10px;
+  border-radius:15px;
+  background:rgba(0,0,0,0.8);
+  border:1px solid lime;
+  display:none;
+  z-index:999;
+}
+.dots-menu button{
+  width:100%;
+  padding:10px;
+  margin:6px 0;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  background:#222;
+  color:white;
+  font-weight:bold;
+  transition:.3s;
+}
+.dots-menu button:hover{
+  background:lime;
+  color:black;
+  transform:scale(1.05);
+}
+
+/* SECTIONS */
+.section{
+  display:none;
+  animation:fadeIn .5s ease;
+}
+.section.active{
+  display:block;
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* TITLE */
+#typingTitle{
+  font-size:34px;
+  font-weight:bold;
+  color:lime;
+  margin-top:30px;
+  text-shadow:0 0 15px lime;
+}
+
+/* PROFILE */
+.profile-pic{
+  width:200px;
+  height:200px;
+  border-radius:50%;
+  border:5px solid lime;
+  box-shadow:0 0 30px lime;
+  margin-top:15px;
+}
+
+/* BUTTONS */
+.btn{
+  padding:12px 25px;
+  margin:10px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  background:lime;
+  font-weight:bold;
+  color:black;
+  transition:0.3s;
+}
+.btn:hover{
+  transform:scale(1.08);
+  box-shadow:0 0 20px lime;
+}
+
+.back-btn{
+  margin-top:20px;
+  background:gray;
+  color:white;
+}
+
+/* BOX */
+.box{
+  max-width:540px;
+  margin:30px auto;
+  padding:20px;
+  border-radius:20px;
+  background:rgba(0,0,0,.55);
+  border:1px solid lime;
+  box-shadow:0 0 20px rgba(0,255,0,.4);
+}
+body.light .box{
+  background:rgba(255,255,255,.9);
+  color:black;
+}
+
+/* INPUT */
+input,textarea{
+  width:95%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:10px;
+  border:1px solid #777;
+  outline:none;
+}
+textarea{height:100px;}
+
+/* CHAT */
+#chat{
+  height:320px;
+  overflow-y:auto;
+  background:#000;
+  border-radius:15px;
+  padding:10px;
+  text-align:left;
+  border:1px solid lime;
+}
+body.light #chat{
+  background:#f5f5f5;
+}
+.user{
+  background:#00ff8833;
+  padding:10px;
+  margin:8px 0;
+  border-radius:12px;
+  color:lime;
+}
+.bot{
+  background:#0088ff33;
+  padding:10px;
+  margin:8px 0;
+  border-radius:12px;
+  color:#66ccff;
+}
+body.light .user{color:green;}
+body.light .bot{color:blue;}
+
+/* MENU GRID */
+.menu-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:15px;
+  margin-top:20px;
+}
+
+/* GAMES GRID */
+.games-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:15px;
+  margin-top:20px;
+}
+
+/* CANVAS */
+canvas{
+  background:#000;
+  border-radius:15px;
+  border:2px solid lime;
+  max-width:100%;
+  touch-action:none;
+}
+
+/* MOBILE FIX */
+@media(max-width:600px){
+  #typingTitle{font-size:26px;}
+  .profile-pic{width:160px;height:160px;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <div class="loader"></div>
+  <p>Loading MR7 WORLD...</p>
+</div>
+
+<!-- 3 DOT MENU -->
+<button class="dots" onclick="toggleDots()">⋮</button>
+<div class="dots-menu" id="dotsMenu">
+  <button onclick="openSection('mainMenu'); closeDots()">🏠 Home</button>
+  <button onclick="openSection('aiPage'); closeDots()">🤖 MR7 AI</button>
+  <button onclick="openSection('gamesPage'); closeDots()">🎮 Games</button>
+  <button onclick="openSection('helpPage'); closeDots()">📩 Help</button>
+  <button onclick="logoutUser()">🚪 Logout</button>
+</div>
+
+<button class="dark-toggle" onclick="toggleMode()">🌙 Mode</button>
+
+<!-- LOGIN PAGE -->
+<div id="loginPage" class="section active">
+  <div class="box">
+    <h2>🔐 Login Required</h2>
+    <p style="margin-top:8px;color:lime;">Login karo tabhi MR7 WORLD open hoga 🔥</p>
+
+    <input id="loginEmail" placeholder="Enter Email">
+    <input id="loginPassword" type="password" placeholder="Enter Password">
+
+    <button class="btn" onclick="loginUser()">Login</button>
+
+    <p id="loginStatus" style="margin-top:10px;font-weight:bold;"></p>
+  </div>
+</div>
+
+<!-- MAIN MENU PAGE -->
+<div id="mainMenu" class="section">
+  <h1 id="typingTitle"></h1>
+  <h2>- MD -</h2>
+  <h3>- REHAN -</h3>
+
+  <a href="https://www.youtube.com/@MR7OFFICIAL777" target="_blank">
+    <button class="btn">🔥 SUBSCRIBE</button>
+  </a>
+
+  <p>👆 CLICK HERE ☝</p>
+
+  <img src="rehan.png" class="profile-pic">
+
+  <div class="box">
+    <h2>🔥 MR7 WORLD Updates</h2>
+    <p>Welcome to MR7 WORLD - Gaming + AI + Cool Features 😎</p>
+  </div>
+
+  <div class="box">
+    <h2>🚀 Features</h2>
+    <div class="menu-grid">
+      <button class="btn" onclick="openSection('aiPage')">🤖 MR7 AI</button>
+      <button class="btn" onclick="openSection('gamesPage')">🎮 Games</button>
+      <button class="btn" onclick="openSection('helpPage')">📩 Help</button>
+    </div>
+  </div>
+</div>
+
+<!-- AI PAGE -->
+<div id="aiPage" class="section">
+  <div class="box">
+    <h2>🤖 MR7 AI (Smart Hinglish)</h2>
+
+    <div id="chat"></div>
+
+    <input id="aiInput" placeholder="Ask anything...">
+    <button class="btn" onclick="askAI()">Send</button>
+    <button class="btn" onclick="clearChat()">Clear</button>
+  </div>
+
+  <button class="btn back-btn" onclick="openSection('mainMenu')">⬅ Back</button>
+</div>
+
+<!-- GAMES PAGE -->
+<div id="gamesPage" class="section">
+  <div class="box">
+    <h2>🎮 MR7 Games Zone</h2>
+
+    <div class="games-grid">
+      <button class="btn" onclick="openGame('snakeBox')">🐍 Snake Game</button>
+      <button class="btn" onclick="openGame('carBox')">🚗 Car Racing</button>
+      <button class="btn" onclick="openGame('tttBox')">❌⭕ Tic Tac Toe</button>
+    </div>
+  </div>
+
+  <!-- Snake -->
+  <div id="snakeBox" class="box" style="display:none;">
+    <h2>🐍 Snake Game</h2>
+    <canvas id="snakeCanvas" width="320" height="320"></canvas>
+    <button class="btn" onclick="startSnake()">Start Snake</button>
+    <button class="btn back-btn" onclick="closeGames()">⬅ Back</button>
+  </div>
+
+  <!-- Car -->
+  <div id="carBox" class="box" style="display:none;">
+    <h2>🚗 Car Racing</h2>
+    <canvas id="carCanvas" width="320" height="420"></canvas>
+    <button class="btn" onclick="startCar()">Start Car</button>
+    <button class="btn back-btn" onclick="closeGames()">⬅ Back</button>
+  </div>
+
+  <!-- Tic Tac Toe -->
+  <div id="tttBox" class="box" style="display:none;">
+    <h2>❌⭕ Tic Tac Toe</h2>
+    <div id="tttBoard" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px;"></div>
+    <p id="tttStatus" style="margin-top:10px;color:lime;font-weight:bold;"></p>
+    <button class="btn" onclick="resetTTT()">Restart</button>
+    <button class="btn back-btn" onclick="closeGames()">⬅ Back</button>
+  </div>
+
+  <button class="btn back-btn" onclick="openSection('mainMenu')">⬅ Back Menu</button>
+</div>
+
+<!-- HELP PAGE -->
+<div id="helpPage" class="section">
+  <div class="box">
+    <h2>📩 Help / Contact</h2>
+    <input id="name" placeholder="Name">
+    <input id="mobile" placeholder="Mobile">
+    <textarea id="message" placeholder="Message"></textarea>
+    <button class="btn" onclick="sendMail()">Send Email</button>
+  </div>
+
+  <button class="btn back-btn" onclick="openSection('mainMenu')">⬅ Back</button>
+</div>
+
+<script>
+/* PRELOADER + AUTO LOGIN */
 window.addEventListener("load", () => {
   setTimeout(() => {
     document.getElementById("preloader").style.display = "none";
@@ -14,7 +445,7 @@ window.addEventListener("load", () => {
   }
 });
 
-/* PARTICLES CREATE */
+/* PARTICLES BACKGROUND */
 for (let i = 0; i < 35; i++) {
   let p = document.createElement("div");
   p.className = "particle";
@@ -94,7 +525,7 @@ function loginUser() {
 
   if (!isValidEmail(email)) {
     status.style.color = "red";
-    status.innerText = "❌ Invalid Email! Please enter correct email.";
+    status.innerText = "❌ Invalid Email! Enter correct email.";
     return;
   }
 
@@ -141,7 +572,7 @@ function sendMail() {
 }
 
 /* =======================
-   SUPER SMART AI (HINGLISH ONLY)
+   MR7 AI SMART (HINGLISH ONLY)
 ======================= */
 let chat = document.getElementById("chat");
 let aiInput = document.getElementById("aiInput");
@@ -154,10 +585,10 @@ function addMsg(text, cls) {
   chat.scrollTop = chat.scrollHeight;
 }
 
+/* AI BRAIN */
 function smartAI(q) {
   let text = q.toLowerCase().trim();
 
-  // calculator
   if (text.startsWith("calc")) {
     try {
       let exp = text.replace("calc", "").trim();
@@ -169,17 +600,14 @@ function smartAI(q) {
     }
   }
 
-  // greetings
   if (text.includes("hello") || text.includes("hi") || text.includes("hey")) {
     return "Hello Boss 😎 MR7 AI online hai! Ask anything!";
   }
 
-  // who are you
-  if (text.includes("who are you") || text.includes("tum kaun ho") || text.includes("tu kaun hai")) {
+  if (text.includes("who are you")) {
     return "Main MR7 AI hoon Boss 🤖🔥 Coding, YouTube and gaming me help karunga!";
   }
 
-  // time/date
   if (text.includes("time")) {
     return "Boss current time: " + new Date().toLocaleTimeString();
   }
@@ -188,9 +616,8 @@ function smartAI(q) {
     return "Boss current date: " + new Date().toLocaleDateString();
   }
 
-  // tech topics
   if (text.includes("python")) {
-    return "Python best hai Boss! Automation, AI, web development sab me use hota hai.";
+    return "Python best hai Boss 😎 Automation, AI, web development sab me use hota hai.";
   }
 
   if (text.includes("html")) {
@@ -198,14 +625,13 @@ function smartAI(q) {
   }
 
   if (text.includes("css")) {
-    return "CSS se website ka design, colors, animations aur layout set hota hai Boss.";
+    return "CSS se website ka design, colors, animation aur layout set hota hai Boss.";
   }
 
   if (text.includes("javascript") || text.includes("js")) {
-    return "JavaScript website ko alive banata hai Boss. Buttons, AI, games sab JS se hota hai.";
+    return "JavaScript website ko alive banata hai Boss 😎 Buttons, AI, games sab JS se hota hai.";
   }
 
-  // youtube
   if (text.includes("youtube") && (text.includes("grow") || text.includes("views") || text.includes("subs"))) {
     return "Boss YouTube grow ka secret: consistency + strong thumbnail + trending topic + shorts daily.";
   }
@@ -214,19 +640,16 @@ function smartAI(q) {
     return "Boss thumbnail tip: bright background + bold text + face zoom + max 3 words.";
   }
 
-  // football
   if (text.includes("football") || text.includes("ronaldo") || text.includes("messi")) {
     return "Boss football improve karne ke liye: daily dribbling + cone practice + stamina running 30 min.";
   }
 
-  // motivation
   if (text.includes("sad") || text.includes("tension") || text.includes("motivation")) {
     return "Boss tension mat lo 😎 Consistency rakho, tum definitely top pe jaoge!";
   }
 
-  // general question
   if (text.includes("how") || text.includes("kaise") || text.includes("kya") || text.includes("kyu")) {
-    return "Boss bilkul! Detail me bolo, main full clear answer de dunga.";
+    return "Boss bilkul! Detail me bolo, main full clear answer de dunga 😎";
   }
 
   let random = [
@@ -374,6 +797,7 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowRight" && dir !== "LEFT") dir = "RIGHT";
 });
 
+/* Mobile swipe */
 let startX = 0, startY = 0;
 snakeCanvas.addEventListener("touchstart", (e) => {
   startX = e.touches[0].clientX;
@@ -501,6 +925,7 @@ document.addEventListener("keydown", (e) => {
   if (playerCar.x > 235) playerCar.x = 235;
 });
 
+/* Mobile drag */
 carCanvas.addEventListener("touchstart", (e) => {
   startX = e.touches[0].clientX;
 });
@@ -585,3 +1010,6 @@ function resetTTT() {
   createTTT();
 }
 </script>
+
+</body>
+</html>

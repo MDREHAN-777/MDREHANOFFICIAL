@@ -1,551 +1,135 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MR7 - OFFICIAL</title>
-
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-  font-family:Segoe UI;
-  background:#111;
-  color:white;
-  text-align:center;
-  transition:0.4s;
-  overflow-x:hidden;
-  padding:15px;
-}
-
-/* PRELOADER */
-#preloader{
-  position:fixed;
-  top:0;left:0;
-  width:100%;height:100%;
-  background:#000;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
-  color:lime;
-  font-size:28px;
-  text-shadow:0 0 25px lime;
-}
-
-/* BACKGROUND ANIMATION */
-body::before{
-  content:"";
-  position:fixed;
-  top:0;left:0;
-  width:100%;height:100%;
-  z-index:-2;
-  background:linear-gradient(120deg,#0f0f0f,#003300,#000,#001a00);
-  background-size:400% 400%;
-  animation:bgMove 10s infinite alternate;
-  opacity:.25;
-}
-@keyframes bgMove{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
-
-/* PARTICLES */
-.particle{
-  position:fixed;
-  width:7px;height:7px;
-  border-radius:50%;
-  background:lime;
-  opacity:0.25;
-  animation:float 6s infinite ease-in-out;
-  z-index:-1;
-}
-@keyframes float{
-  0%{transform:translateY(0)}
-  50%{transform:translateY(-40px)}
-  100%{transform:translateY(0)}
-}
-
-body.light{
-  background:#fff;
-  color:#111;
-}
-
-/* DARK TOGGLE */
-.dark-toggle{
-  position:fixed;
-  top:15px;
-  right:15px;
-  padding:10px 20px;
-  border:none;
-  border-radius:30px;
-  background:lime;
-  color:black;
-  font-weight:bold;
-  cursor:pointer;
-  z-index:999;
-}
-
-/* 3 DOT MENU */
-.dots{
-  position:fixed;
-  top:15px;
-  left:15px;
-  width:45px;
-  height:45px;
-  border-radius:50%;
-  border:none;
-  cursor:pointer;
-  background:rgba(0,255,0,0.2);
-  color:lime;
-  font-size:25px;
-  font-weight:bold;
-  z-index:999;
-  border:1px solid lime;
-  box-shadow:0 0 15px rgba(0,255,0,0.4);
-}
-.dots-menu{
-  position:fixed;
-  top:70px;
-  left:15px;
-  width:180px;
-  padding:10px;
-  border-radius:15px;
-  background:rgba(0,0,0,0.8);
-  border:1px solid lime;
-  display:none;
-  z-index:999;
-}
-.dots-menu button{
-  width:100%;
-  padding:10px;
-  margin:6px 0;
-  border:none;
-  border-radius:12px;
-  cursor:pointer;
-  background:#222;
-  color:white;
-  font-weight:bold;
-  transition:.3s;
-}
-.dots-menu button:hover{
-  background:lime;
-  color:black;
-  transform:scale(1.05);
-}
-
-/* SECTIONS */
-.section{
-  opacity:0;
-  transform:scale(0.95);
-  transition:.4s;
-  display:none;
-}
-.section.active{
-  display:block;
-  opacity:1;
-  transform:scale(1);
-}
-
-/* TITLE */
-#typingTitle{
-  font-size:34px;
-  font-weight:bold;
-  color:lime;
-  margin-top:30px;
-  text-shadow:0 0 15px lime;
-}
-
-/* PROFILE */
-.profile-pic{
-  width:200px;
-  height:200px;
-  border-radius:50%;
-  border:5px solid lime;
-  margin-top:15px;
-  animation:glow 2s infinite alternate;
-}
-@keyframes glow{
-  from{box-shadow:0 0 20px lime;}
-  to{box-shadow:0 0 60px lime;}
-}
-
-/* BUTTONS */
-.btn{
-  padding:12px 25px;
-  margin:10px;
-  border:none;
-  border-radius:12px;
-  cursor:pointer;
-  background:lime;
-  font-weight:bold;
-  color:black;
-  transition:0.3s;
-}
-.btn:hover{
-  transform:scale(1.08);
-  box-shadow:0 0 20px lime;
-}
-
-.back-btn{
-  margin-top:20px;
-  background:gray;
-  color:white;
-}
-
-/* BOX */
-.box{
-  max-width:540px;
-  margin:30px auto;
-  padding:20px;
-  border-radius:20px;
-  background:rgba(0,0,0,.55);
-  border:1px solid lime;
-  box-shadow:0 0 20px rgba(0,255,0,.4);
-}
-body.light .box{
-  background:rgba(255,255,255,.9);
-  color:black;
-}
-
-/* INPUT */
-input,textarea{
-  width:95%;
-  padding:12px;
-  margin:8px 0;
-  border-radius:10px;
-  border:1px solid #777;
-  outline:none;
-}
-textarea{height:100px;}
-
-/* CHAT */
-#chat{
-  height:320px;
-  overflow-y:auto;
-  background:#000;
-  border-radius:15px;
-  padding:10px;
-  text-align:left;
-  border:1px solid lime;
-}
-body.light #chat{
-  background:#f5f5f5;
-}
-.user{
-  background:#00ff8833;
-  padding:10px;
-  margin:8px 0;
-  border-radius:12px;
-  color:lime;
-}
-.bot{
-  background:#0088ff33;
-  padding:10px;
-  margin:8px 0;
-  border-radius:12px;
-  color:#66ccff;
-}
-body.light .user{color:green;}
-body.light .bot{color:blue;}
-
-/* MENU GRID */
-.menu-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:15px;
-  margin-top:20px;
-}
-
-/* GAMES GRID */
-.games-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:15px;
-  margin-top:20px;
-}
-
-/* CANVAS */
-canvas{
-  background:#000;
-  border-radius:15px;
-  border:2px solid lime;
-  max-width:100%;
-  touch-action:none;
-}
-
-/* MOBILE FIX */
-@media(max-width:600px){
-  #typingTitle{font-size:26px;}
-  .profile-pic{width:160px;height:160px;}
-}
-</style>
-</head>
-
-<body>
-
-<!-- PRELOADER -->
-<div id="preloader">⚡ MR7 WORLD Loading...</div>
-
-<!-- 3 DOT MENU -->
-<button class="dots" onclick="toggleDots()">⋮</button>
-<div class="dots-menu" id="dotsMenu">
-  <button onclick="openSection('mainMenu'); closeDots()">🏠 Home</button>
-  <button onclick="openSection('aiPage'); closeDots()">🤖 MR7 AI</button>
-  <button onclick="openSection('gamesPage'); closeDots()">🎮 Games</button>
-  <button onclick="openSection('helpPage'); closeDots()">📩 Help</button>
-  <button onclick="logoutUser()">🚪 Logout</button>
-</div>
-
-<button class="dark-toggle" onclick="toggleMode()">🌙 Mode</button>
-
-<!-- LOGIN PAGE -->
-<div id="loginPage" class="section active">
-  <div class="box">
-    <h2>🔐 Login Required</h2>
-    <p style="margin-top:8px;color:lime;">Login karo tabhi MR7 WORLD open hoga 🔥</p>
-
-    <input id="loginEmail" placeholder="Enter Email">
-    <input id="loginPassword" type="password" placeholder="Enter Password">
-
-    <button class="btn" onclick="loginUser()">Login</button>
-
-    <p id="loginStatus" style="margin-top:10px;font-weight:bold;"></p>
-  </div>
-</div>
-
-<!-- MAIN MENU PAGE -->
-<div id="mainMenu" class="section">
-  <h1 id="typingTitle"></h1>
-  <h2>- MD -</h2>
-  <h3>- REHAN -</h3>
-
-  <a href="https://www.youtube.com/@MR7OFFICIAL777" target="_blank">
-    <button class="btn">🔥 SUBSCRIBE</button>
-  </a>
-
-  <p>👆 CLICK HERE ☝</p>
-
-  <img src="rehan.png" class="profile-pic">
-
-  <div class="box">
-    <h2>🔥 MR7 WORLD Updates</h2>
-    <p>Welcome to MR7 WORLD - Gaming + AI + Cool Features 😎</p>
-  </div>
-
-  <div class="box">
-    <h2>🚀 Features</h2>
-    <div class="menu-grid">
-      <button class="btn" onclick="openSection('aiPage')">🤖 MR7 AI</button>
-      <button class="btn" onclick="openSection('gamesPage')">🎮 Games</button>
-      <button class="btn" onclick="openSection('helpPage')">📩 Help</button>
-    </div>
-  </div>
-</div>
-
-<!-- AI PAGE -->
-<div id="aiPage" class="section">
-  <div class="box">
-    <h2>🤖 MR7 AI (SUPER SMART)</h2>
-
-    <div id="chat"></div>
-
-    <input id="aiInput" placeholder="Ask anything... Example: calc 50+20">
-    <button class="btn" onclick="askAI()">Send</button>
-    <button class="btn" onclick="clearChat()">Clear</button>
-  </div>
-
-  <button class="btn back-btn" onclick="openSection('mainMenu')">⬅ Back</button>
-</div>
-
-<!-- GAMES PAGE -->
-<div id="gamesPage" class="section">
-  <div class="box">
-    <h2>🎮 MR7 Games Zone</h2>
-
-    <div class="games-grid">
-      <button class="btn" onclick="openGame('snakeBox')">🐍 Snake Game</button>
-      <button class="btn" onclick="openGame('carBox')">🚗 Car Racing</button>
-      <button class="btn" onclick="openGame('tttBox')">❌⭕ Tic Tac Toe</button>
-    </div>
-  </div>
-
-  <!-- Snake -->
-  <div id="snakeBox" class="box" style="display:none;">
-    <h2>🐍 Snake Game</h2>
-    <canvas id="snakeCanvas" width="320" height="320"></canvas>
-    <button class="btn" onclick="startSnake()">Start Snake</button>
-    <button class="btn back-btn" onclick="closeGames()">⬅ Back</button>
-  </div>
-
-  <!-- Car -->
-  <div id="carBox" class="box" style="display:none;">
-    <h2>🚗 Car Racing</h2>
-    <canvas id="carCanvas" width="320" height="420"></canvas>
-    <button class="btn" onclick="startCar()">Start Car</button>
-    <button class="btn back-btn" onclick="closeGames()">⬅ Back</button>
-  </div>
-
-  <!-- Tic Tac Toe -->
-  <div id="tttBox" class="box" style="display:none;">
-    <h2>❌⭕ Tic Tac Toe</h2>
-    <div id="tttBoard" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px;"></div>
-    <p id="tttStatus" style="margin-top:10px;color:lime;font-weight:bold;"></p>
-    <button class="btn" onclick="resetTTT()">Restart</button>
-    <button class="btn back-btn" onclick="closeGames()">⬅ Back</button>
-  </div>
-
-  <button class="btn back-btn" onclick="openSection('mainMenu')">⬅ Back Menu</button>
-</div>
-
-<!-- HELP PAGE -->
-<div id="helpPage" class="section">
-  <div class="box">
-    <h2>📩 Help / Contact</h2>
-    <input id="name" placeholder="Name">
-    <input id="mobile" placeholder="Mobile">
-    <textarea id="message" placeholder="Message"></textarea>
-    <button class="btn" onclick="sendMail()">Send Email</button>
-  </div>
-
-  <button class="btn back-btn" onclick="openSection('mainMenu')">⬅ Back</button>
-</div>
-
 <script>
 /* PRELOADER */
-window.addEventListener("load",()=>{
-  setTimeout(()=>{
-    document.getElementById("preloader").style.display="none";
-  },1200);
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    document.getElementById("preloader").style.display = "none";
+  }, 1200);
+
+  let logged = localStorage.getItem("mr7Login");
+  if (logged === "true") {
+    openSection("mainMenu");
+    startTypingTitle();
+  } else {
+    openSection("loginPage");
+  }
 });
 
 /* PARTICLES CREATE */
-for(let i=0;i<35;i++){
-  let p=document.createElement("div");
-  p.className="particle";
-  p.style.left=Math.random()*100+"%";
-  p.style.top=Math.random()*100+"%";
-  p.style.animationDuration=(3+Math.random()*6)+"s";
+for (let i = 0; i < 35; i++) {
+  let p = document.createElement("div");
+  p.className = "particle";
+  p.style.left = Math.random() * 100 + "%";
+  p.style.top = Math.random() * 100 + "%";
+  p.style.animationDuration = (3 + Math.random() * 6) + "s";
   document.body.appendChild(p);
 }
 
 /* DOTS MENU */
-function toggleDots(){
-  let menu=document.getElementById("dotsMenu");
-  menu.style.display = menu.style.display==="block" ? "none" : "block";
+function toggleDots() {
+  let menu = document.getElementById("dotsMenu");
+  menu.style.display = menu.style.display === "block" ? "none" : "block";
 }
-function closeDots(){
-  document.getElementById("dotsMenu").style.display="none";
+function closeDots() {
+  document.getElementById("dotsMenu").style.display = "none";
 }
-document.addEventListener("click",(e)=>{
-  if(!e.target.classList.contains("dots") && !e.target.closest("#dotsMenu")){
+document.addEventListener("click", (e) => {
+  if (!e.target.classList.contains("dots") && !e.target.closest("#dotsMenu")) {
     closeDots();
   }
 });
 
 /* OPEN SECTION */
-function openSection(id){
-  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+function openSection(id) {
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
 /* TYPING TITLE */
-function startTypingTitle(){
-  let text="- MR7 WORLD -";
-  let i=0;
-  let el=document.getElementById("typingTitle");
-  el.innerHTML="";
-  let t=setInterval(()=>{
+function startTypingTitle() {
+  let text = "- MR7 WORLD -";
+  let i = 0;
+  let el = document.getElementById("typingTitle");
+  el.innerHTML = "";
+  let t = setInterval(() => {
     el.innerHTML += text.charAt(i);
     i++;
-    if(i>=text.length) clearInterval(t);
-  },120);
+    if (i >= text.length) clearInterval(t);
+  }, 120);
 }
 
 /* DARK MODE SAVE */
-function applyMode(){
+function applyMode() {
   let mode = localStorage.getItem("mode") || "dark";
-  if(mode==="light") document.body.classList.add("light");
+  if (mode === "light") document.body.classList.add("light");
   else document.body.classList.remove("light");
 }
 applyMode();
 
-function toggleMode(){
-  if(document.body.classList.contains("light")){
+function toggleMode() {
+  if (document.body.classList.contains("light")) {
     document.body.classList.remove("light");
-    localStorage.setItem("mode","dark");
-  }else{
+    localStorage.setItem("mode", "dark");
+  } else {
     document.body.classList.add("light");
-    localStorage.setItem("mode","light");
+    localStorage.setItem("mode", "light");
   }
 }
 
 /* EMAIL VALIDATION */
-function isValidEmail(email){
+function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
 }
 
 /* LOGIN SYSTEM */
-function loginUser(){
-  let email=document.getElementById("loginEmail").value.trim();
-  let pass=document.getElementById("loginPassword").value.trim();
-  let status=document.getElementById("loginStatus");
+function loginUser() {
+  let email = document.getElementById("loginEmail").value.trim();
+  let pass = document.getElementById("loginPassword").value.trim();
+  let status = document.getElementById("loginStatus");
 
-  if(!email || !pass){
-    status.style.color="red";
-    status.innerText="❌ Email aur Password fill karo!";
+  if (!email || !pass) {
+    status.style.color = "red";
+    status.innerText = "❌ Email and Password required!";
     return;
   }
 
-  if(!isValidEmail(email)){
-    status.style.color="red";
-    status.innerText="❌ Galat Email! Sahi email dalo.";
+  if (!isValidEmail(email)) {
+    status.style.color = "red";
+    status.innerText = "❌ Invalid Email! Please enter correct email.";
     return;
   }
 
-  if(pass.length < 4){
-    status.style.color="red";
-    status.innerText="❌ Password minimum 4 characters hona chahiye!";
+  if (pass.length < 4) {
+    status.style.color = "red";
+    status.innerText = "❌ Password must be minimum 4 characters!";
     return;
   }
 
-  localStorage.setItem("mr7Login","true");
-  localStorage.setItem("mr7Email",email);
+  localStorage.setItem("mr7Login", "true");
+  localStorage.setItem("mr7Email", email);
 
-  status.style.color="lime";
-  status.innerText="✅ Login Successful Boss 😎🔥";
+  status.style.color = "lime";
+  status.innerText = "✅ Login Successful Boss 😎🔥";
 
-  setTimeout(()=>{
+  setTimeout(() => {
     openSection("mainMenu");
     startTypingTitle();
-  },600);
+  }, 600);
 }
 
-function logoutUser(){
+function logoutUser() {
   localStorage.removeItem("mr7Login");
   localStorage.removeItem("mr7Email");
   closeDots();
   openSection("loginPage");
 }
 
-/* AUTO LOGIN CHECK */
-window.onload=()=>{
-  let logged = localStorage.getItem("mr7Login");
-  if(logged==="true"){
-    openSection("mainMenu");
-    startTypingTitle();
-  }else{
-    openSection("loginPage");
-  }
-};
-
 /* CONTACT EMAIL */
-function sendMail(){
-  let n=document.getElementById("name").value.trim();
-  let m=document.getElementById("mobile").value.trim();
-  let msg=document.getElementById("message").value.trim();
+function sendMail() {
+  let n = document.getElementById("name").value.trim();
+  let m = document.getElementById("mobile").value.trim();
+  let msg = document.getElementById("message").value.trim();
 
-  if(!n || !msg){
+  if (!n || !msg) {
     alert("Please enter Name and Message 😅");
     return;
   }
@@ -553,193 +137,209 @@ function sendMail(){
   let subject = encodeURIComponent("MR7 Help from " + n);
   let body = encodeURIComponent("Name: " + n + "\nMobile: " + m + "\n\nMessage:\n" + msg);
 
-  location.href="mailto:mrrehanofficial.1777@gmail.com?subject="+subject+"&body="+body;
+  location.href = "mailto:mrrehanofficial.1777@gmail.com?subject=" + subject + "&body=" + body;
 }
 
 /* =======================
-   SUPER SMART AI SYSTEM
+   SUPER SMART AI (HINGLISH ONLY)
 ======================= */
-let chat=document.getElementById("chat");
-let aiInput=document.getElementById("aiInput");
+let chat = document.getElementById("chat");
+let aiInput = document.getElementById("aiInput");
 
-function addMsg(text,cls){
-  let div=document.createElement("div");
-  div.className=cls;
-  div.innerText=text;
+function addMsg(text, cls) {
+  let div = document.createElement("div");
+  div.className = cls;
+  div.innerText = text;
   chat.appendChild(div);
-  chat.scrollTop=chat.scrollHeight;
+  chat.scrollTop = chat.scrollHeight;
 }
 
-function smartAI(q){
-  let text=q.toLowerCase().trim();
+function smartAI(q) {
+  let text = q.toLowerCase().trim();
 
-  if(text.startsWith("calc")){
-    try{
-      let exp=text.replace("calc","").trim();
-      if(!exp) return "❌ Example: calc 50+20";
-      let result=eval(exp);
-      return "🧮 Result: " + result;
-    }catch{
-      return "❌ Calculator error! Example: calc 50+20";
+  // calculator
+  if (text.startsWith("calc")) {
+    try {
+      let exp = text.replace("calc", "").trim();
+      if (!exp) return "Boss example: calc 50+20";
+      let result = eval(exp);
+      return "Boss result is: " + result;
+    } catch {
+      return "Boss calculator error! Example: calc 50+20";
     }
   }
 
-  if(text.includes("hello")||text.includes("hi")||text.includes("namaste")||text.includes("hey"))
-    return "Hello Boss 😎🔥 MR7 AI online hai!";
-
-  if(text.includes("who are you")||text.includes("tum kaun ho"))
-    return "Main MR7 AI hoon 🤖🔥 Main tumhare coding, youtube aur gaming me help karunga!";
-
-  if(text.includes("time"))
-    return "⏰ Time: " + new Date().toLocaleTimeString();
-
-  if(text.includes("date")||text.includes("day"))
-    return "📅 Date: " + new Date().toLocaleDateString();
-
-  if(text.includes("python"))
-    return "🐍 Python best hai AI, automation, web dev aur apps banane ke liye.";
-
-  if(text.includes("html"))
-    return "💻 HTML se website ka structure banta hai. Body, div, h1, p sab HTML hai.";
-
-  if(text.includes("css"))
-    return "🎨 CSS se color, design, animation aur responsive layout banate hain.";
-
-  if(text.includes("javascript")||text.includes("js"))
-    return "⚡ JavaScript website ko interactive banata hai. Games, AI, buttons sab JS se hota hai.";
-
-  if(text.includes("youtube") && (text.includes("grow")||text.includes("views")||text.includes("subs")))
-    return "🔥 YouTube grow tips: daily upload + trending topic + strong thumbnail + short title + consistency.";
-
-  if(text.includes("thumbnail"))
-    return "🎨 Thumbnail tip: Bright color + face zoom + 3 words max + bold outline text.";
-
-  if(text.includes("football")||text.includes("ronaldo")||text.includes("messi"))
-    return "⚽ Football tip: Dribbling practice + cone training + stamina running daily 30 min.";
-
-  if(text.includes("motivation")||text.includes("sad")||text.includes("tension"))
-    return "🔥 Boss tension mat lo! Discipline + daily practice = success. Tum ek din top banoge 😎";
-
-  if(text.includes("love")||text.includes("girlfriend"))
-    return "❤️ Love ka rule: Respect + trust + time. Jaldi decision mat lo boss 😄";
-
-  if(text.includes("study")||text.includes("exam"))
-    return "📚 Study tip: Daily 2 hour fix routine + revision + mock test = strong result.";
-
-  if(text.includes("game") && text.includes("snake"))
-    return "🐍 Snake game me logic: move direction + food eat + length increase + collision detect.";
-
-  if(text.includes("how")||text.includes("kaise")||text.includes("kya")||text.includes("kyu")){
-    return "😎 Boss main help kar dunga! Bas thoda detail me likho, phir main full answer de dunga.";
+  // greetings
+  if (text.includes("hello") || text.includes("hi") || text.includes("hey")) {
+    return "Hello Boss 😎 MR7 AI online hai! Ask anything!";
   }
 
-  let random=[
-    "🤖 Boss ye interesting question hai! Detail do toh main best answer dunga.",
-    "🔥 MR7 AI says: Consistency hi success ka secret hai 😎",
-    "⚡ Tum kuch bada plan kar rahe ho boss! Main ready hoon.",
-    "💡 Tip: Apne goal ko small steps me divide karo aur daily complete karo.",
-    "😄 Boss ye simple hai, bas thoda clear batao."
+  // who are you
+  if (text.includes("who are you") || text.includes("tum kaun ho") || text.includes("tu kaun hai")) {
+    return "Main MR7 AI hoon Boss 🤖🔥 Coding, YouTube and gaming me help karunga!";
+  }
+
+  // time/date
+  if (text.includes("time")) {
+    return "Boss current time: " + new Date().toLocaleTimeString();
+  }
+
+  if (text.includes("date") || text.includes("day")) {
+    return "Boss current date: " + new Date().toLocaleDateString();
+  }
+
+  // tech topics
+  if (text.includes("python")) {
+    return "Python best hai Boss! Automation, AI, web development sab me use hota hai.";
+  }
+
+  if (text.includes("html")) {
+    return "HTML website ka skeleton hota hai Boss. Structure banata hai.";
+  }
+
+  if (text.includes("css")) {
+    return "CSS se website ka design, colors, animations aur layout set hota hai Boss.";
+  }
+
+  if (text.includes("javascript") || text.includes("js")) {
+    return "JavaScript website ko alive banata hai Boss. Buttons, AI, games sab JS se hota hai.";
+  }
+
+  // youtube
+  if (text.includes("youtube") && (text.includes("grow") || text.includes("views") || text.includes("subs"))) {
+    return "Boss YouTube grow ka secret: consistency + strong thumbnail + trending topic + shorts daily.";
+  }
+
+  if (text.includes("thumbnail")) {
+    return "Boss thumbnail tip: bright background + bold text + face zoom + max 3 words.";
+  }
+
+  // football
+  if (text.includes("football") || text.includes("ronaldo") || text.includes("messi")) {
+    return "Boss football improve karne ke liye: daily dribbling + cone practice + stamina running 30 min.";
+  }
+
+  // motivation
+  if (text.includes("sad") || text.includes("tension") || text.includes("motivation")) {
+    return "Boss tension mat lo 😎 Consistency rakho, tum definitely top pe jaoge!";
+  }
+
+  // general question
+  if (text.includes("how") || text.includes("kaise") || text.includes("kya") || text.includes("kyu")) {
+    return "Boss bilkul! Detail me bolo, main full clear answer de dunga.";
+  }
+
+  let random = [
+    "Boss interesting question 😎 Thoda detail do main best answer dunga.",
+    "MR7 AI says: consistency is the real power 🔥",
+    "Boss tum kuch bada plan kar rahe ho 😎 main ready hoon.",
+    "Boss tip: goal ko small steps me divide karo and daily complete karo.",
+    "Boss ye easy hai 😄 bas thoda clear batao."
   ];
-  return random[Math.floor(Math.random()*random.length)];
+
+  return random[Math.floor(Math.random() * random.length)];
 }
 
 /* AI TYPING EFFECT */
-function typeAIReply(reply){
-  let div=document.createElement("div");
-  div.className="bot";
+function typeAIReply(reply) {
+  let div = document.createElement("div");
+  div.className = "bot";
   chat.appendChild(div);
 
-  let i=0;
-  let typing=setInterval(()=>{
-    div.innerText="AI: " + reply.substring(0,i);
+  let i = 0;
+  let typing = setInterval(() => {
+    div.innerText = "AI: " + reply.substring(0, i);
     i++;
-    chat.scrollTop=chat.scrollHeight;
-    if(i>reply.length){
+    chat.scrollTop = chat.scrollHeight;
+
+    if (i > reply.length) {
       clearInterval(typing);
     }
-  },20);
+  }, 20);
 }
 
-function askAI(){
-  let q=aiInput.value.trim();
-  if(!q) return;
+function askAI() {
+  let q = aiInput.value.trim();
+  if (!q) return;
 
-  addMsg("You: "+q,"user");
-  aiInput.value="";
+  addMsg("You: " + q, "user");
+  aiInput.value = "";
 
-  setTimeout(()=>{
-    let reply=smartAI(q);
+  setTimeout(() => {
+    let reply = smartAI(q);
     typeAIReply(reply);
-  },300);
+  }, 300);
 }
 
-aiInput.addEventListener("keypress",(e)=>{
-  if(e.key==="Enter") askAI();
+aiInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") askAI();
 });
 
-function clearChat(){
-  if(confirm("Clear full chat?")){
-    chat.innerHTML="";
+function clearChat() {
+  if (confirm("Clear full chat?")) {
+    chat.innerHTML = "";
   }
 }
 
 /* =======================
-   GAME OPEN
+   GAME OPEN FIX
 ======================= */
-function openGame(id){
-  document.getElementById("snakeBox").style.display="none";
-  document.getElementById("carBox").style.display="none";
-  document.getElementById("tttBox").style.display="none";
-  document.getElementById(id).style.display="block";
+function openGame(id) {
+  document.getElementById("snakeBox").style.display = "none";
+  document.getElementById("carBox").style.display = "none";
+  document.getElementById("tttBox").style.display = "none";
+
+  document.getElementById(id).style.display = "block";
 }
-function closeGames(){
-  document.getElementById("snakeBox").style.display="none";
-  document.getElementById("carBox").style.display="none";
-  document.getElementById("tttBox").style.display="none";
+
+function closeGames() {
+  document.getElementById("snakeBox").style.display = "none";
+  document.getElementById("carBox").style.display = "none";
+  document.getElementById("tttBox").style.display = "none";
 }
 
 /* =======================
    SNAKE GAME
 ======================= */
-let snakeCanvas=document.getElementById("snakeCanvas");
-let sctx=snakeCanvas.getContext("2d");
+let snakeCanvas = document.getElementById("snakeCanvas");
+let sctx = snakeCanvas.getContext("2d");
 
-let snake,food,dir,snakeInterval;
+let snake, food, dir, snakeInterval;
 
-function resetSnake(){
-  snake=[{x:160,y:160}];
-  food={x:80,y:80};
-  dir="RIGHT";
+function resetSnake() {
+  snake = [{ x: 160, y: 160 }];
+  food = { x: 80, y: 80 };
+  dir = "RIGHT";
 }
 
-function drawSnake(){
-  sctx.clearRect(0,0,320,320);
+function drawSnake() {
+  sctx.clearRect(0, 0, 320, 320);
 
-  sctx.fillStyle="red";
-  sctx.fillRect(food.x,food.y,20,20);
+  sctx.fillStyle = "red";
+  sctx.fillRect(food.x, food.y, 20, 20);
 
-  sctx.fillStyle="lime";
-  snake.forEach(part=>{
-    sctx.fillRect(part.x,part.y,20,20);
+  sctx.fillStyle = "lime";
+  snake.forEach(part => {
+    sctx.fillRect(part.x, part.y, 20, 20);
   });
 }
 
-function moveSnake(){
-  let head={...snake[0]};
+function moveSnake() {
+  let head = { ...snake[0] };
 
-  if(dir==="RIGHT") head.x+=20;
-  if(dir==="LEFT") head.x-=20;
-  if(dir==="UP") head.y-=20;
-  if(dir==="DOWN") head.y+=20;
+  if (dir === "RIGHT") head.x += 20;
+  if (dir === "LEFT") head.x -= 20;
+  if (dir === "UP") head.y -= 20;
+  if (dir === "DOWN") head.y += 20;
 
-  if(head.x<0||head.y<0||head.x>=320||head.y>=320){
+  if (head.x < 0 || head.y < 0 || head.x >= 320 || head.y >= 320) {
     clearInterval(snakeInterval);
     alert("Game Over 😭");
     return;
   }
 
-  for(let i=1;i<snake.length;i++){
-    if(snake[i].x===head.x && snake[i].y===head.y){
+  for (let i = 1; i < snake.length; i++) {
+    if (snake[i].x === head.x && snake[i].y === head.y) {
       clearInterval(snakeInterval);
       alert("Game Over 😭");
       return;
@@ -748,135 +348,135 @@ function moveSnake(){
 
   snake.unshift(head);
 
-  if(head.x===food.x && head.y===food.y){
-    food={
-      x:Math.floor(Math.random()*16)*20,
-      y:Math.floor(Math.random()*16)*20
+  if (head.x === food.x && head.y === food.y) {
+    food = {
+      x: Math.floor(Math.random() * 16) * 20,
+      y: Math.floor(Math.random() * 16) * 20
     };
-  }else{
+  } else {
     snake.pop();
   }
 
   drawSnake();
 }
 
-function startSnake(){
+function startSnake() {
   resetSnake();
   drawSnake();
   clearInterval(snakeInterval);
-  snakeInterval=setInterval(moveSnake,140);
+  snakeInterval = setInterval(moveSnake, 140);
 }
 
-document.addEventListener("keydown",(e)=>{
-  if(e.key==="ArrowUp" && dir!=="DOWN") dir="UP";
-  if(e.key==="ArrowDown" && dir!=="UP") dir="DOWN";
-  if(e.key==="ArrowLeft" && dir!=="RIGHT") dir="LEFT";
-  if(e.key==="ArrowRight" && dir!=="LEFT") dir="RIGHT";
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowUp" && dir !== "DOWN") dir = "UP";
+  if (e.key === "ArrowDown" && dir !== "UP") dir = "DOWN";
+  if (e.key === "ArrowLeft" && dir !== "RIGHT") dir = "LEFT";
+  if (e.key === "ArrowRight" && dir !== "LEFT") dir = "RIGHT";
 });
 
-let startX=0,startY=0;
-snakeCanvas.addEventListener("touchstart",(e)=>{
-  startX=e.touches[0].clientX;
-  startY=e.touches[0].clientY;
+let startX = 0, startY = 0;
+snakeCanvas.addEventListener("touchstart", (e) => {
+  startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
 });
-snakeCanvas.addEventListener("touchend",(e)=>{
-  let endX=e.changedTouches[0].clientX;
-  let endY=e.changedTouches[0].clientY;
-  let dx=endX-startX;
-  let dy=endY-startY;
+snakeCanvas.addEventListener("touchend", (e) => {
+  let endX = e.changedTouches[0].clientX;
+  let endY = e.changedTouches[0].clientY;
+  let dx = endX - startX;
+  let dy = endY - startY;
 
-  if(Math.abs(dx)>Math.abs(dy)){
-    if(dx>0 && dir!=="LEFT") dir="RIGHT";
-    if(dx<0 && dir!=="RIGHT") dir="LEFT";
-  }else{
-    if(dy>0 && dir!=="UP") dir="DOWN";
-    if(dy<0 && dir!=="DOWN") dir="UP";
+  if (Math.abs(dx) > Math.abs(dy)) {
+    if (dx > 0 && dir !== "LEFT") dir = "RIGHT";
+    if (dx < 0 && dir !== "RIGHT") dir = "LEFT";
+  } else {
+    if (dy > 0 && dir !== "UP") dir = "DOWN";
+    if (dy < 0 && dir !== "DOWN") dir = "UP";
   }
 });
 
 /* =======================
    CAR GAME
 ======================= */
-let carCanvas=document.getElementById("carCanvas");
-let cctx=carCanvas.getContext("2d");
+let carCanvas = document.getElementById("carCanvas");
+let cctx = carCanvas.getContext("2d");
 
 let playerCar, enemies, carScore, carInterval;
 
-function resetCar(){
-  playerCar={x:140,y:320,w:40,h:70,speed:6};
-  enemies=[
-    {x:60,y:-120,w:40,h:70,speed:5},
-    {x:220,y:-400,w:40,h:70,speed:6}
+function resetCar() {
+  playerCar = { x: 140, y: 320, w: 40, h: 70, speed: 6 };
+  enemies = [
+    { x: 60, y: -120, w: 40, h: 70, speed: 5 },
+    { x: 220, y: -400, w: 40, h: 70, speed: 6 }
   ];
-  carScore=0;
+  carScore = 0;
 }
 
-function drawRealCar(x,y,w,h,color){
-  cctx.fillStyle=color;
-  cctx.fillRect(x,y,w,h);
+function drawRealCar(x, y, w, h, color) {
+  cctx.fillStyle = color;
+  cctx.fillRect(x, y, w, h);
 
-  cctx.fillStyle="black";
-  cctx.fillRect(x+6,y+10,w-12,h/3);
+  cctx.fillStyle = "black";
+  cctx.fillRect(x + 6, y + 10, w - 12, h / 3);
 
-  cctx.fillStyle="#66ccff";
-  cctx.fillRect(x+10,y+14,w-20,18);
+  cctx.fillStyle = "#66ccff";
+  cctx.fillRect(x + 10, y + 14, w - 20, 18);
 
-  cctx.fillStyle="#111";
-  cctx.fillRect(x-6,y+10,8,18);
-  cctx.fillRect(x+w-2,y+10,8,18);
-  cctx.fillRect(x-6,y+h-28,8,18);
-  cctx.fillRect(x+w-2,y+h-28,8,18);
+  cctx.fillStyle = "#111";
+  cctx.fillRect(x - 6, y + 10, 8, 18);
+  cctx.fillRect(x + w - 2, y + 10, 8, 18);
+  cctx.fillRect(x - 6, y + h - 28, 8, 18);
+  cctx.fillRect(x + w - 2, y + h - 28, 8, 18);
 
-  cctx.fillStyle="yellow";
-  cctx.fillRect(x+5,y+h-6,8,6);
-  cctx.fillRect(x+w-13,y+h-6,8,6);
+  cctx.fillStyle = "yellow";
+  cctx.fillRect(x + 5, y + h - 6, 8, 6);
+  cctx.fillRect(x + w - 13, y + h - 6, 8, 6);
 }
 
-function drawCarGame(){
-  cctx.clearRect(0,0,320,420);
+function drawCarGame() {
+  cctx.clearRect(0, 0, 320, 420);
 
-  cctx.fillStyle="#2a2a2a";
-  cctx.fillRect(0,0,320,420);
+  cctx.fillStyle = "#2a2a2a";
+  cctx.fillRect(0, 0, 320, 420);
 
-  cctx.fillStyle="#111";
-  cctx.fillRect(0,0,40,420);
-  cctx.fillRect(280,0,40,420);
+  cctx.fillStyle = "#111";
+  cctx.fillRect(0, 0, 40, 420);
+  cctx.fillRect(280, 0, 40, 420);
 
-  cctx.strokeStyle="white";
-  cctx.lineWidth=4;
-  cctx.setLineDash([20,20]);
+  cctx.strokeStyle = "white";
+  cctx.lineWidth = 4;
+  cctx.setLineDash([20, 20]);
   cctx.beginPath();
-  cctx.moveTo(160,0);
-  cctx.lineTo(160,420);
+  cctx.moveTo(160, 0);
+  cctx.lineTo(160, 420);
   cctx.stroke();
   cctx.setLineDash([]);
 
-  cctx.fillStyle="yellow";
-  cctx.font="bold 18px Arial";
-  cctx.fillText("Score: "+carScore,15,30);
+  cctx.fillStyle = "yellow";
+  cctx.font = "bold 18px Arial";
+  cctx.fillText("Score: " + carScore, 15, 30);
 
-  drawRealCar(playerCar.x,playerCar.y,playerCar.w,playerCar.h,"lime");
+  drawRealCar(playerCar.x, playerCar.y, playerCar.w, playerCar.h, "lime");
 
-  enemies.forEach(e=>{
-    drawRealCar(e.x,e.y,e.w,e.h,"red");
+  enemies.forEach(e => {
+    drawRealCar(e.x, e.y, e.w, e.h, "red");
   });
 }
 
-function updateCarGame(){
-  enemies.forEach(e=>{
+function updateCarGame() {
+  enemies.forEach(e => {
     e.y += e.speed;
 
-    if(playerCar.x < e.x+e.w &&
-       playerCar.x+playerCar.w > e.x &&
-       playerCar.y < e.y+e.h &&
-       playerCar.y+playerCar.h > e.y){
+    if (playerCar.x < e.x + e.w &&
+      playerCar.x + playerCar.w > e.x &&
+      playerCar.y < e.y + e.h &&
+      playerCar.y + playerCar.h > e.y) {
       clearInterval(carInterval);
-      alert("💥 Crash! Game Over! Score: "+carScore);
+      alert("💥 Crash! Game Over! Score: " + carScore);
     }
 
-    if(e.y>450){
-      e.y = -Math.random()*300 - 100;
-      e.x = 60 + Math.random()*160;
+    if (e.y > 450) {
+      e.y = -Math.random() * 300 - 100;
+      e.x = 60 + Math.random() * 160;
       carScore++;
     }
   });
@@ -884,104 +484,104 @@ function updateCarGame(){
   drawCarGame();
 }
 
-function startCar(){
+function startCar() {
   resetCar();
   drawCarGame();
   clearInterval(carInterval);
-  carInterval=setInterval(updateCarGame,30);
+  carInterval = setInterval(updateCarGame, 30);
 }
 
-document.addEventListener("keydown",(e)=>{
-  if(!playerCar) return;
+document.addEventListener("keydown", (e) => {
+  if (!playerCar) return;
 
-  if(e.key==="ArrowLeft") playerCar.x -= playerCar.speed*3;
-  if(e.key==="ArrowRight") playerCar.x += playerCar.speed*3;
+  if (e.key === "ArrowLeft") playerCar.x -= playerCar.speed * 3;
+  if (e.key === "ArrowRight") playerCar.x += playerCar.speed * 3;
 
-  if(playerCar.x<45) playerCar.x=45;
-  if(playerCar.x>235) playerCar.x=235;
+  if (playerCar.x < 45) playerCar.x = 45;
+  if (playerCar.x > 235) playerCar.x = 235;
 });
 
-carCanvas.addEventListener("touchstart",(e)=>{
-  startX=e.touches[0].clientX;
+carCanvas.addEventListener("touchstart", (e) => {
+  startX = e.touches[0].clientX;
 });
-carCanvas.addEventListener("touchmove",(e)=>{
-  if(!playerCar) return;
+carCanvas.addEventListener("touchmove", (e) => {
+  if (!playerCar) return;
 
-  let x=e.touches[0].clientX;
-  let diff=x-startX;
+  let x = e.touches[0].clientX;
+  let diff = x - startX;
 
-  playerCar.x += diff*0.2;
-  startX=x;
+  playerCar.x += diff * 0.2;
+  startX = x;
 
-  if(playerCar.x<45) playerCar.x=45;
-  if(playerCar.x>235) playerCar.x=235;
+  if (playerCar.x < 45) playerCar.x = 45;
+  if (playerCar.x > 235) playerCar.x = 235;
 });
 
 /* =======================
    TIC TAC TOE
 ======================= */
-let tttBoard=document.getElementById("tttBoard");
-let tttStatus=document.getElementById("tttStatus");
-let tttCells=[],currentPlayer="X";
+let tttBoard = document.getElementById("tttBoard");
+let tttStatus = document.getElementById("tttStatus");
+let tttCells = [], currentPlayer = "X";
 
-function createTTT(){
-  tttBoard.innerHTML="";
-  tttCells=new Array(9).fill("");
-  currentPlayer="X";
-  tttStatus.innerText="Player X turn";
+function createTTT() {
+  tttBoard.innerHTML = "";
+  tttCells = new Array(9).fill("");
+  currentPlayer = "X";
+  tttStatus.innerText = "Player X turn";
 
-  for(let i=0;i<9;i++){
-    let btn=document.createElement("button");
-    btn.style.height="80px";
-    btn.style.fontSize="30px";
-    btn.style.borderRadius="15px";
-    btn.style.border="2px solid lime";
-    btn.style.cursor="pointer";
-    btn.style.background="#111";
-    btn.style.color="lime";
-    btn.innerText="";
+  for (let i = 0; i < 9; i++) {
+    let btn = document.createElement("button");
+    btn.style.height = "80px";
+    btn.style.fontSize = "30px";
+    btn.style.borderRadius = "15px";
+    btn.style.border = "2px solid lime";
+    btn.style.cursor = "pointer";
+    btn.style.background = "#111";
+    btn.style.color = "lime";
+    btn.innerText = "";
 
-    btn.onclick=()=>playTTT(i,btn);
+    btn.onclick = () => playTTT(i, btn);
     tttBoard.appendChild(btn);
   }
 }
 createTTT();
 
-function playTTT(i,btn){
-  if(tttCells[i]!=="" ) return;
+function playTTT(i, btn) {
+  if (tttCells[i] !== "") return;
 
-  tttCells[i]=currentPlayer;
-  btn.innerText=currentPlayer;
+  tttCells[i] = currentPlayer;
+  btn.innerText = currentPlayer;
 
-  if(checkWin()){
-    tttStatus.innerText="🏆 Player "+currentPlayer+" Wins!";
+  if (checkWin()) {
+    tttStatus.innerText = "🏆 Player " + currentPlayer + " Wins!";
     return;
   }
 
-  if(tttCells.every(c=>c!=="")){
-    tttStatus.innerText="😐 Draw!";
+  if (tttCells.every(c => c !== "")) {
+    tttStatus.innerText = "😐 Draw!";
     return;
   }
 
-  currentPlayer = currentPlayer==="X" ? "O" : "X";
-  tttStatus.innerText="Player "+currentPlayer+" turn";
+  currentPlayer = currentPlayer === "X" ? "O" : "X";
+  tttStatus.innerText = "Player " + currentPlayer + " turn";
 }
 
-function checkWin(){
-  let w=[
-    [0,1,2],[3,4,5],[6,7,8],
-    [0,3,6],[1,4,7],[2,5,8],
-    [0,4,8],[2,4,6]
+function checkWin() {
+  let w = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6]
   ];
-  return w.some(p=>{
-    return tttCells[p[0]] && tttCells[p[0]]===tttCells[p[1]] && tttCells[p[1]]===tttCells[p[2]];
+
+  return w.some(p => {
+    return tttCells[p[0]] &&
+      tttCells[p[0]] === tttCells[p[1]] &&
+      tttCells[p[1]] === tttCells[p[2]];
   });
 }
 
-function resetTTT(){
+function resetTTT() {
   createTTT();
 }
 </script>
-
-</body>
-</html>

@@ -1,770 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>MR7 WORLD - Gaming + AI</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MR7 Snake Game - Premium</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
 body{
-  font-family:Segoe UI, Arial;
+  margin:0;
+  padding:0;
   background:black;
-  color:white;
+  font-family:Segoe UI, Arial;
+  color:#00ff00;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
   overflow:hidden;
 }
 
-#particles{
-  position:fixed;
-  top:0;left:0;
-  width:100%;
-  height:100%;
-  z-index:-1;
-}
-
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:15px 20px;
-  border-bottom:2px solid #00ff00;
-  color:#00ff00;
-  font-weight:bold;
-}
-
-.logo{
-  font-size:20px;
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
-
-.verified{
-  color:#00ff00;
-  font-size:14px;
-  opacity:0.9;
-}
-
-.status{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:14px;
-}
-
-.dot{
-  width:12px;
-  height:12px;
-  border-radius:50%;
-  background:#00ff00;
-  box-shadow:0 0 10px #00ff00;
-}
-
-.menu{
-  font-size:26px;
-  cursor:pointer;
-  color:#00ff00;
-}
-
-#dropdown{
-  position:absolute;
-  top:55px;
-  right:20px;
-  background:#111;
-  border:2px solid #00ff00;
-  border-radius:10px;
-  width:200px;
-  display:none;
-  padding:10px;
-  box-shadow:0 0 15px #00ff00;
-  z-index:999;
-}
-
-#dropdown button{
-  width:100%;
-  padding:10px;
-  margin:5px 0;
-  border:none;
-  background:black;
-  color:#00ff00;
-  border:1px solid #00ff00;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:bold;
-  transition:0.3s;
-}
-
-#dropdown button:hover{
-  background:#00ff00;
-  color:black;
-}
-
-.page{
-  width:100%;
-  height:calc(100vh - 60px);
-  display:none;
-  justify-content:center;
-  align-items:center;
-  animation:fadeIn 0.4s ease;
-}
-
-.active{
-  display:flex;
-}
-
-@keyframes fadeIn{
-  from{opacity:0; transform:scale(0.95);}
-  to{opacity:1; transform:scale(1);}
-}
-
-.card{
-  width:360px;
-  max-width:95%;
-  padding:20px;
-  border-radius:20px;
-  background:#0b0b0b;
-  border:2px solid #00ff00;
-  box-shadow:0 0 25px #00ff00;
-  text-align:center;
-}
-
 h2{
-  color:#00ff00;
-  margin-bottom:15px;
+  margin:10px;
+  text-shadow:0 0 10px #00ff00;
 }
 
-.btn{
-  padding:12px 18px;
-  border:none;
-  border-radius:12px;
-  background:#00ff00;
-  color:black;
-  font-weight:bold;
-  cursor:pointer;
-  margin:6px;
-  transition:0.3s;
-}
-
-.btn:hover{
-  transform:scale(1.05);
-}
-
-input{
-  width:100%;
-  padding:12px;
-  border-radius:10px;
-  border:1px solid #00ff00;
-  outline:none;
-  margin-top:10px;
-  background:black;
-  color:white;
-}
-
-textarea{
-  width:100%;
-  height:200px;
-  border-radius:10px;
-  border:1px solid #00ff00;
-  outline:none;
-  margin-top:10px;
-  background:black;
-  color:#00ff00;
-  padding:10px;
-  resize:none;
-}
-
-.profile-img{
-  width:110px;
-  height:110px;
-  border-radius:50%;
+#scoreBox{
+  font-size:18px;
+  margin-bottom:10px;
+  padding:10px 20px;
   border:2px solid #00ff00;
-  box-shadow:0 0 20px #00ff00;
-  margin:10px auto;
-  object-fit:cover;
-}
-
-.social{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  margin-top:10px;
-}
-
-.social a{
-  text-decoration:none;
-  padding:10px 14px;
   border-radius:12px;
-  background:black;
-  border:1px solid #00ff00;
-  color:#00ff00;
-  font-weight:bold;
-  transition:0.3s;
-}
-
-.social a:hover{
-  background:#00ff00;
-  color:black;
-}
-
-#popup{
-  position:fixed;
-  bottom:30px;
-  right:30px;
+  box-shadow:0 0 15px #00ff00;
   background:#111;
-  border:2px solid #00ff00;
-  padding:15px 20px;
-  border-radius:15px;
-  box-shadow:0 0 20px #00ff00;
-  color:#00ff00;
-  display:none;
-  z-index:9999;
-  animation:pop 0.5s ease;
-}
-
-@keyframes pop{
-  from{transform:translateY(20px);opacity:0;}
-  to{transform:translateY(0);opacity:1;}
-}
-
-.toggle{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin:10px 0;
-  padding:10px;
-  border-radius:12px;
-  border:1px solid #00ff00;
-  background:black;
-}
-
-.switch{
-  width:50px;
-  height:25px;
-  border-radius:20px;
-  background:#333;
-  position:relative;
-  cursor:pointer;
-}
-
-.switch span{
-  width:20px;
-  height:20px;
-  border-radius:50%;
-  background:#00ff00;
-  position:absolute;
-  top:2.5px;
-  left:3px;
-  transition:0.3s;
-}
-
-.switch.on{
-  background:#00ff00;
-}
-
-.switch.on span{
-  left:26px;
-  background:black;
-}
-
-.smalltext{
-  color:#bbb;
-  font-size:13px;
-  margin-top:10px;
 }
 
 canvas{
-  background:#111;
   border:2px solid #00ff00;
-  border-radius:10px;
-  box-shadow:0 0 20px #00ff00;
+  border-radius:15px;
+  background:#050505;
+  box-shadow:0 0 30px #00ff00;
 }
 
+.controls{
+  margin-top:15px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.controls .row{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+}
+
+.btn{
+  width:70px;
+  height:60px;
+  font-size:22px;
+  border:none;
+  border-radius:12px;
+  background:#00ff00;
+  color:black;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 0 20px #00ff00;
+  transition:0.2s;
+}
+
+.btn:active{
+  transform:scale(0.9);
+}
+
+@media(min-width:800px){
+  .controls{display:none;}
+}
 </style>
 </head>
+
 <body>
 
-<canvas id="particles"></canvas>
+<h2>🐍 MR7 Snake Game</h2>
 
-<header>
-  <div class="logo">
-    <span>MR7 WORLD</span>
-    <span class="verified">✔ Verified</span>
-  </div>
-
-  <div class="status">
-    <div class="dot" id="netDot"></div>
-    <span id="netText">Online</span>
-  </div>
-
-  <div class="menu" onclick="toggleMenu()">⋮</div>
-</header>
-
-<div id="dropdown">
-  <input id="searchBox" placeholder="Search page (ai, snake, car, profile)" onkeyup="searchPage()" />
-  <button onclick="openPage('home')">Home</button>
-  <button onclick="openPage('ai')">MR7 AI Chat</button>
-  <button onclick="openPage('snake')">Snake Game</button>
-  <button onclick="openPage('car')">Car Game</button>
-  <button onclick="openPage('profile')">Profile</button>
-  <button onclick="openPage('settings')">Settings</button>
+<div id="scoreBox">
+  Score: <span id="score">0</span> |
+  High Score: <span id="highscore">0</span>
 </div>
 
-<!-- POPUP -->
-<div id="popup">Welcome to MR7 WORLD 😎🔥</div>
+<canvas id="game" width="420" height="420"></canvas>
 
-<!-- HOME -->
-<div class="page active" id="home">
-  <div class="card">
-    <h2>Welcome to MR7 WORLD</h2>
-    <p class="smalltext">Gaming + AI + Cool Features 😎</p>
-
-    <button class="btn" onclick="openPage('ai')">Open MR7 AI</button>
-    <button class="btn" onclick="openPage('snake')">Play Snake</button>
-    <button class="btn" onclick="openPage('car')">Play Car</button>
-    <button class="btn" onclick="openPage('profile')">My Profile</button>
-    <button class="btn" onclick="openFullscreen()">Fullscreen</button>
-
-    <p class="smalltext" id="achievementText"></p>
+<!-- Mobile Controls -->
+<div class="controls">
+  <div class="row">
+    <button class="btn" onclick="setDir('UP')">⬆</button>
   </div>
-</div>
-
-<!-- AI -->
-<div class="page" id="ai">
-  <div class="card">
-    <h2>MR7 AI Chat</h2>
-
-    <textarea id="chatBox" readonly></textarea>
-    <input id="userInput" placeholder="Ask anything..." />
-
-    <button class="btn" onclick="sendMsg()">Send</button>
-    <button class="btn" onclick="clearChat()">Clear</button>
-    <button class="btn" onclick="openPage('home')">Back</button>
-  </div>
-</div>
-
-<!-- SNAKE -->
-<div class="page" id="snake">
-  <div class="card">
-    <h2>Snake Game</h2>
-    <p class="smalltext">Use Arrow Keys ⬅⬆➡⬇</p>
-    <p class="smalltext" id="snakeScoreText">Score: 0 | High Score: 0</p>
-
-    <canvas id="snakeCanvas" width="320" height="320"></canvas>
-    <br>
-    <button class="btn" onclick="openPage('home')">Back</button>
-  </div>
-</div>
-
-<!-- CAR -->
-<div class="page" id="car">
-  <div class="card">
-    <h2>Car Game</h2>
-    <p class="smalltext">Simple car game coming soon 🔥</p>
-    <p class="smalltext">Right now only snake is fully working.</p>
-    <button class="btn" onclick="openPage('home')">Back</button>
-  </div>
-</div>
-
-<!-- PROFILE -->
-<div class="page" id="profile">
-  <div class="card">
-    <h2>Profile</h2>
-
-    <img src="rehan.png" class="profile-img" alt="profile">
-
-    <h3 style="color:#00ff00;">MR7 WORLD</h3>
-    <p class="smalltext">Gaming Creator + AI Developer</p>
-
-    <div class="social">
-      <a href="https://youtube.com" target="_blank">YouTube</a>
-      <a href="https://instagram.com" target="_blank">Instagram</a>
-      <a href="https://wa.me/91" target="_blank">WhatsApp</a>
-    </div>
-
-    <button class="btn" onclick="openPage('home')">Back</button>
-  </div>
-</div>
-
-<!-- SETTINGS -->
-<div class="page" id="settings">
-  <div class="card">
-    <h2>Settings</h2>
-
-    <div class="toggle">
-      <span>Dark Mode</span>
-      <div class="switch" id="darkSwitch" onclick="toggleDark()"><span></span></div>
-    </div>
-
-    <div class="toggle">
-      <span>Sound (Click + Music)</span>
-      <div class="switch" id="soundSwitch" onclick="toggleSound()"><span></span></div>
-    </div>
-
-    <div class="toggle">
-      <span>Vibration (Mobile)</span>
-      <div class="switch" id="vibSwitch" onclick="toggleVibration()"><span></span></div>
-    </div>
-
-    <button class="btn" onclick="openPage('home')">Back</button>
-
-    <p class="smalltext">All settings auto saved.</p>
+  <div class="row">
+    <button class="btn" onclick="setDir('LEFT')">⬅</button>
+    <button class="btn" onclick="setDir('DOWN')">⬇</button>
+    <button class="btn" onclick="setDir('RIGHT')">➡</button>
   </div>
 </div>
 
 <script>
-/* ===========================
-   PARTICLES BACKGROUND
-=========================== */
-const pCanvas = document.getElementById("particles");
-const pCtx = pCanvas.getContext("2d");
-
-pCanvas.width = window.innerWidth;
-pCanvas.height = window.innerHeight;
-
-let particles = [];
-
-for(let i=0;i<80;i++){
-  particles.push({
-    x:Math.random()*pCanvas.width,
-    y:Math.random()*pCanvas.height,
-    r:Math.random()*3+1,
-    dx:(Math.random()-0.5)*1.5,
-    dy:(Math.random()-0.5)*1.5
-  });
-}
-
-function animateParticles(){
-  pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
-
-  particles.forEach(p=>{
-    pCtx.beginPath();
-    pCtx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    pCtx.fillStyle="#00ff00";
-    pCtx.fill();
-
-    p.x+=p.dx;
-    p.y+=p.dy;
-
-    if(p.x<0||p.x>pCanvas.width) p.dx*=-1;
-    if(p.y<0||p.y>pCanvas.height) p.dy*=-1;
-  });
-
-  requestAnimationFrame(animateParticles);
-}
-animateParticles();
-
-window.addEventListener("resize", ()=>{
-  pCanvas.width = window.innerWidth;
-  pCanvas.height = window.innerHeight;
-});
-
-/* ===========================
-   MENU
-=========================== */
-function toggleMenu(){
-  const menu = document.getElementById("dropdown");
-  menu.style.display = (menu.style.display === "block") ? "none" : "block";
-}
-
-document.addEventListener("click", (e)=>{
-  if(!e.target.classList.contains("menu") && !document.getElementById("dropdown").contains(e.target)){
-    document.getElementById("dropdown").style.display="none";
-  }
-});
-
-function openPage(pageId){
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  document.getElementById(pageId).classList.add("active");
-  document.getElementById("dropdown").style.display="none";
-  clickSound();
-}
-
-/* ===========================
-   SEARCH PAGE
-=========================== */
-function searchPage(){
-  const text = document.getElementById("searchBox").value.toLowerCase().trim();
-
-  if(text === "ai") openPage("ai");
-  if(text === "snake") openPage("snake");
-  if(text === "car") openPage("car");
-  if(text === "profile") openPage("profile");
-  if(text === "settings") openPage("settings");
-  if(text === "home") openPage("home");
-}
-
-/* ===========================
-   POPUP WELCOME
-=========================== */
-function showPopup(msg){
-  const pop = document.getElementById("popup");
-  pop.innerText = msg;
-  pop.style.display="block";
-
-  setTimeout(()=>{
-    pop.style.display="none";
-  }, 3000);
-}
-
-setTimeout(()=>{
-  showPopup("Welcome to MR7 WORLD 😎🔥");
-}, 1200);
-
-/* ===========================
-   ONLINE OFFLINE STATUS
-=========================== */
-function updateNetwork(){
-  const dot = document.getElementById("netDot");
-  const text = document.getElementById("netText");
-
-  if(navigator.onLine){
-    dot.style.background="#00ff00";
-    dot.style.boxShadow="0 0 10px #00ff00";
-    text.innerText="Online";
-  } else {
-    dot.style.background="red";
-    dot.style.boxShadow="0 0 10px red";
-    text.innerText="Offline";
-  }
-}
-window.addEventListener("online", updateNetwork);
-window.addEventListener("offline", updateNetwork);
-updateNetwork();
-
-/* ===========================
-   FULLSCREEN
-=========================== */
-function openFullscreen(){
-  const el = document.documentElement;
-  if(el.requestFullscreen){
-    el.requestFullscreen();
-  }
-}
-
-/* ===========================
-   SETTINGS SYSTEM
-=========================== */
-let darkMode = localStorage.getItem("mr7_dark") === "true";
-let soundOn = localStorage.getItem("mr7_sound") === "true";
-let vibOn = localStorage.getItem("mr7_vibration") === "true";
-
-function applySwitch(id, state){
-  const sw = document.getElementById(id);
-  if(state){
-    sw.classList.add("on");
-  } else {
-    sw.classList.remove("on");
-  }
-}
-
-function toggleDark(){
-  darkMode = !darkMode;
-  localStorage.setItem("mr7_dark", darkMode);
-  applySwitch("darkSwitch", darkMode);
-  clickSound();
-}
-
-function toggleSound(){
-  soundOn = !soundOn;
-  localStorage.setItem("mr7_sound", soundOn);
-  applySwitch("soundSwitch", soundOn);
-  clickSound();
-}
-
-function toggleVibration(){
-  vibOn = !vibOn;
-  localStorage.setItem("mr7_vibration", vibOn);
-  applySwitch("vibSwitch", vibOn);
-  if(vibOn) vibratePhone();
-  clickSound();
-}
-
-applySwitch("darkSwitch", darkMode);
-applySwitch("soundSwitch", soundOn);
-applySwitch("vibSwitch", vibOn);
-
-/* ===========================
-   CLICK SOUND + VIBRATION
-=========================== */
-function clickSound(){
-  if(!soundOn) return;
-  const audio = new Audio("https://www.soundjay.com/buttons/sounds/button-09.mp3");
-  audio.volume = 0.4;
-  audio.play();
-}
-
-function vibratePhone(){
-  if(vibOn && navigator.vibrate){
-    navigator.vibrate(120);
-  }
-}
-
-/* ===========================
-   AI SYSTEM (SMART)
-=========================== */
-let memoryName = localStorage.getItem("mr7_username") || "";
-let lastChat = localStorage.getItem("mr7_lastchat") || "";
-
-const chatBox = document.getElementById("chatBox");
-
-if(lastChat){
-  chatBox.value = lastChat;
-}else{
-  chatBox.value = "AI: Hello Boss 😎 Ask me anything!\n";
-}
-
-function saveChat(){
-  localStorage.setItem("mr7_lastchat", chatBox.value);
-}
-
-function clearChat(){
-  chatBox.value = "AI: Hello Boss 😎 Ask me anything!\n";
-  localStorage.removeItem("mr7_lastchat");
-}
-
-function smartAI(userMsg){
-  let msg = userMsg.toLowerCase().trim();
-
-  // name memory
-  if(msg.includes("my name is")){
-    let name = msg.split("my name is")[1].trim();
-    if(name.length > 0){
-      memoryName = name;
-      localStorage.setItem("mr7_username", memoryName);
-      return "Nice! Ab se mai tumhe " + memoryName + " bolunga 😎🔥";
-    }
-  }
-
-  // greetings
-  if(msg.includes("hi") || msg.includes("hello") || msg.includes("hey")){
-    if(memoryName){
-      return "Hello " + memoryName + " 😎 Kya help chahiye?";
-    }
-    return "Hello Boss 😎 Kya puchna hai?";
-  }
-
-  // time
-  if(msg.includes("time")){
-    let now = new Date();
-    return "Boss current time: " + now.toLocaleTimeString();
-  }
-
-  // date
-  if(msg.includes("date") || msg.includes("day")){
-    let now = new Date();
-    return "Boss aaj ki date: " + now.toDateString();
-  }
-
-  // weather
-  if(msg.includes("weather")){
-    return "Boss weather dekhne ke liye internet API chahiye. Agar tum chaho to mai weather API add kar du 😎";
-  }
-
-  // python
-  if(msg.includes("python")){
-    return "Python ek easy programming language hai. Tum variables, loops, functions aur projects banana start karo. Tum bolo kya topic samajhna hai?";
-  }
-
-  // javascript
-  if(msg.includes("javascript") || msg.includes("js")){
-    return "JavaScript website ko interactive banata hai. Isse buttons, games, AI chat sab possible hota hai 😎";
-  }
-
-  // motivation
-  if(msg.includes("motivate") || msg.includes("sad") || msg.includes("depressed")){
-    return "Boss tension mat lo 😎 Life me slow progress bhi progress hota hai. Tum ek din bohot bada developer banoge 🔥";
-  }
-
-  // joke
-  if(msg.includes("joke")){
-    return "Ek programmer ne bola: 'Meri life me bugs nahi, features hai!' 😭😂";
-  }
-
-  // calculator
-  if(msg.match(/[0-9]+\s*[\+\-\*\/]\s*[0-9]+/)){
-    try{
-      let result = eval(msg);
-      return "Answer: " + result + " ✅";
-    }catch(err){
-      return "Boss calculation error 😭";
-    }
-  }
-
-  // fallback smart replies
-  const randomReplies = [
-    "Boss ye interesting question hai 😎 thoda detail me bolo.",
-    "Samajh gaya boss 🔥 tum ye kis purpose ke liye puch rahe ho?",
-    "Boss main help kar sakta hu 😎 bas thoda clear likho.",
-    "Acha boss 😎 ye topic important hai. Tum example do."
-  ];
-
-  return randomReplies[Math.floor(Math.random()*randomReplies.length)];
-}
-
-function sendMsg(){
-  let input = document.getElementById("userInput");
-  let msg = input.value.trim();
-  if(msg === "") return;
-
-  chatBox.value += "\nYou: " + msg + "\n";
-  input.value = "";
-
-  // typing effect
-  let reply = smartAI(msg);
-  typeAIReply(reply);
-  vibratePhone();
-}
-
-function typeAIReply(text){
-  let i=0;
-  chatBox.value += "AI: ";
-  let interval = setInterval(()=>{
-    chatBox.value += text.charAt(i);
-    i++;
-    chatBox.scrollTop = chatBox.scrollHeight;
-    saveChat();
-
-    if(i >= text.length){
-      clearInterval(interval);
-      chatBox.value += "\n";
-      saveChat();
-    }
-  }, 25);
-}
-
-/* ===========================
-   SNAKE GAME (FIXED)
-=========================== */
-const sCanvas = document.getElementById("snakeCanvas");
-const sCtx = sCanvas.getContext("2d");
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
 
 const box = 20;
-let snake = [{x: 160, y: 160}];
+const gridCount = canvas.width / box;
+
+let snake = [{x: 10*box, y: 10*box}];
 let direction = "RIGHT";
 
-let food = {
-  x: Math.floor(Math.random() * (sCanvas.width/box)) * box,
-  y: Math.floor(Math.random() * (sCanvas.height/box)) * box
-};
+let food = randomFood();
+let score = 0;
 
-let snakeScore = 0;
-let snakeHigh = localStorage.getItem("mr7_snake_high") ? parseInt(localStorage.getItem("mr7_snake_high")) : 0;
+let highScore = localStorage.getItem("mr7_snake_highscore")
+  ? parseInt(localStorage.getItem("mr7_snake_highscore"))
+  : 0;
 
-function updateSnakeScore(){
-  document.getElementById("snakeScoreText").innerText =
-    "Score: " + snakeScore + " | High Score: " + snakeHigh;
+document.getElementById("highscore").innerText = highScore;
+
+function randomFood(){
+  return {
+    x: Math.floor(Math.random() * gridCount) * box,
+    y: Math.floor(Math.random() * gridCount) * box
+  };
 }
 
-updateSnakeScore();
-
-document.addEventListener("keydown", (event)=>{
-  if(event.key==="ArrowLeft" && direction!=="RIGHT") direction="LEFT";
-  if(event.key==="ArrowUp" && direction!=="DOWN") direction="UP";
-  if(event.key==="ArrowRight" && direction!=="LEFT") direction="RIGHT";
-  if(event.key==="ArrowDown" && direction!=="UP") direction="DOWN";
+document.addEventListener("keydown", (e)=>{
+  if(e.key==="ArrowLeft") setDir("LEFT");
+  if(e.key==="ArrowUp") setDir("UP");
+  if(e.key==="ArrowRight") setDir("RIGHT");
+  if(e.key==="ArrowDown") setDir("DOWN");
 });
 
-function snakeCollision(head, arr){
+function setDir(dir){
+  if(dir==="LEFT" && direction!=="RIGHT") direction="LEFT";
+  if(dir==="RIGHT" && direction!=="LEFT") direction="RIGHT";
+  if(dir==="UP" && direction!=="DOWN") direction="UP";
+  if(dir==="DOWN" && direction!=="UP") direction="DOWN";
+}
+
+function drawGrid(){
+  ctx.strokeStyle = "#003300";
+  for(let i=0;i<=gridCount;i++){
+    ctx.beginPath();
+    ctx.moveTo(i*box,0);
+    ctx.lineTo(i*box,canvas.height);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(0,i*box);
+    ctx.lineTo(canvas.width,i*box);
+    ctx.stroke();
+  }
+}
+
+function drawSnake(){
+  for(let i=0;i<snake.length;i++){
+    let part = snake[i];
+
+    // Glow effect
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = "#00ff00";
+
+    if(i===0){
+      // head
+      ctx.fillStyle = "#00ff00";
+    } else {
+      // body
+      ctx.fillStyle = "#00cc00";
+    }
+
+    ctx.fillRect(part.x, part.y, box, box);
+
+    // border effect
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = "#000";
+    ctx.strokeRect(part.x, part.y, box, box);
+  }
+}
+
+function drawFood(){
+  ctx.shadowBlur = 20;
+  ctx.shadowColor = "red";
+  ctx.fillStyle = "red";
+  ctx.beginPath();
+  ctx.arc(food.x + box/2, food.y + box/2, box/2.2, 0, Math.PI*2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+}
+
+function collision(head, arr){
   for(let i=0;i<arr.length;i++){
     if(head.x===arr[i].x && head.y===arr[i].y){
       return true;
@@ -773,87 +201,66 @@ function snakeCollision(head, arr){
   return false;
 }
 
-function drawSnake(){
-  sCtx.clearRect(0,0,sCanvas.width,sCanvas.height);
+function update(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  // snake
-  for(let i=0;i<snake.length;i++){
-    sCtx.fillStyle = (i===0) ? "#00ff00" : "#00cc00";
-    sCtx.fillRect(snake[i].x, snake[i].y, box, box);
-  }
-
-  // food
-  sCtx.fillStyle="red";
-  sCtx.fillRect(food.x, food.y, box, box);
+  drawGrid();
+  drawFood();
+  drawSnake();
 
   let headX = snake[0].x;
   let headY = snake[0].y;
 
   if(direction==="LEFT") headX -= box;
-  if(direction==="UP") headY -= box;
   if(direction==="RIGHT") headX += box;
+  if(direction==="UP") headY -= box;
   if(direction==="DOWN") headY += box;
 
-  // eat
-  if(headX===food.x && headY===food.y){
-    snakeScore++;
-    if(snakeScore > snakeHigh){
-      snakeHigh = snakeScore;
-      localStorage.setItem("mr7_snake_high", snakeHigh);
-    }
-
-    food = {
-      x: Math.floor(Math.random() * (sCanvas.width/box)) * box,
-      y: Math.floor(Math.random() * (sCanvas.height/box)) * box
-    };
-
-    updateSnakeScore();
-    updateAchievements();
-  } else {
-    snake.pop();
+  // Game over wall
+  if(headX < 0 || headY < 0 || headX >= canvas.width || headY >= canvas.height){
+    gameOver();
+    return;
   }
 
   let newHead = {x: headX, y: headY};
 
-  // game over
-  if(
-    headX < 0 || headY < 0 ||
-    headX >= sCanvas.width || headY >= sCanvas.height ||
-    snakeCollision(newHead, snake)
-  ){
-    showPopup("Game Over! Score: " + snakeScore);
-    snake = [{x: 160, y: 160}];
-    direction = "RIGHT";
-    snakeScore = 0;
-    updateSnakeScore();
+  // Game over self hit
+  if(collision(newHead, snake)){
+    gameOver();
     return;
+  }
+
+  // Eat food
+  if(headX === food.x && headY === food.y){
+    score++;
+    document.getElementById("score").innerText = score;
+
+    if(score > highScore){
+      highScore = score;
+      localStorage.setItem("mr7_snake_highscore", highScore);
+      document.getElementById("highscore").innerText = highScore;
+    }
+
+    food = randomFood();
+  } else {
+    snake.pop();
   }
 
   snake.unshift(newHead);
 }
 
-setInterval(drawSnake, 120);
+function gameOver(){
+  alert("Game Over! Score: " + score);
 
-/* ===========================
-   ACHIEVEMENTS SYSTEM
-=========================== */
-function updateAchievements(){
-  let text = "";
+  score = 0;
+  document.getElementById("score").innerText = score;
 
-  if(snakeHigh >= 5) text = "🏆 Achievement Unlocked: Beginner Snake (High Score 5)";
-  if(snakeHigh >= 10) text = "🏆 Achievement Unlocked: Pro Snake (High Score 10)";
-  if(snakeHigh >= 20) text = "🏆 Achievement Unlocked: Legend Snake (High Score 20)";
-
-  document.getElementById("achievementText").innerText = text;
+  snake = [{x: 10*box, y: 10*box}];
+  direction = "RIGHT";
+  food = randomFood();
 }
-updateAchievements();
 
-/* ===========================
-   CUSTOM CURSOR (PC ONLY)
-=========================== */
-if(window.innerWidth > 700){
-  document.body.style.cursor = "crosshair";
-}
+setInterval(update, 90);
 </script>
 
 </body>

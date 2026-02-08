@@ -533,8 +533,8 @@ canvas{
     <p style="margin-top:8px;color:lime;">Premium Neon Games 🔥</p>
 
     <div class="menu-grid">
-      <button class="btn" onclick="openGame('snakeBox')">🐍 Snake</button>
-      <button class="btn" onclick="openGame('carBox')">🚗 Car Racing</button>
+      <button class="btn" onclick="openGame('snakeBox'); startSnake();">🐍 Snake</button>
+      <button class="btn" onclick="openGame('carBox'); startCar();">🚗 Car Racing</button>
       <button class="btn" onclick="openGame('tttBox')">❌⭕ Tic Tac Toe</button>
     </div>
   </div>
@@ -596,11 +596,6 @@ canvas{
     </div>
 
     <div class="toggleRow">
-      <span>Click Sound</span>
-      <div class="switch" id="soundSwitch" onclick="toggleSound()"></div>
-    </div>
-
-    <div class="toggleRow">
       <span>Vibration</span>
       <div class="switch" id="vibrationSwitch" onclick="toggleVibration()"></div>
     </div>
@@ -627,9 +622,7 @@ canvas{
 </div>
 
 <script>
-/* ==========================
-   PRELOADER
-========================== */
+/* PRELOADER */
 window.addEventListener("load",()=>{
   setTimeout(()=>{
     document.getElementById("preloader").style.display="none";
@@ -637,9 +630,7 @@ window.addEventListener("load",()=>{
   },800);
 });
 
-/* ==========================
-   POPUP
-========================== */
+/* POPUP */
 function showPopup(msg){
   let pop=document.getElementById("popup");
   pop.innerText=msg;
@@ -647,9 +638,7 @@ function showPopup(msg){
   setTimeout(()=>pop.style.display="none",2500);
 }
 
-/* ==========================
-   PARTICLES
-========================== */
+/* PARTICLES */
 const pCanvas=document.getElementById("particles");
 const pCtx=pCanvas.getContext("2d");
 let particles=[];
@@ -677,11 +666,9 @@ createParticles();
 
 function animateParticles(){
   pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
-
   particles.forEach(p=>{
     p.x+=p.dx;
     p.y+=p.dy;
-
     if(p.x<0||p.x>pCanvas.width) p.dx*=-1;
     if(p.y<0||p.y>pCanvas.height) p.dy*=-1;
 
@@ -692,14 +679,11 @@ function animateParticles(){
     pCtx.arc(p.x,p.y,p.r,0,Math.PI*2);
     pCtx.fill();
   });
-
   requestAnimationFrame(animateParticles);
 }
 animateParticles();
 
-/* ==========================
-   DOTS MENU
-========================== */
+/* DOTS MENU */
 function toggleDots(){
   let menu=document.getElementById("dotsMenu");
   menu.style.display = menu.style.display==="block" ? "none" : "block";
@@ -713,12 +697,9 @@ document.addEventListener("click",(e)=>{
   }
 });
 
-/* ==========================
-   SEARCH MENU
-========================== */
+/* SEARCH MENU */
 function searchMenu(){
   let val=document.getElementById("menuSearch").value.toLowerCase();
-
   if(val.includes("home")) openSection("mainMenu");
   if(val.includes("ai")) openSection("aiPage");
   if(val.includes("game")) openSection("gamesPage");
@@ -727,18 +708,14 @@ function searchMenu(){
   if(val.includes("achieve")) openSection("achievePage");
 }
 
-/* ==========================
-   OPEN SECTION
-========================== */
+/* OPEN SECTION */
 function openSection(id){
   document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
   closeDots();
 }
 
-/* ==========================
-   TYPING TITLE
-========================== */
+/* TYPING TITLE */
 function startTypingTitle(){
   let text="- MR7 WORLD -";
   let i=0;
@@ -751,16 +728,12 @@ function startTypingTitle(){
   },120);
 }
 
-/* ==========================
-   EMAIL VALIDATION
-========================== */
+/* EMAIL VALIDATION */
 function isValidEmail(email){
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
 }
 
-/* ==========================
-   LOGIN SYSTEM
-========================== */
+/* LOGIN */
 function loginUser(){
   let email=document.getElementById("loginEmail").value.trim();
   let pass=document.getElementById("loginPassword").value.trim();
@@ -811,9 +784,7 @@ window.onload=()=>{
   }
 };
 
-/* ==========================
-   ONLINE/OFFLINE STATUS
-========================== */
+/* ONLINE/OFFLINE */
 function updateNet(){
   let text=document.getElementById("netText");
   let dot=document.getElementById("netDot");
@@ -832,18 +803,14 @@ updateNet();
 window.addEventListener("online",updateNet);
 window.addEventListener("offline",updateNet);
 
-/* ==========================
-   FULLSCREEN
-========================== */
+/* FULLSCREEN */
 function goFullScreen(){
   if(document.documentElement.requestFullscreen){
     document.documentElement.requestFullscreen();
   }
 }
 
-/* ==========================
-   HELP EMAIL
-========================== */
+/* HELP EMAIL */
 function sendMail(){
   let n=document.getElementById("name").value.trim();
   let m=document.getElementById("mobile").value.trim();
@@ -860,12 +827,9 @@ function sendMail(){
   location.href="mailto:mrrehanofficial.1777@gmail.com?subject="+subject+"&body="+body;
 }
 
-/* ==========================
-   SETTINGS SYSTEM
-========================== */
+/* SETTINGS */
 let settings={
   theme: localStorage.getItem("mr7_theme") || "dark",
-  sound: localStorage.getItem("mr7_sound") || "on",
   vibration: localStorage.getItem("mr7_vibration") || "on"
 };
 
@@ -879,7 +843,6 @@ function applySettings(){
   }
 
   document.getElementById("themeSwitch").classList.toggle("active", settings.theme==="light");
-  document.getElementById("soundSwitch").classList.toggle("active", settings.sound==="on");
   document.getElementById("vibrationSwitch").classList.toggle("active", settings.vibration==="on");
 }
 applySettings();
@@ -889,13 +852,6 @@ function toggleTheme(){
   localStorage.setItem("mr7_theme", settings.theme);
   applySettings();
   showPopup("Theme Updated");
-}
-
-function toggleSound(){
-  settings.sound = (settings.sound==="on") ? "off" : "on";
-  localStorage.setItem("mr7_sound", settings.sound);
-  applySettings();
-  showPopup("Sound Updated");
 }
 
 function toggleVibration(){
@@ -918,22 +874,14 @@ function resetAllData(){
   }
 }
 
-/* CLICK SOUND */
-const clickSound = new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3");
-document.addEventListener("click",()=>{
-  if(settings.sound==="on"){
-    clickSound.currentTime=0;
-    clickSound.play().catch(()=>{});
-  }
-  vibrate();
+/* BUTTON VIBRATION ONLY */
+document.querySelectorAll("button").forEach(btn=>{
+  btn.addEventListener("click",()=>vibrate());
 });
 
-/* ==========================
-   AI CHAT SYSTEM (SMART OFFLINE)
-========================== */
+/* AI SYSTEM */
 let chat=document.getElementById("chat");
 let aiInput=document.getElementById("aiInput");
-
 let memoryName = localStorage.getItem("mr7_username") || "";
 
 function addMsg(text,cls){
@@ -1019,13 +967,9 @@ function smartAI(q){
   if(text.includes("motivation"))
     return "Boss remember: Discipline beats talent 😎🔥 Keep grinding daily!";
 
-  if(text.includes("weather"))
-    return "I can't fetch live weather offline. But if you want real weather, connect API 😎";
-
   if(text.includes("help"))
     return "Sure boss. Tell me your problem clearly and I will solve it step by step.";
 
-  // fallback smart replies
   let replies=[
     "Interesting question 😎 Can you explain a little more?",
     "Boss that's a good one! Give me more details so I can answer perfectly.",
@@ -1061,9 +1005,7 @@ function clearChat(){
   }
 }
 
-/* ==========================
-   GAMES OPEN FIX
-========================== */
+/* GAME OPEN */
 function openGame(id){
   document.getElementById("snakeBox").style.display="none";
   document.getElementById("carBox").style.display="none";
@@ -1076,9 +1018,7 @@ function closeGames(){
   document.getElementById("tttBox").style.display="none";
 }
 
-/* ==========================
-   PREMIUM SNAKE GAME (FIXED)
-========================== */
+/* SNAKE */
 let snakeCanvas=document.getElementById("snakeCanvas");
 let sctx=snakeCanvas.getContext("2d");
 const box=20;
@@ -1125,10 +1065,8 @@ function drawSnakeGrid(){
 
 function drawSnakeGame(){
   sctx.clearRect(0,0,snakeCanvas.width,snakeCanvas.height);
-
   drawSnakeGrid();
 
-  // food
   sctx.shadowBlur=25;
   sctx.shadowColor="red";
   sctx.fillStyle="red";
@@ -1137,7 +1075,6 @@ function drawSnakeGame(){
   sctx.fill();
   sctx.shadowBlur=0;
 
-  // snake
   snake.forEach((p,i)=>{
     sctx.shadowBlur=15;
     sctx.shadowColor="lime";
@@ -1185,7 +1122,6 @@ function moveSnake(){
       localStorage.setItem("mr7_snake_high",snakeHigh);
       document.getElementById("snakeHigh").innerText=snakeHigh;
     }
-
     food=randomFood();
   }else{
     snake.pop();
@@ -1213,9 +1149,7 @@ document.addEventListener("keydown",(e)=>{
   if(e.key==="ArrowRight" && dir!=="LEFT") dir="RIGHT";
 });
 
-/* ==========================
-   CAR GAME (BETTER)
-========================== */
+/* CAR GAME */
 let carCanvas=document.getElementById("carCanvas");
 let cctx=carCanvas.getContext("2d");
 
@@ -1262,16 +1196,13 @@ let roadOffset=0;
 function drawCarGame(){
   cctx.clearRect(0,0,carCanvas.width,carCanvas.height);
 
-  // road
   cctx.fillStyle="#1c1c1c";
   cctx.fillRect(0,0,carCanvas.width,carCanvas.height);
 
-  // borders
   cctx.fillStyle="#111";
   cctx.fillRect(0,0,60,carCanvas.height);
   cctx.fillRect(carCanvas.width-60,0,60,carCanvas.height);
 
-  // moving line
   cctx.strokeStyle="white";
   cctx.lineWidth=4;
   cctx.setLineDash([20,20]);
@@ -1281,10 +1212,8 @@ function drawCarGame(){
   cctx.stroke();
   cctx.setLineDash([]);
 
-  // player
   drawCar(player.x,player.y,player.w,player.h,"lime");
 
-  // enemies
   enemies.forEach(e=>{
     drawCar(e.x,e.y,e.w,e.h,"red");
   });
@@ -1344,9 +1273,7 @@ document.addEventListener("keydown",(e)=>{
   if(player.x>carCanvas.width-105) player.x=carCanvas.width-105;
 });
 
-/* ==========================
-   TIC TAC TOE
-========================== */
+/* TIC TAC TOE */
 let tttBoard=document.getElementById("tttBoard");
 let tttStatus=document.getElementById("tttStatus");
 let tttCells=[],currentPlayer="X";
@@ -1408,9 +1335,7 @@ function resetTTT(){
   createTTT();
 }
 
-/* ==========================
-   ACHIEVEMENTS SYSTEM
-========================== */
+/* ACHIEVEMENTS */
 function updateAchievements(){
   let list=document.getElementById("achievementsList");
 
@@ -1434,7 +1359,6 @@ function updateAchievements(){
   }
 }
 updateAchievements();
-
 setInterval(updateAchievements,1500);
 </script>
 

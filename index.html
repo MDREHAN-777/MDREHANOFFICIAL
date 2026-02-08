@@ -1,266 +1,1441 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MR7 Snake Game - Premium</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MR7 WORLD - OFFICIAL</title>
 
 <style>
+*{margin:0;padding:0;box-sizing:border-box;}
 body{
-  margin:0;
-  padding:0;
-  background:black;
   font-family:Segoe UI, Arial;
-  color:#00ff00;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  overflow:hidden;
+  background:#0b0b0b;
+  color:white;
+  text-align:center;
+  overflow-x:hidden;
+  padding:15px;
 }
 
-h2{
-  margin:10px;
+/* PRELOADER */
+#preloader{
+  position:fixed;
+  inset:0;
+  background:black;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  z-index:99999;
+}
+.loader-circle{
+  width:70px;height:70px;
+  border-radius:50%;
+  border:6px solid #00ff00;
+  border-top:6px solid transparent;
+  animation:spin 1s linear infinite;
+  box-shadow:0 0 20px #00ff00;
+}
+@keyframes spin{
+  100%{transform:rotate(360deg);}
+}
+#preloader p{
+  margin-top:15px;
+  color:#00ff00;
+  font-weight:bold;
   text-shadow:0 0 10px #00ff00;
 }
 
-#scoreBox{
+/* PARTICLES CANVAS */
+#particles{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:100%;
+  z-index:-1;
+  opacity:0.9;
+}
+
+/* TOP BAR */
+.topbar{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  padding:12px 15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  z-index:999;
+  background:rgba(0,0,0,0.55);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(0,255,0,0.3);
+}
+.brand{
   font-size:18px;
-  margin-bottom:10px;
-  padding:10px 20px;
-  border:2px solid #00ff00;
-  border-radius:12px;
-  box-shadow:0 0 15px #00ff00;
-  background:#111;
-}
-
-canvas{
-  border:2px solid #00ff00;
-  border-radius:15px;
-  background:#050505;
-  box-shadow:0 0 30px #00ff00;
-}
-
-.controls{
-  margin-top:15px;
+  font-weight:bold;
+  color:#00ff00;
+  text-shadow:0 0 10px #00ff00;
   display:flex;
-  flex-direction:column;
-  gap:10px;
+  gap:8px;
+  align-items:center;
+}
+.brand span{
+  color:white;
+  font-size:14px;
+  opacity:0.9;
 }
 
-.controls .row{
+/* ONLINE STATUS */
+#netStatus{
+  font-weight:bold;
+  font-size:14px;
   display:flex;
-  justify-content:center;
-  gap:10px;
+  align-items:center;
+  gap:6px;
+}
+.dot{
+  width:10px;height:10px;
+  border-radius:50%;
+  background:lime;
+  box-shadow:0 0 10px lime;
 }
 
-.btn{
-  width:70px;
-  height:60px;
+/* DOTS MENU */
+.dots{
+  width:42px;height:42px;
+  border-radius:50%;
+  border:1px solid lime;
+  cursor:pointer;
+  background:rgba(0,255,0,0.15);
+  color:lime;
   font-size:22px;
+  font-weight:bold;
+  box-shadow:0 0 15px rgba(0,255,0,0.35);
+}
+.dots-menu{
+  position:fixed;
+  top:65px;
+  right:15px;
+  width:200px;
+  padding:10px;
+  border-radius:15px;
+  background:rgba(0,0,0,0.85);
+  border:1px solid lime;
+  display:none;
+  z-index:9999;
+}
+.dots-menu input{
+  width:100%;
+  padding:10px;
+  border-radius:12px;
+  border:1px solid #444;
+  outline:none;
+  background:#111;
+  color:white;
+  margin-bottom:10px;
+}
+.dots-menu button{
+  width:100%;
+  padding:10px;
+  margin:6px 0;
   border:none;
   border-radius:12px;
-  background:#00ff00;
+  cursor:pointer;
+  background:#222;
+  color:white;
+  font-weight:bold;
+  transition:.25s;
+}
+.dots-menu button:hover{
+  background:lime;
   color:black;
+  transform:scale(1.05);
+}
+
+/* BUTTONS */
+.btn{
+  padding:12px 25px;
+  margin:8px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  background:lime;
+  font-weight:bold;
+  color:black;
+  transition:0.3s;
+}
+.btn:hover{
+  transform:scale(1.08);
+  box-shadow:0 0 20px lime;
+}
+.back-btn{
+  margin-top:15px;
+  background:#444;
+  color:white;
+}
+
+/* BOX */
+.box{
+  max-width:560px;
+  margin:20px auto;
+  padding:20px;
+  border-radius:20px;
+  background:rgba(0,0,0,.65);
+  border:1px solid lime;
+  box-shadow:0 0 25px rgba(0,255,0,.35);
+}
+
+/* SECTION */
+.section{
+  display:none;
+  padding-top:75px;
+  animation:pageIn .35s ease;
+}
+.section.active{
+  display:block;
+}
+@keyframes pageIn{
+  from{opacity:0;transform:scale(0.95) translateY(20px)}
+  to{opacity:1;transform:scale(1) translateY(0)}
+}
+
+/* TITLE TYPING */
+#typingTitle{
+  font-size:34px;
+  font-weight:bold;
+  color:lime;
+  margin-top:20px;
+  text-shadow:0 0 15px lime;
+}
+
+/* PROFILE */
+.profile-card{
+  max-width:420px;
+  margin:20px auto;
+  padding:18px;
+  border-radius:20px;
+  border:1px solid lime;
+  background:rgba(0,0,0,0.55);
+  box-shadow:0 0 25px rgba(0,255,0,0.35);
+}
+.profile-pic{
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  border:5px solid lime;
+  box-shadow:0 0 30px lime;
+  object-fit:cover;
+}
+.verified{
+  margin-top:10px;
+  font-size:20px;
+  font-weight:bold;
+  color:white;
+}
+.verified b{
+  color:lime;
+  text-shadow:0 0 10px lime;
+}
+.verified .tick{
+  color:#00ffcc;
+  text-shadow:0 0 10px #00ffcc;
+}
+
+/* SOCIAL LINKS */
+.socials{
+  margin-top:15px;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.socials a{
+  text-decoration:none;
+}
+.socials button{
+  padding:10px 16px;
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+  font-weight:bold;
+  background:#111;
+  color:white;
+  border:1px solid lime;
+  transition:.25s;
+}
+.socials button:hover{
+  background:lime;
+  color:black;
+  transform:scale(1.05);
+}
+
+/* CHAT */
+#chat{
+  height:320px;
+  overflow-y:auto;
+  background:#000;
+  border-radius:15px;
+  padding:10px;
+  text-align:left;
+  border:1px solid lime;
+}
+.user{
+  background:#00ff8833;
+  padding:10px;
+  margin:8px 0;
+  border-radius:12px;
+  color:#00ff88;
+  font-weight:bold;
+}
+.bot{
+  background:#0088ff33;
+  padding:10px;
+  margin:8px 0;
+  border-radius:12px;
+  color:#66ccff;
+  font-weight:bold;
+}
+.typing{
+  color:lime;
+  opacity:0.8;
+  font-style:italic;
+  margin:8px 0;
+}
+
+/* INPUT */
+input,textarea{
+  width:95%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:10px;
+  border:1px solid #777;
+  outline:none;
+  background:#111;
+  color:white;
+}
+textarea{height:100px;}
+
+/* GAME CANVAS */
+canvas{
+  border-radius:15px;
+  border:2px solid lime;
+  max-width:100%;
+  background:#050505;
+  box-shadow:0 0 20px rgba(0,255,0,0.35);
+}
+
+/* GRID */
+.menu-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:15px;
+  margin-top:15px;
+}
+
+/* NOTIFICATION */
+#popup{
+  position:fixed;
+  top:90px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(0,0,0,0.85);
+  border:1px solid lime;
+  padding:12px 18px;
+  border-radius:15px;
+  box-shadow:0 0 20px lime;
+  display:none;
+  z-index:9999;
+  font-weight:bold;
+  color:white;
+}
+
+/* SETTINGS */
+.toggleRow{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#111;
+  border:1px solid lime;
+  padding:12px;
+  border-radius:15px;
+  margin:10px 0;
+}
+.toggleRow span{
+  font-weight:bold;
+}
+.switch{
+  width:55px;
+  height:28px;
+  background:#333;
+  border-radius:50px;
+  position:relative;
+  cursor:pointer;
+  border:1px solid #444;
+}
+.switch::after{
+  content:"";
+  width:22px;height:22px;
+  border-radius:50%;
+  background:#888;
+  position:absolute;
+  top:2px;left:3px;
+  transition:.25s;
+}
+.switch.active{
+  background:lime;
+}
+.switch.active::after{
+  background:black;
+  left:28px;
+}
+
+/* FULLSCREEN BTN */
+.fullscreen-btn{
+  position:fixed;
+  bottom:15px;
+  right:15px;
+  padding:10px 14px;
+  border-radius:14px;
+  border:1px solid lime;
+  background:rgba(0,0,0,0.7);
+  color:lime;
   font-weight:bold;
   cursor:pointer;
-  box-shadow:0 0 20px #00ff00;
-  transition:0.2s;
+  z-index:9999;
+  box-shadow:0 0 20px rgba(0,255,0,0.3);
 }
 
-.btn:active{
-  transform:scale(0.9);
+/* MOBILE FIX */
+@media(max-width:600px){
+  #typingTitle{font-size:26px;}
+  .profile-pic{width:150px;height:150px;}
 }
 
+/* CUSTOM CURSOR */
 @media(min-width:800px){
-  .controls{display:none;}
+  body{
+    cursor:crosshair;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<h2>🐍 MR7 Snake Game</h2>
-
-<div id="scoreBox">
-  Score: <span id="score">0</span> |
-  High Score: <span id="highscore">0</span>
+<!-- PRELOADER -->
+<div id="preloader">
+  <div class="loader-circle"></div>
+  <p>Loading MR7 WORLD...</p>
 </div>
 
-<canvas id="game" width="420" height="420"></canvas>
+<!-- PARTICLES -->
+<canvas id="particles"></canvas>
 
-<!-- Mobile Controls -->
-<div class="controls">
-  <div class="row">
-    <button class="btn" onclick="setDir('UP')">⬆</button>
+<!-- POPUP -->
+<div id="popup">🔥 Welcome to MR7 WORLD</div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="brand">
+    MR7 WORLD <span>✓ Verified</span>
   </div>
-  <div class="row">
-    <button class="btn" onclick="setDir('LEFT')">⬅</button>
-    <button class="btn" onclick="setDir('DOWN')">⬇</button>
-    <button class="btn" onclick="setDir('RIGHT')">➡</button>
+
+  <div id="netStatus">
+    <div class="dot" id="netDot"></div>
+    <span id="netText">Online</span>
   </div>
+
+  <button class="dots" onclick="toggleDots()">⋮</button>
+</div>
+
+<!-- DOTS MENU -->
+<div class="dots-menu" id="dotsMenu">
+  <input id="menuSearch" placeholder="Search page..." oninput="searchMenu()" />
+  <button onclick="openSection('mainMenu'); closeDots()">🏠 Home</button>
+  <button onclick="openSection('aiPage'); closeDots()">🤖 MR7 AI</button>
+  <button onclick="openSection('gamesPage'); closeDots()">🎮 Games</button>
+  <button onclick="openSection('achievePage'); closeDots()">🏆 Achievements</button>
+  <button onclick="openSection('settingsPage'); closeDots()">⚙ Settings</button>
+  <button onclick="openSection('helpPage'); closeDots()">📩 Help</button>
+  <button onclick="logoutUser()">🚪 Logout</button>
+</div>
+
+<button class="fullscreen-btn" onclick="goFullScreen()">📱 Fullscreen</button>
+
+<!-- LOGIN PAGE -->
+<div id="loginPage" class="section active">
+  <div class="box">
+    <h2>🔐 Login Required</h2>
+    <p style="margin-top:8px;color:lime;">Login first to enter MR7 WORLD 😎</p>
+
+    <input id="loginEmail" placeholder="Enter Email" />
+    <input id="loginPassword" type="password" placeholder="Enter Password" />
+
+    <button class="btn" onclick="loginUser()">Login</button>
+    <p id="loginStatus" style="margin-top:10px;font-weight:bold;"></p>
+  </div>
+</div>
+
+<!-- MAIN MENU -->
+<div id="mainMenu" class="section">
+  <h1 id="typingTitle"></h1>
+
+  <div class="profile-card">
+    <img src="rehan.png" class="profile-pic" alt="MR7 Logo" />
+
+    <div class="verified">
+      <b>MR7 OFFICIAL</b> <span class="tick">✔</span>
+    </div>
+
+    <div class="socials">
+      <a href="https://www.youtube.com/@MR7OFFICIAL777" target="_blank">
+        <button>🔥 YouTube</button>
+      </a>
+      <a href="https://www.instagram.com/" target="_blank">
+        <button>📸 Instagram</button>
+      </a>
+      <a href="https://wa.me/919999999999" target="_blank">
+        <button>💬 WhatsApp</button>
+      </a>
+    </div>
+  </div>
+
+  <div class="box">
+    <h2>🚀 Features</h2>
+    <div class="menu-grid">
+      <button class="btn" onclick="openSection('aiPage')">🤖 MR7 AI</button>
+      <button class="btn" onclick="openSection('gamesPage')">🎮 Games</button>
+      <button class="btn" onclick="openSection('achievePage')">🏆 Achievements</button>
+      <button class="btn" onclick="openSection('settingsPage')">⚙ Settings</button>
+      <button class="btn" onclick="openSection('helpPage')">📩 Help</button>
+    </div>
+  </div>
+</div>
+
+<!-- AI PAGE -->
+<div id="aiPage" class="section">
+  <div class="box">
+    <h2>🤖 MR7 AI Chat (Smart Mode)</h2>
+
+    <div id="chat"></div>
+
+    <input id="aiInput" placeholder="Ask anything..." />
+    <button class="btn" onclick="askAI()">Send</button>
+    <button class="btn" onclick="clearChat()">Clear</button>
+  </div>
+
+  <button class="btn back-btn" onclick="openSection('mainMenu')">⬅ Back</button>
+</div>
+
+<!-- GAMES PAGE -->
+<div id="gamesPage" class="section">
+  <div class="box">
+    <h2>🎮 MR7 Games Zone</h2>
+    <p style="margin-top:8px;color:lime;">Premium Neon Games 🔥</p>
+
+    <div class="menu-grid">
+      <button class="btn" onclick="openGame('snakeBox')">🐍 Snake</button>
+      <button class="btn" onclick="openGame('carBox')">🚗 Car Racing</button>
+      <button class="btn" onclick="openGame('tttBox')">❌⭕ Tic Tac Toe</button>
+    </div>
+  </div>
+
+  <!-- Snake -->
+  <div id="snakeBox" class="box" style="display:none;">
+    <h2>🐍 MR7 Snake (Premium)</h2>
+    <p style="color:lime;font-weight:bold;">
+      Score: <span id="snakeScore">0</span> | High: <span id="snakeHigh">0</span>
+    </p>
+    <canvas id="snakeCanvas" width="420" height="420"></canvas>
+    <button class="btn" onclick="startSnake()">Restart</button>
+    <button class="btn back-btn" onclick="closeGames()">⬅ Back</button>
+  </div>
+
+  <!-- Car -->
+  <div id="carBox" class="box" style="display:none;">
+    <h2>🚗 MR7 Car Racing (Improved)</h2>
+    <p style="color:lime;font-weight:bold;">
+      Score: <span id="carScore">0</span> | High: <span id="carHigh">0</span>
+    </p>
+    <canvas id="carCanvas" width="420" height="520"></canvas>
+    <button class="btn" onclick="startCar()">Restart</button>
+    <button class="btn back-btn" onclick="closeGames()">⬅ Back</button>
+  </div>
+
+  <!-- Tic Tac Toe -->
+  <div id="tttBox" class="box" style="display:none;">
+    <h2>❌⭕ MR7 Tic Tac Toe</h2>
+    <div id="tttBoard" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px;"></div>
+    <p id="tttStatus" style="margin-top:10px;color:lime;font-weight:bold;"></p>
+    <button class="btn" onclick="resetTTT()">Restart</button>
+    <button class="btn back-btn" onclick="closeGames()">⬅ Back</button>
+  </div>
+
+  <button class="btn back-btn" onclick="openSection('mainMenu')">⬅ Back Menu</button>
+</div>
+
+<!-- ACHIEVEMENTS -->
+<div id="achievePage" class="section">
+  <div class="box">
+    <h2>🏆 Achievements</h2>
+    <p style="margin-top:8px;color:lime;">Unlock badges by playing games!</p>
+
+    <div id="achievementsList" style="margin-top:15px;text-align:left;"></div>
+  </div>
+
+  <button class="btn back-btn" onclick="openSection('mainMenu')">⬅ Back</button>
+</div>
+
+<!-- SETTINGS -->
+<div id="settingsPage" class="section">
+  <div class="box">
+    <h2>⚙ Settings</h2>
+
+    <div class="toggleRow">
+      <span>Theme Mode</span>
+      <div class="switch" id="themeSwitch" onclick="toggleTheme()"></div>
+    </div>
+
+    <div class="toggleRow">
+      <span>Click Sound</span>
+      <div class="switch" id="soundSwitch" onclick="toggleSound()"></div>
+    </div>
+
+    <div class="toggleRow">
+      <span>Vibration</span>
+      <div class="switch" id="vibrationSwitch" onclick="toggleVibration()"></div>
+    </div>
+
+    <button class="btn" onclick="resetAllData()">Reset All Data</button>
+  </div>
+
+  <button class="btn back-btn" onclick="openSection('mainMenu')">⬅ Back</button>
+</div>
+
+<!-- HELP PAGE -->
+<div id="helpPage" class="section">
+  <div class="box">
+    <h2>📩 Help / Contact</h2>
+
+    <input id="name" placeholder="Name" />
+    <input id="mobile" placeholder="Mobile" />
+    <textarea id="message" placeholder="Message"></textarea>
+
+    <button class="btn" onclick="sendMail()">Send Email</button>
+  </div>
+
+  <button class="btn back-btn" onclick="openSection('mainMenu')">⬅ Back</button>
 </div>
 
 <script>
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
+/* ==========================
+   PRELOADER
+========================== */
+window.addEventListener("load",()=>{
+  setTimeout(()=>{
+    document.getElementById("preloader").style.display="none";
+    showPopup("🔥 Welcome to MR7 WORLD");
+  },800);
+});
 
-const box = 20;
-const gridCount = canvas.width / box;
+/* ==========================
+   POPUP
+========================== */
+function showPopup(msg){
+  let pop=document.getElementById("popup");
+  pop.innerText=msg;
+  pop.style.display="block";
+  setTimeout(()=>pop.style.display="none",2500);
+}
 
-let snake = [{x: 10*box, y: 10*box}];
-let direction = "RIGHT";
+/* ==========================
+   PARTICLES
+========================== */
+const pCanvas=document.getElementById("particles");
+const pCtx=pCanvas.getContext("2d");
+let particles=[];
 
-let food = randomFood();
-let score = 0;
+function resizeParticles(){
+  pCanvas.width=window.innerWidth;
+  pCanvas.height=window.innerHeight;
+}
+resizeParticles();
+window.addEventListener("resize",resizeParticles);
 
-let highScore = localStorage.getItem("mr7_snake_highscore")
-  ? parseInt(localStorage.getItem("mr7_snake_highscore"))
+function createParticles(){
+  particles=[];
+  for(let i=0;i<70;i++){
+    particles.push({
+      x:Math.random()*pCanvas.width,
+      y:Math.random()*pCanvas.height,
+      r:Math.random()*3+1,
+      dx:(Math.random()-0.5)*1.2,
+      dy:(Math.random()-0.5)*1.2
+    });
+  }
+}
+createParticles();
+
+function animateParticles(){
+  pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
+
+  particles.forEach(p=>{
+    p.x+=p.dx;
+    p.y+=p.dy;
+
+    if(p.x<0||p.x>pCanvas.width) p.dx*=-1;
+    if(p.y<0||p.y>pCanvas.height) p.dy*=-1;
+
+    pCtx.beginPath();
+    pCtx.fillStyle="lime";
+    pCtx.shadowBlur=15;
+    pCtx.shadowColor="lime";
+    pCtx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    pCtx.fill();
+  });
+
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+/* ==========================
+   DOTS MENU
+========================== */
+function toggleDots(){
+  let menu=document.getElementById("dotsMenu");
+  menu.style.display = menu.style.display==="block" ? "none" : "block";
+}
+function closeDots(){
+  document.getElementById("dotsMenu").style.display="none";
+}
+document.addEventListener("click",(e)=>{
+  if(!e.target.classList.contains("dots") && !e.target.closest("#dotsMenu")){
+    closeDots();
+  }
+});
+
+/* ==========================
+   SEARCH MENU
+========================== */
+function searchMenu(){
+  let val=document.getElementById("menuSearch").value.toLowerCase();
+
+  if(val.includes("home")) openSection("mainMenu");
+  if(val.includes("ai")) openSection("aiPage");
+  if(val.includes("game")) openSection("gamesPage");
+  if(val.includes("setting")) openSection("settingsPage");
+  if(val.includes("help")) openSection("helpPage");
+  if(val.includes("achieve")) openSection("achievePage");
+}
+
+/* ==========================
+   OPEN SECTION
+========================== */
+function openSection(id){
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  closeDots();
+}
+
+/* ==========================
+   TYPING TITLE
+========================== */
+function startTypingTitle(){
+  let text="- MR7 WORLD -";
+  let i=0;
+  let el=document.getElementById("typingTitle");
+  el.innerHTML="";
+  let t=setInterval(()=>{
+    el.innerHTML += text.charAt(i);
+    i++;
+    if(i>=text.length) clearInterval(t);
+  },120);
+}
+
+/* ==========================
+   EMAIL VALIDATION
+========================== */
+function isValidEmail(email){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+}
+
+/* ==========================
+   LOGIN SYSTEM
+========================== */
+function loginUser(){
+  let email=document.getElementById("loginEmail").value.trim();
+  let pass=document.getElementById("loginPassword").value.trim();
+  let status=document.getElementById("loginStatus");
+
+  if(!email || !pass){
+    status.style.color="red";
+    status.innerText="❌ Fill Email and Password!";
+    return;
+  }
+  if(!isValidEmail(email)){
+    status.style.color="red";
+    status.innerText="❌ Invalid Email!";
+    return;
+  }
+  if(pass.length < 4){
+    status.style.color="red";
+    status.innerText="❌ Password must be 4+ characters!";
+    return;
+  }
+
+  localStorage.setItem("mr7Login","true");
+  localStorage.setItem("mr7Email",email);
+
+  status.style.color="lime";
+  status.innerText="✅ Login Successful!";
+
+  setTimeout(()=>{
+    openSection("mainMenu");
+    startTypingTitle();
+  },600);
+}
+
+function logoutUser(){
+  localStorage.removeItem("mr7Login");
+  localStorage.removeItem("mr7Email");
+  openSection("loginPage");
+}
+
+/* AUTO LOGIN */
+window.onload=()=>{
+  let logged = localStorage.getItem("mr7Login");
+  if(logged==="true"){
+    openSection("mainMenu");
+    startTypingTitle();
+  }else{
+    openSection("loginPage");
+  }
+};
+
+/* ==========================
+   ONLINE/OFFLINE STATUS
+========================== */
+function updateNet(){
+  let text=document.getElementById("netText");
+  let dot=document.getElementById("netDot");
+
+  if(navigator.onLine){
+    text.innerText="Online";
+    dot.style.background="lime";
+    dot.style.boxShadow="0 0 10px lime";
+  }else{
+    text.innerText="Offline";
+    dot.style.background="red";
+    dot.style.boxShadow="0 0 10px red";
+  }
+}
+updateNet();
+window.addEventListener("online",updateNet);
+window.addEventListener("offline",updateNet);
+
+/* ==========================
+   FULLSCREEN
+========================== */
+function goFullScreen(){
+  if(document.documentElement.requestFullscreen){
+    document.documentElement.requestFullscreen();
+  }
+}
+
+/* ==========================
+   HELP EMAIL
+========================== */
+function sendMail(){
+  let n=document.getElementById("name").value.trim();
+  let m=document.getElementById("mobile").value.trim();
+  let msg=document.getElementById("message").value.trim();
+
+  if(!n || !msg){
+    alert("Enter name and message first!");
+    return;
+  }
+
+  let subject = encodeURIComponent("MR7 Help from " + n);
+  let body = encodeURIComponent("Name: " + n + "\nMobile: " + m + "\n\nMessage:\n" + msg);
+
+  location.href="mailto:mrrehanofficial.1777@gmail.com?subject="+subject+"&body="+body;
+}
+
+/* ==========================
+   SETTINGS SYSTEM
+========================== */
+let settings={
+  theme: localStorage.getItem("mr7_theme") || "dark",
+  sound: localStorage.getItem("mr7_sound") || "on",
+  vibration: localStorage.getItem("mr7_vibration") || "on"
+};
+
+function applySettings(){
+  if(settings.theme==="light"){
+    document.body.style.background="#f5f5f5";
+    document.body.style.color="#111";
+  }else{
+    document.body.style.background="#0b0b0b";
+    document.body.style.color="white";
+  }
+
+  document.getElementById("themeSwitch").classList.toggle("active", settings.theme==="light");
+  document.getElementById("soundSwitch").classList.toggle("active", settings.sound==="on");
+  document.getElementById("vibrationSwitch").classList.toggle("active", settings.vibration==="on");
+}
+applySettings();
+
+function toggleTheme(){
+  settings.theme = (settings.theme==="dark") ? "light" : "dark";
+  localStorage.setItem("mr7_theme", settings.theme);
+  applySettings();
+  showPopup("Theme Updated");
+}
+
+function toggleSound(){
+  settings.sound = (settings.sound==="on") ? "off" : "on";
+  localStorage.setItem("mr7_sound", settings.sound);
+  applySettings();
+  showPopup("Sound Updated");
+}
+
+function toggleVibration(){
+  settings.vibration = (settings.vibration==="on") ? "off" : "on";
+  localStorage.setItem("mr7_vibration", settings.vibration);
+  applySettings();
+  showPopup("Vibration Updated");
+}
+
+function vibrate(){
+  if(settings.vibration==="on" && navigator.vibrate){
+    navigator.vibrate(60);
+  }
+}
+
+function resetAllData(){
+  if(confirm("Reset all data?")){
+    localStorage.clear();
+    location.reload();
+  }
+}
+
+/* CLICK SOUND */
+const clickSound = new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3");
+document.addEventListener("click",()=>{
+  if(settings.sound==="on"){
+    clickSound.currentTime=0;
+    clickSound.play().catch(()=>{});
+  }
+  vibrate();
+});
+
+/* ==========================
+   AI CHAT SYSTEM (SMART OFFLINE)
+========================== */
+let chat=document.getElementById("chat");
+let aiInput=document.getElementById("aiInput");
+
+let memoryName = localStorage.getItem("mr7_username") || "";
+
+function addMsg(text,cls){
+  let div=document.createElement("div");
+  div.className=cls;
+  div.innerText=text;
+  chat.appendChild(div);
+  chat.scrollTop=chat.scrollHeight;
+}
+
+function typingEffect(){
+  let div=document.createElement("div");
+  div.className="typing";
+  div.innerText="AI is typing...";
+  chat.appendChild(div);
+  chat.scrollTop=chat.scrollHeight;
+  return div;
+}
+
+function smartAI(q){
+  let text=q.toLowerCase().trim();
+
+  if(text.includes("my name is")){
+    let name=text.split("my name is")[1].trim();
+    if(name.length>1){
+      localStorage.setItem("mr7_username",name);
+      memoryName=name;
+      return "Nice to meet you " + name + " 😎";
+    }
+  }
+
+  if(text.includes("what is my name")){
+    if(memoryName){
+      return "Your name is " + memoryName + " 😎🔥";
+    }else{
+      return "I don't know your name yet. Type: my name is Rehan";
+    }
+  }
+
+  if(text.startsWith("calc")){
+    try{
+      let exp=text.replace("calc","").trim();
+      let result=eval(exp);
+      return "Result: " + result;
+    }catch{
+      return "Calculator error. Example: calc 50+20";
+    }
+  }
+
+  if(text.includes("hello")||text.includes("hi")||text.includes("hey"))
+    return "Hello Boss 😎🔥 Ask me anything!";
+
+  if(text.includes("time"))
+    return "Current Time: " + new Date().toLocaleTimeString();
+
+  if(text.includes("date"))
+    return "Today's Date: " + new Date().toLocaleDateString();
+
+  if(text.includes("who are you"))
+    return "I am MR7 AI 🤖🔥 Your personal assistant for gaming + coding + YouTube.";
+
+  if(text.includes("python"))
+    return "Python is best for AI, automation, web dev. Practice loops, functions, lists daily.";
+
+  if(text.includes("html"))
+    return "HTML makes website structure. Use CSS for design and JS for logic.";
+
+  if(text.includes("css"))
+    return "CSS is used for styling. Use flexbox/grid + animations for premium UI.";
+
+  if(text.includes("javascript") || text.includes("js"))
+    return "JavaScript controls website logic. You can build games, AI chat, animations with it.";
+
+  if(text.includes("youtube"))
+    return "YouTube growth tip: Shorts daily + catchy title + bright thumbnail + consistency.";
+
+  if(text.includes("thumbnail"))
+    return "Thumbnail tip: big text (3 words), face zoom, strong contrast, glow outline.";
+
+  if(text.includes("football"))
+    return "Football tip: practice ball control 30 mins daily + cone dribbling + speed sprints.";
+
+  if(text.includes("motivation"))
+    return "Boss remember: Discipline beats talent 😎🔥 Keep grinding daily!";
+
+  if(text.includes("weather"))
+    return "I can't fetch live weather offline. But if you want real weather, connect API 😎";
+
+  if(text.includes("help"))
+    return "Sure boss. Tell me your problem clearly and I will solve it step by step.";
+
+  // fallback smart replies
+  let replies=[
+    "Interesting question 😎 Can you explain a little more?",
+    "Boss that's a good one! Give me more details so I can answer perfectly.",
+    "I can help with coding, games, YouTube, study, motivation. Ask anything 🔥",
+    "Try asking like: calc 50+20, what is python, how to grow youtube etc."
+  ];
+  return replies[Math.floor(Math.random()*replies.length)];
+}
+
+function askAI(){
+  let q=aiInput.value.trim();
+  if(!q) return;
+
+  addMsg("You: "+q,"user");
+  aiInput.value="";
+
+  let typing=typingEffect();
+
+  setTimeout(()=>{
+    typing.remove();
+    let reply=smartAI(q);
+    addMsg("AI: "+reply,"bot");
+  },600);
+}
+
+aiInput.addEventListener("keypress",(e)=>{
+  if(e.key==="Enter") askAI();
+});
+
+function clearChat(){
+  if(confirm("Clear chat?")){
+    chat.innerHTML="";
+  }
+}
+
+/* ==========================
+   GAMES OPEN FIX
+========================== */
+function openGame(id){
+  document.getElementById("snakeBox").style.display="none";
+  document.getElementById("carBox").style.display="none";
+  document.getElementById("tttBox").style.display="none";
+  document.getElementById(id).style.display="block";
+}
+function closeGames(){
+  document.getElementById("snakeBox").style.display="none";
+  document.getElementById("carBox").style.display="none";
+  document.getElementById("tttBox").style.display="none";
+}
+
+/* ==========================
+   PREMIUM SNAKE GAME (FIXED)
+========================== */
+let snakeCanvas=document.getElementById("snakeCanvas");
+let sctx=snakeCanvas.getContext("2d");
+const box=20;
+const grid=snakeCanvas.width/box;
+
+let snake=[],food={},dir="RIGHT",snakeLoop;
+let snakeScore=0;
+
+let snakeHigh = localStorage.getItem("mr7_snake_high")
+  ? parseInt(localStorage.getItem("mr7_snake_high"))
   : 0;
 
-document.getElementById("highscore").innerText = highScore;
+document.getElementById("snakeHigh").innerText=snakeHigh;
 
 function randomFood(){
   return {
-    x: Math.floor(Math.random() * gridCount) * box,
-    y: Math.floor(Math.random() * gridCount) * box
+    x:Math.floor(Math.random()*grid)*box,
+    y:Math.floor(Math.random()*grid)*box
   };
 }
 
-document.addEventListener("keydown", (e)=>{
-  if(e.key==="ArrowLeft") setDir("LEFT");
-  if(e.key==="ArrowUp") setDir("UP");
-  if(e.key==="ArrowRight") setDir("RIGHT");
-  if(e.key==="ArrowDown") setDir("DOWN");
-});
-
-function setDir(dir){
-  if(dir==="LEFT" && direction!=="RIGHT") direction="LEFT";
-  if(dir==="RIGHT" && direction!=="LEFT") direction="RIGHT";
-  if(dir==="UP" && direction!=="DOWN") direction="UP";
-  if(dir==="DOWN" && direction!=="UP") direction="DOWN";
+function resetSnake(){
+  snake=[{x:10*box,y:10*box}];
+  food=randomFood();
+  dir="RIGHT";
+  snakeScore=0;
+  document.getElementById("snakeScore").innerText=snakeScore;
 }
 
-function drawGrid(){
-  ctx.strokeStyle = "#003300";
-  for(let i=0;i<=gridCount;i++){
-    ctx.beginPath();
-    ctx.moveTo(i*box,0);
-    ctx.lineTo(i*box,canvas.height);
-    ctx.stroke();
+function drawSnakeGrid(){
+  sctx.strokeStyle="#003300";
+  for(let i=0;i<=grid;i++){
+    sctx.beginPath();
+    sctx.moveTo(i*box,0);
+    sctx.lineTo(i*box,snakeCanvas.height);
+    sctx.stroke();
 
-    ctx.beginPath();
-    ctx.moveTo(0,i*box);
-    ctx.lineTo(canvas.width,i*box);
-    ctx.stroke();
+    sctx.beginPath();
+    sctx.moveTo(0,i*box);
+    sctx.lineTo(snakeCanvas.width,i*box);
+    sctx.stroke();
   }
 }
 
-function drawSnake(){
-  for(let i=0;i<snake.length;i++){
-    let part = snake[i];
+function drawSnakeGame(){
+  sctx.clearRect(0,0,snakeCanvas.width,snakeCanvas.height);
 
-    // Glow effect
-    ctx.shadowBlur = 15;
-    ctx.shadowColor = "#00ff00";
+  drawSnakeGrid();
 
-    if(i===0){
-      // head
-      ctx.fillStyle = "#00ff00";
-    } else {
-      // body
-      ctx.fillStyle = "#00cc00";
-    }
+  // food
+  sctx.shadowBlur=25;
+  sctx.shadowColor="red";
+  sctx.fillStyle="red";
+  sctx.beginPath();
+  sctx.arc(food.x+box/2,food.y+box/2,box/2.2,0,Math.PI*2);
+  sctx.fill();
+  sctx.shadowBlur=0;
 
-    ctx.fillRect(part.x, part.y, box, box);
-
-    // border effect
-    ctx.shadowBlur = 0;
-    ctx.strokeStyle = "#000";
-    ctx.strokeRect(part.x, part.y, box, box);
-  }
+  // snake
+  snake.forEach((p,i)=>{
+    sctx.shadowBlur=15;
+    sctx.shadowColor="lime";
+    sctx.fillStyle = (i===0) ? "#00ff00" : "#00cc00";
+    sctx.fillRect(p.x,p.y,box,box);
+    sctx.shadowBlur=0;
+    sctx.strokeStyle="#000";
+    sctx.strokeRect(p.x,p.y,box,box);
+  });
 }
 
-function drawFood(){
-  ctx.shadowBlur = 20;
-  ctx.shadowColor = "red";
-  ctx.fillStyle = "red";
-  ctx.beginPath();
-  ctx.arc(food.x + box/2, food.y + box/2, box/2.2, 0, Math.PI*2);
-  ctx.fill();
-  ctx.shadowBlur = 0;
-}
-
-function collision(head, arr){
+function snakeCollision(head,arr){
   for(let i=0;i<arr.length;i++){
-    if(head.x===arr[i].x && head.y===arr[i].y){
-      return true;
-    }
+    if(head.x===arr[i].x && head.y===arr[i].y) return true;
   }
   return false;
 }
 
-function update(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
+function moveSnake(){
+  let head={...snake[0]};
 
-  drawGrid();
-  drawFood();
-  drawSnake();
+  if(dir==="RIGHT") head.x+=box;
+  if(dir==="LEFT") head.x-=box;
+  if(dir==="UP") head.y-=box;
+  if(dir==="DOWN") head.y+=box;
 
-  let headX = snake[0].x;
-  let headY = snake[0].y;
-
-  if(direction==="LEFT") headX -= box;
-  if(direction==="RIGHT") headX += box;
-  if(direction==="UP") headY -= box;
-  if(direction==="DOWN") headY += box;
-
-  // Game over wall
-  if(headX < 0 || headY < 0 || headX >= canvas.width || headY >= canvas.height){
-    gameOver();
+  if(head.x<0 || head.y<0 || head.x>=snakeCanvas.width || head.y>=snakeCanvas.height){
+    gameOverSnake();
     return;
   }
 
-  let newHead = {x: headX, y: headY};
-
-  // Game over self hit
-  if(collision(newHead, snake)){
-    gameOver();
+  if(snakeCollision(head,snake)){
+    gameOverSnake();
     return;
   }
 
-  // Eat food
-  if(headX === food.x && headY === food.y){
-    score++;
-    document.getElementById("score").innerText = score;
+  snake.unshift(head);
 
-    if(score > highScore){
-      highScore = score;
-      localStorage.setItem("mr7_snake_highscore", highScore);
-      document.getElementById("highscore").innerText = highScore;
+  if(head.x===food.x && head.y===food.y){
+    snakeScore++;
+    document.getElementById("snakeScore").innerText=snakeScore;
+
+    if(snakeScore>snakeHigh){
+      snakeHigh=snakeScore;
+      localStorage.setItem("mr7_snake_high",snakeHigh);
+      document.getElementById("snakeHigh").innerText=snakeHigh;
     }
 
-    food = randomFood();
-  } else {
+    food=randomFood();
+  }else{
     snake.pop();
   }
 
-  snake.unshift(newHead);
+  drawSnakeGame();
 }
 
-function gameOver(){
-  alert("Game Over! Score: " + score);
-
-  score = 0;
-  document.getElementById("score").innerText = score;
-
-  snake = [{x: 10*box, y: 10*box}];
-  direction = "RIGHT";
-  food = randomFood();
+function gameOverSnake(){
+  clearInterval(snakeLoop);
+  showPopup("Snake Game Over! Score: "+snakeScore);
 }
 
-setInterval(update, 90);
+function startSnake(){
+  resetSnake();
+  drawSnakeGame();
+  clearInterval(snakeLoop);
+  snakeLoop=setInterval(moveSnake,90);
+}
+
+document.addEventListener("keydown",(e)=>{
+  if(e.key==="ArrowUp" && dir!=="DOWN") dir="UP";
+  if(e.key==="ArrowDown" && dir!=="UP") dir="DOWN";
+  if(e.key==="ArrowLeft" && dir!=="RIGHT") dir="LEFT";
+  if(e.key==="ArrowRight" && dir!=="LEFT") dir="RIGHT";
+});
+
+/* ==========================
+   CAR GAME (BETTER)
+========================== */
+let carCanvas=document.getElementById("carCanvas");
+let cctx=carCanvas.getContext("2d");
+
+let player,enemies=[],carLoop,carScore=0;
+
+let carHigh = localStorage.getItem("mr7_car_high")
+  ? parseInt(localStorage.getItem("mr7_car_high"))
+  : 0;
+
+document.getElementById("carHigh").innerText=carHigh;
+
+function resetCar(){
+  player={x:190,y:420,w:40,h:70,speed:7};
+  enemies=[
+    {x:90,y:-120,w:40,h:70,speed:5},
+    {x:260,y:-420,w:40,h:70,speed:6}
+  ];
+  carScore=0;
+  document.getElementById("carScore").innerText=carScore;
+}
+
+function drawCar(x,y,w,h,color){
+  cctx.shadowBlur=15;
+  cctx.shadowColor=color;
+  cctx.fillStyle=color;
+  cctx.fillRect(x,y,w,h);
+
+  cctx.shadowBlur=0;
+  cctx.fillStyle="#000";
+  cctx.fillRect(x+6,y+10,w-12,25);
+
+  cctx.fillStyle="#66ccff";
+  cctx.fillRect(x+10,y+14,w-20,18);
+
+  cctx.fillStyle="#111";
+  cctx.fillRect(x-6,y+10,8,18);
+  cctx.fillRect(x+w-2,y+10,8,18);
+  cctx.fillRect(x-6,y+h-28,8,18);
+  cctx.fillRect(x+w-2,y+h-28,8,18);
+}
+
+let roadOffset=0;
+
+function drawCarGame(){
+  cctx.clearRect(0,0,carCanvas.width,carCanvas.height);
+
+  // road
+  cctx.fillStyle="#1c1c1c";
+  cctx.fillRect(0,0,carCanvas.width,carCanvas.height);
+
+  // borders
+  cctx.fillStyle="#111";
+  cctx.fillRect(0,0,60,carCanvas.height);
+  cctx.fillRect(carCanvas.width-60,0,60,carCanvas.height);
+
+  // moving line
+  cctx.strokeStyle="white";
+  cctx.lineWidth=4;
+  cctx.setLineDash([20,20]);
+  cctx.beginPath();
+  cctx.moveTo(carCanvas.width/2,roadOffset);
+  cctx.lineTo(carCanvas.width/2,carCanvas.height);
+  cctx.stroke();
+  cctx.setLineDash([]);
+
+  // player
+  drawCar(player.x,player.y,player.w,player.h,"lime");
+
+  // enemies
+  enemies.forEach(e=>{
+    drawCar(e.x,e.y,e.w,e.h,"red");
+  });
+}
+
+function collisionCar(a,b){
+  return (
+    a.x < b.x+b.w &&
+    a.x+a.w > b.x &&
+    a.y < b.y+b.h &&
+    a.y+a.h > b.y
+  );
+}
+
+function updateCar(){
+  roadOffset+=10;
+  if(roadOffset>40) roadOffset=0;
+
+  enemies.forEach(e=>{
+    e.y += e.speed;
+
+    if(collisionCar(player,e)){
+      clearInterval(carLoop);
+      showPopup("Crash! Score: "+carScore);
+    }
+
+    if(e.y>carCanvas.height+80){
+      e.y=-Math.random()*400 - 150;
+      e.x=80 + Math.random()*240;
+      carScore++;
+      document.getElementById("carScore").innerText=carScore;
+
+      if(carScore>carHigh){
+        carHigh=carScore;
+        localStorage.setItem("mr7_car_high",carHigh);
+        document.getElementById("carHigh").innerText=carHigh;
+      }
+    }
+  });
+
+  drawCarGame();
+}
+
+function startCar(){
+  resetCar();
+  drawCarGame();
+  clearInterval(carLoop);
+  carLoop=setInterval(updateCar,30);
+}
+
+document.addEventListener("keydown",(e)=>{
+  if(!player) return;
+  if(e.key==="ArrowLeft") player.x -= player.speed*3;
+  if(e.key==="ArrowRight") player.x += player.speed*3;
+
+  if(player.x<65) player.x=65;
+  if(player.x>carCanvas.width-105) player.x=carCanvas.width-105;
+});
+
+/* ==========================
+   TIC TAC TOE
+========================== */
+let tttBoard=document.getElementById("tttBoard");
+let tttStatus=document.getElementById("tttStatus");
+let tttCells=[],currentPlayer="X";
+
+function createTTT(){
+  tttBoard.innerHTML="";
+  tttCells=new Array(9).fill("");
+  currentPlayer="X";
+  tttStatus.innerText="Player X turn";
+
+  for(let i=0;i<9;i++){
+    let btn=document.createElement("button");
+    btn.style.height="80px";
+    btn.style.fontSize="30px";
+    btn.style.borderRadius="15px";
+    btn.style.border="2px solid lime";
+    btn.style.cursor="pointer";
+    btn.style.background="#111";
+    btn.style.color="lime";
+    btn.innerText="";
+    btn.onclick=()=>playTTT(i,btn);
+    tttBoard.appendChild(btn);
+  }
+}
+createTTT();
+
+function playTTT(i,btn){
+  if(tttCells[i]!=="" ) return;
+
+  tttCells[i]=currentPlayer;
+  btn.innerText=currentPlayer;
+
+  if(checkWin()){
+    tttStatus.innerText="Winner: "+currentPlayer;
+    return;
+  }
+
+  if(tttCells.every(c=>c!=="")){
+    tttStatus.innerText="Draw!";
+    return;
+  }
+
+  currentPlayer = currentPlayer==="X" ? "O" : "X";
+  tttStatus.innerText="Player "+currentPlayer+" turn";
+}
+
+function checkWin(){
+  let w=[
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6]
+  ];
+  return w.some(p=>{
+    return tttCells[p[0]] && tttCells[p[0]]===tttCells[p[1]] && tttCells[p[1]]===tttCells[p[2]];
+  });
+}
+
+function resetTTT(){
+  createTTT();
+}
+
+/* ==========================
+   ACHIEVEMENTS SYSTEM
+========================== */
+function updateAchievements(){
+  let list=document.getElementById("achievementsList");
+
+  let sHigh = localStorage.getItem("mr7_snake_high") || 0;
+  let cHigh = localStorage.getItem("mr7_car_high") || 0;
+
+  let badges=[];
+
+  if(sHigh>=5) badges.push("🐍 Snake Rookie (Score 5+)");
+  if(sHigh>=15) badges.push("🐍 Snake Pro (Score 15+)");
+  if(sHigh>=30) badges.push("🐍 Snake Legend (Score 30+)");
+
+  if(cHigh>=5) badges.push("🚗 Car Rookie (Score 5+)");
+  if(cHigh>=15) badges.push("🚗 Car Pro (Score 15+)");
+  if(cHigh>=30) badges.push("🚗 Car Legend (Score 30+)");
+
+  if(badges.length===0){
+    list.innerHTML="<p style='color:gray;'>No achievements yet. Play games to unlock!</p>";
+  }else{
+    list.innerHTML = badges.map(b=>"<p style='color:lime;font-weight:bold;margin:10px 0;'>✅ "+b+"</p>").join("");
+  }
+}
+updateAchievements();
+
+setInterval(updateAchievements,1500);
 </script>
 
 </body>

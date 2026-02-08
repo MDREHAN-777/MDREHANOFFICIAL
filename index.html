@@ -265,6 +265,15 @@ body.light .bot{color:blue;}
   margin-top:20px;
 }
 
+/* CANVAS */
+canvas{
+  background:#000;
+  border-radius:15px;
+  border:2px solid lime;
+  max-width:100%;
+  touch-action:none;
+}
+
 /* MOBILE FIX */
 @media(max-width:600px){
   #typingTitle{font-size:26px;}
@@ -337,7 +346,7 @@ body.light .bot{color:blue;}
 <!-- AI PAGE -->
 <div id="aiPage" class="section">
   <div class="box">
-    <h2>🤖 MR7 AI (Super Smart Offline)</h2>
+    <h2>🤖 MR7 AI (SUPER SMART)</h2>
 
     <div id="chat"></div>
 
@@ -355,12 +364,35 @@ body.light .bot{color:blue;}
     <h2>🎮 MR7 Games Zone</h2>
 
     <div class="games-grid">
-      <button class="btn" onclick="alert('Games already added 😎🔥')">🐍 Snake Game</button>
-      <button class="btn" onclick="alert('Car game already added 😎🔥')">🚗 Car Racing</button>
-      <button class="btn" onclick="alert('Tic Tac Toe already added 😎🔥')">❌⭕ Tic Tac Toe</button>
+      <button class="btn" onclick="openGame('snakeBox')">🐍 Snake Game</button>
+      <button class="btn" onclick="openGame('carBox')">🚗 Car Racing</button>
+      <button class="btn" onclick="openGame('tttBox')">❌⭕ Tic Tac Toe</button>
     </div>
+  </div>
 
-    <p style="margin-top:15px;color:lime;">(Games code tumhare purane code me already hai)</p>
+  <!-- Snake -->
+  <div id="snakeBox" class="box" style="display:none;">
+    <h2>🐍 Snake Game</h2>
+    <canvas id="snakeCanvas" width="320" height="320"></canvas>
+    <button class="btn" onclick="startSnake()">Start Snake</button>
+    <button class="btn back-btn" onclick="closeGames()">⬅ Back</button>
+  </div>
+
+  <!-- Car -->
+  <div id="carBox" class="box" style="display:none;">
+    <h2>🚗 Car Racing</h2>
+    <canvas id="carCanvas" width="320" height="420"></canvas>
+    <button class="btn" onclick="startCar()">Start Car</button>
+    <button class="btn back-btn" onclick="closeGames()">⬅ Back</button>
+  </div>
+
+  <!-- Tic Tac Toe -->
+  <div id="tttBox" class="box" style="display:none;">
+    <h2>❌⭕ Tic Tac Toe</h2>
+    <div id="tttBoard" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px;"></div>
+    <p id="tttStatus" style="margin-top:10px;color:lime;font-weight:bold;"></p>
+    <button class="btn" onclick="resetTTT()">Restart</button>
+    <button class="btn back-btn" onclick="closeGames()">⬅ Back</button>
   </div>
 
   <button class="btn back-btn" onclick="openSection('mainMenu')">⬅ Back Menu</button>
@@ -380,7 +412,7 @@ body.light .bot{color:blue;}
 </div>
 
 <script>
-/* PRELOADER OFF */
+/* PRELOADER */
 window.addEventListener("load",()=>{
   setTimeout(()=>{
     document.getElementById("preloader").style.display="none";
@@ -538,11 +570,9 @@ function addMsg(text,cls){
   chat.scrollTop=chat.scrollHeight;
 }
 
-/* AI BRAIN */
 function smartAI(q){
   let text=q.toLowerCase().trim();
 
-  // calculator
   if(text.startsWith("calc")){
     try{
       let exp=text.replace("calc","").trim();
@@ -554,72 +584,61 @@ function smartAI(q){
     }
   }
 
-  // greetings
   if(text.includes("hello")||text.includes("hi")||text.includes("namaste")||text.includes("hey"))
     return "Hello Boss 😎🔥 MR7 AI online hai!";
 
-  // identity
   if(text.includes("who are you")||text.includes("tum kaun ho"))
     return "Main MR7 AI hoon 🤖🔥 Main tumhare coding, youtube aur gaming me help karunga!";
 
-  // time date
   if(text.includes("time"))
     return "⏰ Time: " + new Date().toLocaleTimeString();
+
   if(text.includes("date")||text.includes("day"))
     return "📅 Date: " + new Date().toLocaleDateString();
 
-  // coding
-  if(text.includes("html"))
-    return "💻 HTML ek structure language hai. Website ka skeleton HTML se banta hai.";
-  if(text.includes("css"))
-    return "🎨 CSS se website ka design, color, animation aur layout banate hain.";
-  if(text.includes("javascript")||text.includes("js"))
-    return "⚡ JavaScript website ko dynamic banata hai (buttons, AI, games, logic).";
   if(text.includes("python"))
-    return "🐍 Python best language hai AI, automation, web development aur hacking basics ke liye.";
+    return "🐍 Python best hai AI, automation, web dev aur apps banane ke liye.";
 
-  // youtube
+  if(text.includes("html"))
+    return "💻 HTML se website ka structure banta hai. Body, div, h1, p sab HTML hai.";
+
+  if(text.includes("css"))
+    return "🎨 CSS se color, design, animation aur responsive layout banate hain.";
+
+  if(text.includes("javascript")||text.includes("js"))
+    return "⚡ JavaScript website ko interactive banata hai. Games, AI, buttons sab JS se hota hai.";
+
   if(text.includes("youtube") && (text.includes("grow")||text.includes("views")||text.includes("subs")))
     return "🔥 YouTube grow tips: daily upload + trending topic + strong thumbnail + short title + consistency.";
 
   if(text.includes("thumbnail"))
-    return "🎨 Thumbnail tip: Face zoom + bright color + 3 words max + bold outline text.";
+    return "🎨 Thumbnail tip: Bright color + face zoom + 3 words max + bold outline text.";
 
-  if(text.includes("editing")||text.includes("capcut"))
-    return "✂ Editing tip: Fast cuts + beats sync + subtitle + zoom effect = viral chance high.";
-
-  // motivation
-  if(text.includes("motivation")||text.includes("sad")||text.includes("depressed")||text.includes("tension"))
-    return "🔥 Boss tension mat lo! Hard work + discipline = success. Tum ek din pakka bada banoge 😎";
-
-  // football
   if(text.includes("football")||text.includes("ronaldo")||text.includes("messi"))
-    return "⚽ Football tip: Daily 30 min dribbling + 20 min shooting + 10 min stamina running karo.";
+    return "⚽ Football tip: Dribbling practice + cone training + stamina running daily 30 min.";
 
-  // love
+  if(text.includes("motivation")||text.includes("sad")||text.includes("tension"))
+    return "🔥 Boss tension mat lo! Discipline + daily practice = success. Tum ek din top banoge 😎";
+
   if(text.includes("love")||text.includes("girlfriend"))
     return "❤️ Love ka rule: Respect + trust + time. Jaldi decision mat lo boss 😄";
 
-  // study
-  if(text.includes("exam")||text.includes("study")||text.includes("board"))
-    return "📚 Study tip: Daily 2 hour fixed routine + 1 topic + 20 MCQ + revision = top performance.";
+  if(text.includes("study")||text.includes("exam"))
+    return "📚 Study tip: Daily 2 hour fix routine + revision + mock test = strong result.";
 
-  // tech questions
-  if(text.includes("website")||text.includes("web"))
-    return "🌐 Website cool banane ke liye: animations + clean UI + fast loading + mobile responsive zaroori hai.";
+  if(text.includes("game") && text.includes("snake"))
+    return "🐍 Snake game me logic: move direction + food eat + length increase + collision detect.";
 
-  // general question logic
-  if(text.includes("kaise")||text.includes("kyu")||text.includes("kya")||text.includes("how")||text.includes("why")){
-    return "😎 Boss main help kar dunga! Tum question thoda detail me likho (example ke sath) phir main full solution dunga.";
+  if(text.includes("how")||text.includes("kaise")||text.includes("kya")||text.includes("kyu")){
+    return "😎 Boss main help kar dunga! Bas thoda detail me likho, phir main full answer de dunga.";
   }
 
-  // random intelligent answers
   let random=[
-    "🤖 Boss ye interesting hai! Agar tum detail doge toh main best answer de dunga.",
+    "🤖 Boss ye interesting question hai! Detail do toh main best answer dunga.",
     "🔥 MR7 AI says: Consistency hi success ka secret hai 😎",
     "⚡ Tum kuch bada plan kar rahe ho boss! Main ready hoon.",
-    "💡 Tip: Apne goal ko small steps me divide karo, phir daily complete karo.",
-    "😄 Boss ye simple hai, bas mujhe thoda clear batao tum kya karna chahte ho."
+    "💡 Tip: Apne goal ko small steps me divide karo aur daily complete karo.",
+    "😄 Boss ye simple hai, bas thoda clear batao."
   ];
   return random[Math.floor(Math.random()*random.length)];
 }
@@ -641,7 +660,6 @@ function typeAIReply(reply){
   },20);
 }
 
-/* ASK AI */
 function askAI(){
   let q=aiInput.value.trim();
   if(!q) return;
@@ -663,6 +681,305 @@ function clearChat(){
   if(confirm("Clear full chat?")){
     chat.innerHTML="";
   }
+}
+
+/* =======================
+   GAME OPEN
+======================= */
+function openGame(id){
+  document.getElementById("snakeBox").style.display="none";
+  document.getElementById("carBox").style.display="none";
+  document.getElementById("tttBox").style.display="none";
+  document.getElementById(id).style.display="block";
+}
+function closeGames(){
+  document.getElementById("snakeBox").style.display="none";
+  document.getElementById("carBox").style.display="none";
+  document.getElementById("tttBox").style.display="none";
+}
+
+/* =======================
+   SNAKE GAME
+======================= */
+let snakeCanvas=document.getElementById("snakeCanvas");
+let sctx=snakeCanvas.getContext("2d");
+
+let snake,food,dir,snakeInterval;
+
+function resetSnake(){
+  snake=[{x:160,y:160}];
+  food={x:80,y:80};
+  dir="RIGHT";
+}
+
+function drawSnake(){
+  sctx.clearRect(0,0,320,320);
+
+  sctx.fillStyle="red";
+  sctx.fillRect(food.x,food.y,20,20);
+
+  sctx.fillStyle="lime";
+  snake.forEach(part=>{
+    sctx.fillRect(part.x,part.y,20,20);
+  });
+}
+
+function moveSnake(){
+  let head={...snake[0]};
+
+  if(dir==="RIGHT") head.x+=20;
+  if(dir==="LEFT") head.x-=20;
+  if(dir==="UP") head.y-=20;
+  if(dir==="DOWN") head.y+=20;
+
+  if(head.x<0||head.y<0||head.x>=320||head.y>=320){
+    clearInterval(snakeInterval);
+    alert("Game Over 😭");
+    return;
+  }
+
+  for(let i=1;i<snake.length;i++){
+    if(snake[i].x===head.x && snake[i].y===head.y){
+      clearInterval(snakeInterval);
+      alert("Game Over 😭");
+      return;
+    }
+  }
+
+  snake.unshift(head);
+
+  if(head.x===food.x && head.y===food.y){
+    food={
+      x:Math.floor(Math.random()*16)*20,
+      y:Math.floor(Math.random()*16)*20
+    };
+  }else{
+    snake.pop();
+  }
+
+  drawSnake();
+}
+
+function startSnake(){
+  resetSnake();
+  drawSnake();
+  clearInterval(snakeInterval);
+  snakeInterval=setInterval(moveSnake,140);
+}
+
+document.addEventListener("keydown",(e)=>{
+  if(e.key==="ArrowUp" && dir!=="DOWN") dir="UP";
+  if(e.key==="ArrowDown" && dir!=="UP") dir="DOWN";
+  if(e.key==="ArrowLeft" && dir!=="RIGHT") dir="LEFT";
+  if(e.key==="ArrowRight" && dir!=="LEFT") dir="RIGHT";
+});
+
+let startX=0,startY=0;
+snakeCanvas.addEventListener("touchstart",(e)=>{
+  startX=e.touches[0].clientX;
+  startY=e.touches[0].clientY;
+});
+snakeCanvas.addEventListener("touchend",(e)=>{
+  let endX=e.changedTouches[0].clientX;
+  let endY=e.changedTouches[0].clientY;
+  let dx=endX-startX;
+  let dy=endY-startY;
+
+  if(Math.abs(dx)>Math.abs(dy)){
+    if(dx>0 && dir!=="LEFT") dir="RIGHT";
+    if(dx<0 && dir!=="RIGHT") dir="LEFT";
+  }else{
+    if(dy>0 && dir!=="UP") dir="DOWN";
+    if(dy<0 && dir!=="DOWN") dir="UP";
+  }
+});
+
+/* =======================
+   CAR GAME
+======================= */
+let carCanvas=document.getElementById("carCanvas");
+let cctx=carCanvas.getContext("2d");
+
+let playerCar, enemies, carScore, carInterval;
+
+function resetCar(){
+  playerCar={x:140,y:320,w:40,h:70,speed:6};
+  enemies=[
+    {x:60,y:-120,w:40,h:70,speed:5},
+    {x:220,y:-400,w:40,h:70,speed:6}
+  ];
+  carScore=0;
+}
+
+function drawRealCar(x,y,w,h,color){
+  cctx.fillStyle=color;
+  cctx.fillRect(x,y,w,h);
+
+  cctx.fillStyle="black";
+  cctx.fillRect(x+6,y+10,w-12,h/3);
+
+  cctx.fillStyle="#66ccff";
+  cctx.fillRect(x+10,y+14,w-20,18);
+
+  cctx.fillStyle="#111";
+  cctx.fillRect(x-6,y+10,8,18);
+  cctx.fillRect(x+w-2,y+10,8,18);
+  cctx.fillRect(x-6,y+h-28,8,18);
+  cctx.fillRect(x+w-2,y+h-28,8,18);
+
+  cctx.fillStyle="yellow";
+  cctx.fillRect(x+5,y+h-6,8,6);
+  cctx.fillRect(x+w-13,y+h-6,8,6);
+}
+
+function drawCarGame(){
+  cctx.clearRect(0,0,320,420);
+
+  cctx.fillStyle="#2a2a2a";
+  cctx.fillRect(0,0,320,420);
+
+  cctx.fillStyle="#111";
+  cctx.fillRect(0,0,40,420);
+  cctx.fillRect(280,0,40,420);
+
+  cctx.strokeStyle="white";
+  cctx.lineWidth=4;
+  cctx.setLineDash([20,20]);
+  cctx.beginPath();
+  cctx.moveTo(160,0);
+  cctx.lineTo(160,420);
+  cctx.stroke();
+  cctx.setLineDash([]);
+
+  cctx.fillStyle="yellow";
+  cctx.font="bold 18px Arial";
+  cctx.fillText("Score: "+carScore,15,30);
+
+  drawRealCar(playerCar.x,playerCar.y,playerCar.w,playerCar.h,"lime");
+
+  enemies.forEach(e=>{
+    drawRealCar(e.x,e.y,e.w,e.h,"red");
+  });
+}
+
+function updateCarGame(){
+  enemies.forEach(e=>{
+    e.y += e.speed;
+
+    if(playerCar.x < e.x+e.w &&
+       playerCar.x+playerCar.w > e.x &&
+       playerCar.y < e.y+e.h &&
+       playerCar.y+playerCar.h > e.y){
+      clearInterval(carInterval);
+      alert("💥 Crash! Game Over! Score: "+carScore);
+    }
+
+    if(e.y>450){
+      e.y = -Math.random()*300 - 100;
+      e.x = 60 + Math.random()*160;
+      carScore++;
+    }
+  });
+
+  drawCarGame();
+}
+
+function startCar(){
+  resetCar();
+  drawCarGame();
+  clearInterval(carInterval);
+  carInterval=setInterval(updateCarGame,30);
+}
+
+document.addEventListener("keydown",(e)=>{
+  if(!playerCar) return;
+
+  if(e.key==="ArrowLeft") playerCar.x -= playerCar.speed*3;
+  if(e.key==="ArrowRight") playerCar.x += playerCar.speed*3;
+
+  if(playerCar.x<45) playerCar.x=45;
+  if(playerCar.x>235) playerCar.x=235;
+});
+
+carCanvas.addEventListener("touchstart",(e)=>{
+  startX=e.touches[0].clientX;
+});
+carCanvas.addEventListener("touchmove",(e)=>{
+  if(!playerCar) return;
+
+  let x=e.touches[0].clientX;
+  let diff=x-startX;
+
+  playerCar.x += diff*0.2;
+  startX=x;
+
+  if(playerCar.x<45) playerCar.x=45;
+  if(playerCar.x>235) playerCar.x=235;
+});
+
+/* =======================
+   TIC TAC TOE
+======================= */
+let tttBoard=document.getElementById("tttBoard");
+let tttStatus=document.getElementById("tttStatus");
+let tttCells=[],currentPlayer="X";
+
+function createTTT(){
+  tttBoard.innerHTML="";
+  tttCells=new Array(9).fill("");
+  currentPlayer="X";
+  tttStatus.innerText="Player X turn";
+
+  for(let i=0;i<9;i++){
+    let btn=document.createElement("button");
+    btn.style.height="80px";
+    btn.style.fontSize="30px";
+    btn.style.borderRadius="15px";
+    btn.style.border="2px solid lime";
+    btn.style.cursor="pointer";
+    btn.style.background="#111";
+    btn.style.color="lime";
+    btn.innerText="";
+
+    btn.onclick=()=>playTTT(i,btn);
+    tttBoard.appendChild(btn);
+  }
+}
+createTTT();
+
+function playTTT(i,btn){
+  if(tttCells[i]!=="" ) return;
+
+  tttCells[i]=currentPlayer;
+  btn.innerText=currentPlayer;
+
+  if(checkWin()){
+    tttStatus.innerText="🏆 Player "+currentPlayer+" Wins!";
+    return;
+  }
+
+  if(tttCells.every(c=>c!=="")){
+    tttStatus.innerText="😐 Draw!";
+    return;
+  }
+
+  currentPlayer = currentPlayer==="X" ? "O" : "X";
+  tttStatus.innerText="Player "+currentPlayer+" turn";
+}
+
+function checkWin(){
+  let w=[
+    [0,1,2],[3,4,5],[6,7,8],
+    [0,3,6],[1,4,7],[2,5,8],
+    [0,4,8],[2,4,6]
+  ];
+  return w.some(p=>{
+    return tttCells[p[0]] && tttCells[p[0]]===tttCells[p[1]] && tttCells[p[1]]===tttCells[p[2]];
+  });
+}
+
+function resetTTT(){
+  createTTT();
 }
 </script>
 

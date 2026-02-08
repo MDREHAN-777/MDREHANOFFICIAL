@@ -1,1300 +1,1174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MR7 WORLD - OFFICIAL</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MR7 WORLD - Official</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
- font-family:Segoe UI, sans-serif;
- background:#111;
- color:#eee;
- text-align:center;
- padding:15px;
- overflow-x:hidden;
- transition:.4s;
-}
+    :root{
+        --bg:#050805;
+        --panel:#0b120b;
+        --green:#00ff3c;
+        --green2:#00cc30;
+        --text:#eaffea;
+        --muted:#9cffb2;
+        --danger:#ff3b3b;
+        --shadow: 0 0 25px rgba(0,255,60,.35);
+        --shadow2: 0 0 60px rgba(0,255,60,.25);
+        --radius:18px;
+        --card:#071007;
+    }
 
-/* BACKGROUND */
-body::before{
- content:"";
- position:fixed;
- top:0;left:0;
- width:100%;height:100%;
- z-index:-2;
- background:linear-gradient(120deg,#0f0f0f,#003300,#000000,#001a00);
- background-size:400% 400%;
- animation:bgMove 10s infinite alternate;
- opacity:.25;
-}
-@keyframes bgMove{
- 0%{background-position:0% 50%}
- 50%{background-position:100% 50%}
- 100%{background-position:0% 50%}
-}
+    body{
+        margin:0;
+        font-family:Segoe UI, Arial, sans-serif;
+        background: radial-gradient(circle at top, #061506, #020402 70%);
+        color:var(--text);
+        overflow-x:hidden;
+    }
 
-body.dark-mode{
- background:#111;
- color:#eee;
-}
+    .container{
+        max-width:1100px;
+        margin:auto;
+        padding:20px;
+    }
 
-/* LIGHT MODE */
-body.light-mode{
- background:#fff;
- color:#111;
-}
-body.light-mode #chat{
- background:#f5f5f5;
- color:#111;
-}
-body.light-mode .neon-inner{
- background:rgba(255,255,255,.8);
- color:#111;
-}
-body.light-mode .card{
- background:rgba(255,255,255,.9);
- color:#111;
-}
-body.light-mode .tttCell{
- background:#fff;
- color:green;
-}
+    .topBar{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:15px;
+    }
 
-/* SCROLL BAR */
-#scrollBar{
- position:fixed;
- top:0;left:0;
- height:5px;
- width:0%;
- background:lime;
- z-index:99999;
- box-shadow:0 0 15px lime;
-}
+    .logo{
+        font-size:28px;
+        font-weight:800;
+        color:var(--green);
+        text-shadow:var(--shadow);
+        letter-spacing:1px;
+    }
 
-/* LOADER */
-#loader{
- position:fixed;
- top:0;left:0;
- width:100%;height:100%;
- background:#000;
- display:flex;
- justify-content:center;
- align-items:center;
- flex-direction:column;
- z-index:9999;
- color:white;
- font-size:22px;
-}
-.loader-circle{
- width:80px;height:80px;
- border:6px solid #444;
- border-top:6px solid lime;
- border-radius:50%;
- animation:spin 1s linear infinite;
- margin-bottom:15px;
-}
-#loadPercent{
- font-size:18px;
- margin-top:10px;
- color:lime;
- font-weight:bold;
-}
-@keyframes spin{
- 0%{transform:rotate(0deg)}
- 100%{transform:rotate(360deg)}
-}
+    .modeBtn{
+        background:var(--green);
+        color:black;
+        border:none;
+        padding:10px 18px;
+        border-radius:30px;
+        font-weight:700;
+        cursor:pointer;
+        box-shadow:var(--shadow);
+        transition:.2s;
+    }
+    .modeBtn:hover{ transform:scale(1.05); }
 
-/* NOTIFICATION */
-#notify{
- position:fixed;
- top:80px;
- right:15px;
- background:black;
- color:lime;
- padding:12px 18px;
- border-radius:15px;
- display:none;
- box-shadow:0 0 20px rgba(0,255,0,.6);
- z-index:99999;
- animation:pop .4s ease;
-}
-@keyframes pop{
- from{transform:scale(.9);opacity:.4}
- to{transform:scale(1);opacity:1}
-}
+    .mainCard{
+        background:rgba(0,0,0,.55);
+        border:2px solid var(--green);
+        border-radius:var(--radius);
+        box-shadow:var(--shadow2);
+        padding:18px;
+        min-height:70vh;
+        position:relative;
+    }
 
-/* DARK BUTTON */
-.dark-toggle{
- position:fixed;
- top:15px;right:15px;
- background:green;
- color:white;
- border:none;
- padding:10px 18px;
- border-radius:30px;
- cursor:pointer;
- z-index:999;
- font-size:14px;
- transition:.3s;
-}
-.dark-toggle:hover{transform:scale(1.05);}
+    .title{
+        text-align:center;
+        font-size:26px;
+        font-weight:900;
+        margin:5px 0 20px;
+        text-shadow:var(--shadow);
+    }
 
-/* MENU */
-.menu{
- position:fixed;
- top:15px;left:15px;
- font-size:30px;
- cursor:pointer;
- z-index:1000;
- user-select:none;
-}
-.menu-box{
- position:fixed;
- top:60px;left:15px;
- background:#222;
- padding:12px;
- border-radius:12px;
- display:none;
- box-shadow:0 0 20px rgba(0,255,0,.5);
- z-index:1000;
- max-height:80vh;
- overflow:auto;
-}
-.menu-box button{
- width:210px;
- margin:6px 0;
- padding:10px;
- border:none;
- border-radius:10px;
- background:#333;
- color:white;
- cursor:pointer;
- transition:.3s;
- font-size:15px;
-}
-.menu-box button:hover{
- background:green;
- transform:scale(1.05);
-}
+    .grid{
+        display:grid;
+        grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+        gap:16px;
+    }
 
-/* SECTIONS */
-.section{
- display:none;
- animation:fadeIn .5s ease;
- padding:20px 10px;
-}
-.section.active{display:block;}
-@keyframes fadeIn{
- from{opacity:0;transform:translateY(15px)}
- to{opacity:1;transform:translateY(0)}
-}
+    .cardBtn{
+        background:linear-gradient(180deg, rgba(0,255,60,.12), rgba(0,0,0,.65));
+        border:2px solid rgba(0,255,60,.7);
+        border-radius:16px;
+        padding:18px;
+        cursor:pointer;
+        transition:.2s;
+        box-shadow:0 0 25px rgba(0,255,60,.15);
+        text-align:left;
+    }
+    .cardBtn:hover{
+        transform:translateY(-5px);
+        box-shadow:0 0 35px rgba(0,255,60,.35);
+    }
 
-/* NEON BOX */
-.neon-box{
- max-width:520px;
- margin:20px auto;
- border-radius:20px;
- overflow:hidden;
- position:relative;
-}
-.neon-box::before{
- content:"";
- position:absolute;
- top:-2px;left:-2px;
- width:calc(100% + 4px);
- height:calc(100% + 4px);
- background:linear-gradient(90deg,lime,green,lime,cyan,lime);
- background-size:400% 400%;
- animation:neonMove 4s infinite linear;
- z-index:-1;
-}
-@keyframes neonMove{
- 0%{background-position:0% 50%}
- 50%{background-position:100% 50%}
- 100%{background-position:0% 50%}
-}
-.neon-inner{
- background:rgba(0,0,0,.6);
- padding:18px;
- border-radius:20px;
-}
+    .cardBtn h3{
+        margin:0;
+        color:var(--green);
+        font-size:18px;
+        font-weight:900;
+    }
+    .cardBtn p{
+        margin:8px 0 0;
+        color:var(--muted);
+        font-size:14px;
+        line-height:1.3;
+    }
 
-/* BUTTON */
-.btn{
- background:green;
- color:white;
- padding:12px;
- width:100%;
- border:none;
- border-radius:12px;
- cursor:pointer;
- margin-top:10px;
- font-size:16px;
- transition:.3s;
-}
-.btn:hover{
- transform:scale(1.03);
- box-shadow:0 0 20px lime;
-}
+    .hidden{ display:none; }
 
-/* YOUTUBE BUTTON */
-.yt-button{
- background:red;
- color:white;
- padding:14px 40px;
- border:none;
- border-radius:50px;
- cursor:pointer;
- font-size:18px;
- margin-top:15px;
- transition:.3s;
-}
-.yt-button:hover{transform:scale(1.08);}
+    .backBtn{
+        margin-top:18px;
+        display:flex;
+        justify-content:center;
+    }
+    .backBtn button{
+        padding:10px 18px;
+        border-radius:12px;
+        border:none;
+        background:#3a3a3a;
+        color:white;
+        font-weight:700;
+        cursor:pointer;
+        transition:.2s;
+    }
+    .backBtn button:hover{ transform:scale(1.05); }
 
-/* PROFILE */
-.profile-pic{
- width:170px;
- height:170px;
- border-radius:50%;
- border:5px solid lime;
- box-shadow:0 0 25px lime;
- margin-top:15px;
- transition:.3s;
-}
-.profile-pic:hover{transform:scale(1.07);}
+    /* 3 DOT MENU */
+    .menuBtn{
+        width:50px;
+        height:50px;
+        border-radius:50%;
+        background:rgba(0,255,60,.18);
+        border:2px solid var(--green);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        cursor:pointer;
+        box-shadow:var(--shadow);
+        transition:.2s;
+    }
+    .menuBtn:hover{ transform:scale(1.05); }
 
-/* TITLE */
-#typingTitle{
- font-size:30px;
- font-weight:bold;
- color:lime;
- text-shadow:0 0 10px rgba(0,255,0,.6);
- margin-top:15px;
-}
+    .dots{
+        font-size:26px;
+        color:var(--green);
+        font-weight:900;
+        transform:rotate(90deg);
+        user-select:none;
+    }
 
-/* INPUTS */
-input,textarea{
- width:95%;
- padding:12px;
- margin-top:8px;
- border-radius:10px;
- border:1px solid #aaa;
- outline:none;
- font-size:15px;
-}
-input:focus,textarea:focus{
- border:1px solid lime;
- box-shadow:0 0 10px rgba(0,255,0,.6);
-}
+    .menuBox{
+        position:absolute;
+        top:70px;
+        left:20px;
+        background:rgba(0,0,0,.9);
+        border:2px solid var(--green);
+        border-radius:14px;
+        padding:10px;
+        box-shadow:var(--shadow2);
+        width:170px;
+        z-index:99;
+    }
+    .menuBox button{
+        width:100%;
+        padding:10px;
+        margin:6px 0;
+        background:rgba(0,255,60,.15);
+        border:1px solid rgba(0,255,60,.6);
+        color:var(--text);
+        border-radius:10px;
+        cursor:pointer;
+        font-weight:800;
+    }
+    .menuBox button:hover{
+        background:rgba(0,255,60,.3);
+    }
 
-/* CHAT */
-#chat{
- text-align:left;
- max-height:300px;
- overflow-y:auto;
- background:#222;
- border-radius:12px;
- padding:10px;
- margin-top:10px;
- border:1px solid #555;
- white-space:pre-line;
-}
-.user{
- background:#133a20;
- color:#00ff88;
- padding:8px;
- border-radius:10px;
- margin:6px 0;
-}
-.bot{
- background:#0e2b44;
- color:#6bbcff;
- padding:8px;
- border-radius:10px;
- margin:6px 0;
-}
-#typingAI{
- display:none;
- color:gray;
- font-style:italic;
- margin-top:8px;
-}
+    /* LOGIN */
+    .loginWrap{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        min-height:90vh;
+    }
 
-/* GAME CANVAS */
-canvas{
- background:black;
- border:3px solid lime;
- border-radius:12px;
- margin-top:15px;
- width:100%;
- max-width:400px;
- height:auto;
- touch-action:none;
-}
+    .loginCard{
+        width:380px;
+        background:rgba(0,0,0,.75);
+        border:2px solid var(--green);
+        border-radius:18px;
+        padding:22px;
+        box-shadow:var(--shadow2);
+    }
 
-/* TIC TAC TOE */
-#tttBoard{
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:8px;
- max-width:320px;
- margin:15px auto;
-}
-.tttCell{
- background:#111;
- border:2px solid lime;
- border-radius:10px;
- height:90px;
- font-size:40px;
- color:lime;
- display:flex;
- justify-content:center;
- align-items:center;
- cursor:pointer;
- transition:.2s;
- user-select:none;
-}
-.tttCell:hover{transform:scale(1.05);}
+    .loginCard h2{
+        margin:0 0 15px;
+        color:var(--green);
+        text-align:center;
+        font-size:24px;
+        font-weight:900;
+        text-shadow:var(--shadow);
+    }
 
-/* GAME ZONE CARDS */
-.cards{
- display:flex;
- flex-wrap:wrap;
- justify-content:center;
- gap:15px;
- margin-top:15px;
-}
-.card{
- width:160px;
- padding:15px;
- border-radius:15px;
- background:rgba(0,0,0,.5);
- border:1px solid lime;
- color:white;
- box-shadow:0 0 15px rgba(0,255,0,.3);
- cursor:pointer;
- transition:.3s;
- user-select:none;
-}
-.card:hover{
- transform:translateY(-6px) scale(1.05);
- box-shadow:0 0 25px lime;
-}
+    .loginCard input{
+        width:100%;
+        padding:12px;
+        border-radius:12px;
+        border:1px solid rgba(0,255,60,.6);
+        background:rgba(0,0,0,.65);
+        color:var(--text);
+        outline:none;
+        margin-bottom:12px;
+        font-size:14px;
+    }
 
-/* MOBILE SNAKE BUTTONS */
-.snake-controls{
- display:flex;
- justify-content:center;
- align-items:center;
- flex-direction:column;
- gap:10px;
- margin-top:15px;
-}
-.snake-row{
- display:flex;
- gap:10px;
- justify-content:center;
-}
-.control-btn{
- width:70px;
- height:55px;
- border:none;
- border-radius:12px;
- background:#111;
- color:lime;
- border:2px solid lime;
- font-size:20px;
- cursor:pointer;
- transition:.2s;
-}
-.control-btn:active{
- transform:scale(0.95);
- background:green;
- color:white;
-}
+    .loginCard button{
+        width:100%;
+        padding:12px;
+        border-radius:12px;
+        border:none;
+        background:var(--green);
+        color:black;
+        font-weight:900;
+        cursor:pointer;
+        box-shadow:var(--shadow);
+        font-size:15px;
+    }
+    .loginCard button:hover{ background:var(--green2); }
 
-/* MOBILE */
-@media(max-width:600px){
- #typingTitle{font-size:26px;}
- .menu-box button{width:200px;}
- .card{width:140px;}
- .tttCell{height:80px;font-size:36px;}
-}
+    .error{
+        color:var(--danger);
+        font-weight:800;
+        text-align:center;
+        margin-top:10px;
+    }
+
+    /* AI CHAT */
+    .chatBox{
+        background:rgba(0,0,0,.6);
+        border:2px solid rgba(0,255,60,.7);
+        border-radius:16px;
+        padding:12px;
+        height:320px;
+        overflow-y:auto;
+        box-shadow:0 0 25px rgba(0,255,60,.15);
+    }
+
+    .msg{
+        padding:10px 12px;
+        border-radius:14px;
+        margin:8px 0;
+        font-weight:700;
+        line-height:1.4;
+        max-width:95%;
+        word-wrap:break-word;
+    }
+
+    .userMsg{
+        background:rgba(0,255,60,.12);
+        border:1px solid rgba(0,255,60,.5);
+        color:var(--muted);
+    }
+
+    .aiMsg{
+        background:rgba(0,120,255,.15);
+        border:1px solid rgba(0,120,255,.4);
+        color:#cde7ff;
+    }
+
+    .inputRow{
+        display:flex;
+        gap:10px;
+        margin-top:12px;
+    }
+    .inputRow input{
+        flex:1;
+        padding:12px;
+        border-radius:12px;
+        border:1px solid rgba(0,255,60,.5);
+        background:rgba(0,0,0,.65);
+        color:var(--text);
+        outline:none;
+    }
+    .inputRow button{
+        padding:12px 16px;
+        border-radius:12px;
+        border:none;
+        background:var(--green);
+        font-weight:900;
+        cursor:pointer;
+        box-shadow:var(--shadow);
+    }
+
+    /* GAME CANVAS */
+    canvas{
+        background:#111;
+        border:2px solid var(--green);
+        border-radius:14px;
+        box-shadow:0 0 30px rgba(0,255,60,.25);
+        max-width:100%;
+    }
+
+    .gameRow{
+        display:flex;
+        justify-content:center;
+        flex-direction:column;
+        align-items:center;
+        gap:10px;
+    }
+
+    .gameInfo{
+        color:var(--muted);
+        font-weight:800;
+        text-align:center;
+    }
+
+    .bigBtn{
+        padding:12px 20px;
+        border:none;
+        background:var(--green);
+        font-weight:900;
+        border-radius:12px;
+        cursor:pointer;
+        box-shadow:var(--shadow);
+    }
+
+    /* LIGHT MODE */
+    body.light{
+        background:#f4fff4;
+        color:#111;
+    }
+    body.light .mainCard,
+    body.light .loginCard{
+        background:white;
+        color:black;
+    }
+    body.light .chatBox{
+        background:#f8fff8;
+    }
+    body.light .aiMsg{
+        color:#000;
+    }
 </style>
 </head>
 
 <body>
 
-<div id="scrollBar"></div>
-
-<div id="loader">
-  <div class="loader-circle"></div>
-  <div>Welcome to MR7 WORLD 🔥</div>
-  <div id="loadPercent">0%</div>
+<!-- LOGIN SCREEN -->
+<div id="loginScreen" class="loginWrap">
+    <div class="loginCard">
+        <h2>🔐 MR7 LOGIN</h2>
+        <input id="email" type="email" placeholder="Enter Real Email" />
+        <input id="password" type="password" placeholder="Enter Password" />
+        <button onclick="login()">LOGIN</button>
+        <div id="loginError" class="error"></div>
+        <p style="text-align:center;color:#88ff9c;font-weight:700;margin-top:12px;">
+            Default: <b>mr7@gmail.com</b> | Pass: <b>mr7</b>
+        </p>
+    </div>
 </div>
 
-<div id="notify">🔥 Ready!</div>
+<!-- MAIN WEBSITE -->
+<div id="site" class="container hidden">
 
-<div class="menu" onclick="toggleMenu()">⋮</div>
-<div class="menu-box" id="menuBox">
- <button onclick="openPage('home')">🏠 Home</button>
- <button onclick="openPage('login')">🔐 Login</button>
- <button onclick="openPage('ai')">🤖 MR7 AI</button>
- <button onclick="openPage('calculator')">🧮 Calculator</button>
- <button onclick="openPage('games')">🎮 Game Zone</button>
- <button onclick="openPage('snake')">🐍 Snake Game</button>
- <button onclick="openPage('tictactoe')">❌⭕ Tic Tac Toe</button>
- <button onclick="openPage('race')">🏎 Car Racing</button>
- <button onclick="openPage('contact')">📞 Contact</button>
-</div>
+    <div class="topBar">
+        <div class="menuBtn" id="menuBtn" onclick="toggleMenu()">
+            <div class="dots">⋮</div>
+        </div>
 
-<button class="dark-toggle" onclick="toggleDark()">🌙 Mode</button>
+        <div class="logo">⚡ MR7 WORLD</div>
 
-<!-- HOME -->
-<div id="home" class="section active">
-<h1 id="typingTitle"></h1>
-<h2>- MD -</h2>
-<h3>- REHAN -</h3>
+        <button class="modeBtn" onclick="toggleMode()">🌙 Mode</button>
+    </div>
 
-<a href="https://www.youtube.com/@MR7OFFICIAL777" target="_blank">
-<button class="yt-button">SUBSCRIBE</button>
-</a>
+    <div id="menuBox" class="menuBox hidden">
+        <button onclick="openPage('home')">🏠 Home</button>
+        <button onclick="openPage('leaderboard')">🏆 Leaderboard</button>
+        <button onclick="logout()">🚪 Logout</button>
+    </div>
 
-<p style="margin-top:10px;">👆🏻 CLICK HERE ☝🏻</p>
-<img src="rehan.png" class="profile-pic">
+    <div class="mainCard">
 
-<div class="neon-box">
-<div class="neon-inner">
-<h2 style="color:lime;">🔥 MR7 WORLD FEATURES</h2>
-<p style="color:white;margin-top:10px;line-height:1.6;">
-✅ Smart Offline AI (ChatGPT Style) <br>
-✅ Login System <br>
-✅ Calculator Mode <br>
-✅ Game Zone (Snake + TicTacToe + Racing) <br>
-✅ Mobile Responsive Pro UI <br>
-</p>
-</div>
-</div>
-</div>
+        <!-- HOME PAGE -->
+        <div id="homePage">
+            <div class="title">🔥 Welcome to MR7 FUTURE WORLD</div>
 
-<!-- LOGIN -->
-<div id="login" class="section">
-<div class="neon-box">
-<div class="neon-inner">
-<h2 style="color:lime;">🔐 MR7 Login System</h2>
-<input id="loginUser" placeholder="Enter Username">
-<input id="loginPass" type="password" placeholder="Enter Password">
-<button class="btn" onclick="doLogin()">Login</button>
-<button class="btn" onclick="doLogout()">Logout</button>
-<p id="loginStatus" style="margin-top:10px;color:lime;font-weight:bold;"></p>
-</div>
-</div>
-</div>
+            <div class="grid">
+                <div class="cardBtn" onclick="openPage('ai')">
+                    <h3>🤖 MR7 AI</h3>
+                    <p>Smart Offline AI + Commands + Quiz Mode</p>
+                </div>
 
-<!-- AI -->
-<div id="ai" class="section">
-<div class="neon-box">
-<div class="neon-inner">
-<h2 style="color:lime;">🤖 MR7 AI PRO (Offline)</h2>
+                <div class="cardBtn" onclick="openPage('games')">
+                    <h3>🎮 Games Zone</h3>
+                    <p>Car, Snake, Dino, Flappy, Shooter & More</p>
+                </div>
 
-<div id="chat"></div>
-<div id="typingAI">AI typing...</div>
+                <div class="cardBtn" onclick="openPage('quiz')">
+                    <h3>🧠 Quiz Game</h3>
+                    <p>Answer questions & win points</p>
+                </div>
 
-<input id="aiInput" placeholder="Ask anything... (Hindi/English)">
-<button class="btn" onclick="askAI()">Send</button>
-<button class="btn" onclick="clearChat()">Clear Chat</button>
-<button class="btn" onclick="downloadChat()">Download Chat</button>
+                <div class="cardBtn" onclick="openPage('contact')">
+                    <h3>📞 Help / Contact</h3>
+                    <p>Support and information page</p>
+                </div>
+            </div>
 
-</div>
-</div>
-</div>
+            <div style="margin-top:20px;text-align:center;color:#9cffb2;font-weight:900;">
+                👁 Visitors: <span id="visitorCount">0</span>
+            </div>
+        </div>
 
-<!-- CALCULATOR -->
-<div id="calculator" class="section">
-<div class="neon-box">
-<div class="neon-inner">
-<h2 style="color:lime;">🧮 MR7 Calculator Mode</h2>
-<input id="calcInput" placeholder="Example: 25+10*2">
-<button class="btn" onclick="calculate()">Calculate</button>
-<h3 id="calcResult" style="margin-top:10px;color:lime;"></h3>
-</div>
-</div>
-</div>
+        <!-- AI PAGE -->
+        <div id="aiPage" class="hidden">
+            <div class="title">🤖 MR7 AI (Smart Offline)</div>
 
-<!-- GAME ZONE -->
-<div id="games" class="section">
-<div class="neon-box">
-<div class="neon-inner">
-<h2 style="color:lime;">🎮 MR7 GAME ZONE</h2>
-<p style="color:white;margin-top:8px;">Choose a game and enjoy 😎🔥</p>
+            <div id="chatBox" class="chatBox"></div>
 
-<div class="cards">
-  <div class="card" onclick="openPage('snake')">🐍 Snake</div>
-  <div class="card" onclick="openPage('tictactoe')">❌⭕ Tic Tac Toe</div>
-  <div class="card" onclick="openPage('race')">🏎 Car Racing</div>
-</div>
+            <div class="inputRow">
+                <input id="userInput" placeholder="Ask anything..." />
+                <button onclick="sendMsg()">Send</button>
+                <button onclick="clearChat()">Clear</button>
+            </div>
 
-</div>
-</div>
-</div>
+            <p style="text-align:center;color:#88ff9c;font-weight:800;margin-top:10px;">
+                Example: <b>calc 50+20</b>, <b>news</b>, <b>weather kolkata</b>, <b>joke</b>, <b>quiz</b>
+            </p>
 
-<!-- SNAKE GAME -->
-<div id="snake" class="section">
-<div class="neon-box">
-<div class="neon-inner">
-<h2 style="color:lime;">🐍 Snake Game (Mobile Fixed)</h2>
+            <div class="backBtn"><button onclick="openPage('home')">⬅ Back</button></div>
+        </div>
 
-<canvas id="snakeCanvas" width="400" height="400"></canvas>
+        <!-- GAMES PAGE -->
+        <div id="gamesPage" class="hidden">
+            <div class="title">🎮 MR7 Games Zone</div>
 
-<button class="btn" onclick="startSnake()">▶ Start</button>
-<button class="btn" onclick="pauseSnake()">⏸ Pause</button>
-<button class="btn" onclick="resetSnake()">🔄 Reset</button>
+            <div class="grid">
+                <div class="cardBtn" onclick="openPage('snake')">
+                    <h3>🐍 Snake Game</h3>
+                    <p>Real snake + sound + highscore</p>
+                </div>
 
-<h3 id="snakeScore" style="margin-top:10px;color:lime;">Score: 0</h3>
+                <div class="cardBtn" onclick="openPage('car')">
+                    <h3>🚗 Car Racing</h3>
+                    <p>Real car + enemy cars + crash sound</p>
+                </div>
 
-<div class="snake-controls">
-  <div class="snake-row">
-    <button class="control-btn" ontouchstart="setDir('up')" onclick="setDir('up')">⬆</button>
-  </div>
-  <div class="snake-row">
-    <button class="control-btn" ontouchstart="setDir('left')" onclick="setDir('left')">⬅</button>
-    <button class="control-btn" ontouchstart="setDir('down')" onclick="setDir('down')">⬇</button>
-    <button class="control-btn" ontouchstart="setDir('right')" onclick="setDir('right')">➡</button>
-  </div>
-</div>
+                <div class="cardBtn" onclick="openPage('dino')">
+                    <h3>🦖 Dino Jump</h3>
+                    <p>Jump & survive (like Chrome dino)</p>
+                </div>
 
-<p style="color:white;margin-top:10px;font-size:14px;">
-📱 Mobile: Swipe or buttons <br>
-⌨ PC: Arrow keys
-</p>
+                <div class="cardBtn" onclick="openPage('flappy')">
+                    <h3>🐦 Flappy Bird</h3>
+                    <p>Tap to fly and avoid pipes</p>
+                </div>
+            </div>
 
-</div>
-</div>
-</div>
+            <div class="backBtn"><button onclick="openPage('home')">⬅ Back</button></div>
+        </div>
 
-<!-- TIC TAC TOE -->
-<div id="tictactoe" class="section">
-<div class="neon-box">
-<div class="neon-inner">
-<h2 style="color:lime;">❌⭕ Tic Tac Toe</h2>
-<div id="tttBoard"></div>
-<h3 id="tttStatus" style="margin-top:10px;color:lime;">Player X Turn</h3>
-<button class="btn" onclick="resetTTT()">🔄 Reset</button>
-</div>
-</div>
-</div>
+        <!-- CONTACT PAGE -->
+        <div id="contactPage" class="hidden">
+            <div class="title">📞 Help / Contact</div>
+            <p style="text-align:center;color:#9cffb2;font-weight:800;">
+                MR7 Official Support<br><br>
+                📧 Email: <b>support@mr7world.com</b><br>
+                🌐 Website: <b>MR7 WORLD</b><br><br>
+                🔥 Future updates coming soon!
+            </p>
+            <div class="backBtn"><button onclick="openPage('home')">⬅ Back</button></div>
+        </div>
 
-<!-- CAR RACING -->
-<div id="race" class="section">
-<div class="neon-box">
-<div class="neon-inner">
-<h2 style="color:lime;">🏎 Car Racing Mini</h2>
+        <!-- LEADERBOARD PAGE -->
+        <div id="leaderboardPage" class="hidden">
+            <div class="title">🏆 Leaderboard</div>
+            <p style="text-align:center;font-weight:900;color:#9cffb2;">
+                Snake Highscore: <span id="snakeHigh">0</span><br><br>
+                Car Highscore: <span id="carHigh">0</span><br><br>
+                Dino Highscore: <span id="dinoHigh">0</span><br><br>
+                Flappy Highscore: <span id="flappyHigh">0</span>
+            </p>
+            <div class="backBtn"><button onclick="openPage('home')">⬅ Back</button></div>
+        </div>
 
-<canvas id="raceCanvas" width="400" height="500"></canvas>
+        <!-- QUIZ PAGE -->
+        <div id="quizPage" class="hidden">
+            <div class="title">🧠 Quiz Game</div>
 
-<button class="btn" onclick="startRace()">▶ Start Race</button>
-<button class="btn" onclick="resetRace()">🔄 Reset</button>
+            <div style="text-align:center;font-weight:900;color:#9cffb2;">
+                <div id="quizQ" style="font-size:18px;margin-bottom:12px;"></div>
+                <div id="quizOptions"></div>
+                <p id="quizResult" style="margin-top:12px;"></p>
+                <button class="bigBtn" onclick="nextQuiz()">Next Question</button>
+            </div>
 
-<h3 id="raceScore" style="margin-top:10px;color:lime;">Score: 0</h3>
+            <div class="backBtn"><button onclick="openPage('home')">⬅ Back</button></div>
+        </div>
 
-<p style="color:white;font-size:14px;margin-top:8px;">
-⌨ PC: Left / Right Arrow <br>
-📱 Mobile: Tap buttons below
-</p>
+        <!-- SNAKE GAME -->
+        <div id="snakePage" class="hidden">
+            <div class="title">🐍 Snake Game</div>
+            <div class="gameRow">
+                <div class="gameInfo">Score: <span id="snakeScore">0</span></div>
+                <canvas id="snakeCanvas" width="320" height="320"></canvas>
+                <button class="bigBtn" onclick="startSnake()">Start Snake</button>
+            </div>
+            <div class="backBtn"><button onclick="openPage('games')">⬅ Back</button></div>
+        </div>
 
-<div style="display:flex;gap:10px;justify-content:center;margin-top:12px;">
-  <button class="btn" style="width:45%;" ontouchstart="moveLeft()" onclick="moveLeft()">⬅ Left</button>
-  <button class="btn" style="width:45%;" ontouchstart="moveRight()" onclick="moveRight()">Right ➡</button>
-</div>
+        <!-- CAR GAME -->
+        <div id="carPage" class="hidden">
+            <div class="title">🚗 Car Racing</div>
+            <div class="gameRow">
+                <div class="gameInfo">Score: <span id="carScore">0</span></div>
+                <canvas id="carCanvas" width="320" height="420"></canvas>
+                <button class="bigBtn" onclick="startCar()">Start Car</button>
+            </div>
+            <div class="backBtn"><button onclick="openPage('games')">⬅ Back</button></div>
+        </div>
 
-</div>
-</div>
-</div>
+        <!-- DINO -->
+        <div id="dinoPage" class="hidden">
+            <div class="title">🦖 Dino Jump</div>
+            <div class="gameRow">
+                <div class="gameInfo">Score: <span id="dinoScore">0</span></div>
+                <canvas id="dinoCanvas" width="320" height="220"></canvas>
+                <button class="bigBtn" onclick="startDino()">Start Dino</button>
+            </div>
+            <div class="backBtn"><button onclick="openPage('games')">⬅ Back</button></div>
+        </div>
 
-<!-- CONTACT -->
-<div id="contact" class="section">
-<div class="neon-box">
-<div class="neon-inner">
-<h2 style="color:lime;">📞 Contact Me</h2>
-<input id="name" placeholder="Name">
-<input id="mobile" placeholder="Mobile">
-<textarea id="message" placeholder="Message"></textarea>
-<button class="btn" onclick="sendMail()">Send Email</button>
-</div>
-</div>
+        <!-- FLAPPY -->
+        <div id="flappyPage" class="hidden">
+            <div class="title">🐦 Flappy Bird</div>
+            <div class="gameRow">
+                <div class="gameInfo">Score: <span id="flappyScore">0</span></div>
+                <canvas id="flappyCanvas" width="320" height="420"></canvas>
+                <button class="bigBtn" onclick="startFlappy()">Start Flappy</button>
+            </div>
+            <div class="backBtn"><button onclick="openPage('games')">⬅ Back</button></div>
+        </div>
+
+    </div>
 </div>
 
 <script>
-/* =====================
-   DARK MODE PERMANENT
-===================== */
-let theme = localStorage.getItem("mr7_theme");
-if(!theme){
-  theme="dark";
-  localStorage.setItem("mr7_theme","dark");
-}
-applyTheme(theme);
+/* ===============================
+   LOGIN SYSTEM (PROTECTED)
+================================ */
+let loggedIn = localStorage.getItem("mr7_logged") === "yes";
 
-function applyTheme(mode){
-  document.body.classList.remove("dark-mode","light-mode");
-  if(mode==="dark"){
-    document.body.classList.add("dark-mode");
-  }else{
-    document.body.classList.add("light-mode");
-  }
+function validateEmail(email){
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    return re.test(email);
 }
 
-function toggleDark(){
-  let current = localStorage.getItem("mr7_theme");
-  if(current==="dark"){
-    localStorage.setItem("mr7_theme","light");
-    applyTheme("light");
-    showNotification("☀ Light Mode ON");
-  }else{
-    localStorage.setItem("mr7_theme","dark");
-    applyTheme("dark");
-    showNotification("🌙 Dark Mode ON");
-  }
+function login(){
+    let email = document.getElementById("email").value.trim();
+    let pass  = document.getElementById("password").value.trim();
+    let err   = document.getElementById("loginError");
+
+    if(!validateEmail(email)){
+        err.innerHTML = "❌ Invalid Email Format!";
+        return;
+    }
+
+    if(email === "mr7@gmail.com" && pass === "mr7"){
+        localStorage.setItem("mr7_logged","yes");
+        loggedIn = true;
+        document.getElementById("loginScreen").classList.add("hidden");
+        document.getElementById("site").classList.remove("hidden");
+        updateVisitors();
+        updateLeaderboard();
+    }else{
+        err.innerHTML = "❌ Wrong Email or Password!";
+    }
 }
 
-/* =====================
-   LOADER
-===================== */
-let percent=0;
-let loadInt=setInterval(()=>{
- percent++;
- document.getElementById("loadPercent").innerText=percent+"%";
- if(percent>=100) clearInterval(loadInt);
-},12);
-
-window.onload=function(){
- setTimeout(()=>{
-   document.getElementById("loader").style.display="none";
-   showNotification("🔥 MR7 WORLD Ready!");
-   startTypingTitle();
- },1500);
-};
-
-/* =====================
-   NOTIFY
-===================== */
-function showNotification(text){
- let notify=document.getElementById("notify");
- notify.innerText=text;
- notify.style.display="block";
- setTimeout(()=>{notify.style.display="none";},2500);
+function logout(){
+    localStorage.removeItem("mr7_logged");
+    loggedIn = false;
+    location.reload();
 }
 
-/* =====================
-   TITLE
-===================== */
-function startTypingTitle(){
- let text="- MR7 WORLD -";
- let i=0;
- let typingTitle=document.getElementById("typingTitle");
- typingTitle.innerHTML="";
- let t=setInterval(()=>{
-   typingTitle.innerHTML+=text.charAt(i);
-   i++;
-   if(i>=text.length) clearInterval(t);
- },120);
+function protectSite(){
+    if(loggedIn){
+        document.getElementById("loginScreen").classList.add("hidden");
+        document.getElementById("site").classList.remove("hidden");
+        updateVisitors();
+        updateLeaderboard();
+    }else{
+        document.getElementById("loginScreen").classList.remove("hidden");
+        document.getElementById("site").classList.add("hidden");
+    }
+}
+protectSite();
+
+/* ===============================
+   VISITOR COUNTER
+================================ */
+function updateVisitors(){
+    let v = localStorage.getItem("mr7_visitors");
+    if(!v) v = 0;
+    v = parseInt(v) + 1;
+    localStorage.setItem("mr7_visitors", v);
+    document.getElementById("visitorCount").innerText = v;
 }
 
-/* =====================
-   SCROLL BAR
-===================== */
-window.onscroll=function(){
- let winScroll=document.documentElement.scrollTop || document.body.scrollTop;
- let height=document.documentElement.scrollHeight-document.documentElement.clientHeight;
- let scrolled=(winScroll/height)*100;
- document.getElementById("scrollBar").style.width=scrolled+"%";
+/* ===============================
+   DARK MODE SAVE
+================================ */
+function toggleMode(){
+    document.body.classList.toggle("light");
+    localStorage.setItem("mr7_mode", document.body.classList.contains("light") ? "light" : "dark");
 }
 
-/* =====================
-   MENU
-===================== */
+if(localStorage.getItem("mr7_mode") === "light"){
+    document.body.classList.add("light");
+}
+
+/* ===============================
+   MENU (3 DOTS) PROTECTED
+================================ */
 function toggleMenu(){
- let menuBox=document.getElementById("menuBox");
- menuBox.style.display = menuBox.style.display=="block"?"none":"block";
+    if(!loggedIn) return;
+    document.getElementById("menuBox").classList.toggle("hidden");
 }
 
-/* =====================
-   OPEN PAGE
-===================== */
-function openPage(id){
- document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
- document.getElementById(id).classList.add("active");
- document.getElementById("menuBox").style.display="none";
- window.scrollTo({top:0,behavior:"smooth"});
+/* ===============================
+   PAGE ROUTER
+================================ */
+function openPage(page){
+    if(!loggedIn) return;
+
+    document.getElementById("menuBox").classList.add("hidden");
+
+    let pages = ["home","ai","games","snake","car","quiz","contact","leaderboard","dino","flappy"];
+    pages.forEach(p=>{
+        document.getElementById(p+"Page").classList.add("hidden");
+    });
+
+    document.getElementById(page+"Page").classList.remove("hidden");
 }
 
-/* =====================
-   LOGIN SYSTEM
-===================== */
-function doLogin(){
- let u=document.getElementById("loginUser").value.trim();
- let p=document.getElementById("loginPass").value.trim();
- let loginStatus=document.getElementById("loginStatus");
-
- if(!u || !p){
-   loginStatus.innerText="⚠ Enter username and password!";
-   return;
- }
-
- localStorage.mr7User=u;
- localStorage.mr7Pass=p;
- localStorage.loggedIn="yes";
-
- loginStatus.innerText="✅ Login Successful! Welcome " + u;
- showNotification("🔥 Welcome " + u);
+/* ===============================
+   LEADERBOARD
+================================ */
+function updateLeaderboard(){
+    document.getElementById("snakeHigh").innerText = localStorage.getItem("snakeHigh") || 0;
+    document.getElementById("carHigh").innerText = localStorage.getItem("carHigh") || 0;
+    document.getElementById("dinoHigh").innerText = localStorage.getItem("dinoHigh") || 0;
+    document.getElementById("flappyHigh").innerText = localStorage.getItem("flappyHigh") || 0;
 }
 
-function doLogout(){
- localStorage.loggedIn="no";
- document.getElementById("loginStatus").innerText="❌ Logged Out!";
- showNotification("Logout Successful!");
+/* ===============================
+   SOUND FX (Simple)
+================================ */
+function playBeep(freq=400, time=0.12){
+    let ctx = new (window.AudioContext || window.webkitAudioContext)();
+    let osc = ctx.createOscillator();
+    let gain = ctx.createGain();
+    osc.frequency.value = freq;
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+    osc.stop(ctx.currentTime + time);
 }
 
-if(localStorage.loggedIn==="yes"){
- document.getElementById("loginStatus").innerText="✅ Logged in as: " + localStorage.mr7User;
+/* ===============================
+   SMART OFFLINE AI
+================================ */
+function addMsg(text, type){
+    let box = document.getElementById("chatBox");
+    let div = document.createElement("div");
+    div.className = "msg " + (type==="user" ? "userMsg" : "aiMsg");
+    div.innerHTML = text;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
 }
-
-/* =====================
-   AI PRO SYSTEM (OFFLINE)
-===================== */
-let chat=document.getElementById("chat");
-chat.innerHTML = localStorage.chatHistory || "";
-
-let aiMemory = JSON.parse(localStorage.aiMemory || "{}");
-if(!aiMemory.mood) aiMemory.mood="normal";
-
-function saveAIMemory(){
- localStorage.aiMemory = JSON.stringify(aiMemory);
-}
-
-function addMsg(text,cls){
- let div=document.createElement("div");
- div.className=cls;
- chat.appendChild(div);
-
- let i=0;
- let speed=10;
-
- let interval=setInterval(()=>{
-   div.innerText = text.substring(0,i);
-   i++;
-   chat.scrollTop=chat.scrollHeight;
-   if(i>text.length){
-     clearInterval(interval);
-     localStorage.chatHistory = chat.innerHTML;
-   }
- },speed);
-}
-
-function detectMood(q){
- q=q.toLowerCase();
-
- if(q.includes("sad")||q.includes("depressed")||q.includes("tension")||q.includes("cry")){
-   return "sad";
- }
- if(q.includes("angry")||q.includes("gussa")||q.includes("hate")){
-   return "angry";
- }
- if(q.includes("happy")||q.includes("excited")||q.includes("mast")){
-   return "happy";
- }
- return "normal";
-}
-
-function isMathExpression(text){
- return /^[0-9+\-*/().%\s]+$/.test(text);
-}
-
-function getAIReply(q){
- let original=q;
- let low=q.toLowerCase();
-
- // mood detect
- aiMemory.mood = detectMood(original);
- saveAIMemory();
-
- // name memory (better)
- if(low.includes("my name is")){
-   let name = original.split("my name is")[1].trim();
-   if(name.length>1){
-     aiMemory.userName=name;
-     saveAIMemory();
-     return "🔥 Nice! Ab main yaad rakhunga tumhara naam: " + name + " 😎";
-   }
- }
-
- if(low.includes("mera naam")){
-   let name = original.split("mera naam")[1].replace("hai","").trim();
-   if(name.length>1){
-     aiMemory.userName=name;
-     saveAIMemory();
-     return "🔥 Wah Boss! Ab main yaad rakhunga tumhara naam: " + name + " 😎";
-   }
- }
-
- let boss = aiMemory.userName ? aiMemory.userName : "Boss";
-
- // greeting
- if(low.includes("hello")||low.includes("hi")||low.includes("namaste")){
-   return "Hello " + boss + " 😄🔥 MR7 WORLD me welcome!";
- }
-
- // mood reply
- if(aiMemory.mood==="sad"){
-   return "💚 " + boss + ", tension mat lo. Tum strong ho 💪🔥 MR7 WORLD always with you!";
- }
- if(aiMemory.mood==="angry"){
-   return "😅 " + boss + ", gussa thoda kam karo. Chill karo bro 🔥";
- }
- if(aiMemory.mood==="happy"){
-   return "😎🔥 Wahh " + boss + "! Tumhara mood full OP lag raha hai!";
- }
-
- // common Q&A
- if(low.includes("how are you") || low.includes("kaise ho")){
-   return "Main mast hoon " + boss + " 😎🔥 Tum batao!";
- }
-
- if(low.includes("owner")||low.includes("malik")){
-   return "Mera owner MD REHAN hai 😎🔥 MR7 WORLD ka king!";
- }
-
- if(low.includes("time")){
-   return "⏰ Time: " + new Date().toLocaleTimeString();
- }
-
- if(low.includes("date") || low.includes("day")){
-   return "📅 Date: " + new Date().toLocaleDateString();
- }
-
- if(low.includes("game")){
-   return "🎮 MR7 GAME ZONE me Snake, TicTacToe aur Car Racing available hai 😎🔥";
- }
-
- // jokes improved
- if(low.includes("joke")){
-   let jokes=[
-     "😂 Teacher: Homework kiya? Student: Sir laptop hang ho gaya 😭",
-     "🤣 Coding me bug fix karna life fix karne se easy hai!",
-     "😂 Boss, tumhara future software developer pakka hai 😎🔥",
-     "🤣 Tumhari website dekh ke lagta hai hacker bhi subscribe karega 😆",
-     "😂 MR7 AI: Main smart hoon... lekin tum aur smart ho 😎"
-   ];
-   return jokes[Math.floor(Math.random()*jokes.length)];
- }
-
- // motivation
- if(low.includes("motivate") || low.includes("motivation") || low.includes("inspire")){
-   let mot=[
-     "🔥 " + boss + ", tu ek din top pe hoga! Bas rukna nahi 💪",
-     "⚡ Fail hona normal hai, give up karna galat hai!",
-     "🏆 Jo mehnat karta hai wahi legend banta hai 😎",
-     "🚀 Consistency = Success. Daily practice kar boss!",
-     "💯 Tumhara time aayega, aur duniya dekhegi MR7 WORLD!"
-   ];
-   return mot[Math.floor(Math.random()*mot.length)];
- }
-
- // calculator auto mode
- if(isMathExpression(low)){
-   try{
-     return "🧮 Answer: " + eval(low);
-   }catch{
-     return "😅 Boss calculation samajh nahi aaya.";
-   }
- }
-
- // memory recall
- if(low.includes("my name") && low.includes("what")){
-   return aiMemory.userName ? ("😎 Tumhara naam " + aiMemory.userName + " hai!") : "😅 Tumne abhi naam nahi bataya.";
- }
- if(low.includes("mera naam kya hai")){
-   return aiMemory.userName ? ("😎 Tumhara naam " + aiMemory.userName + " hai!") : "😅 Tumne abhi naam nahi bataya.";
- }
-
- // smart general answers
- if(low.includes("who are you") || low.includes("tum kaun ho")){
-   return "Main MR7 AI PRO hoon 🤖🔥 Offline Smart AI, MD REHAN ke website ke liye!";
- }
-
- if(low.includes("help")){
-   return "😎 " + boss + ", main help kar sakta hoon: Games, Calculator, Motivation, Jokes, Website tips aur basic answers!";
- }
-
- // default (no suggestion reply)
- let smartReplies=[
-   "😎 " + boss + ", ye question interesting hai! Thoda aur detail me bolo.",
-   "🔥 Haan " + boss + ", ye possible hai. Tum daily practice karte raho!",
-   "💡 Good question! Agar tum chaho to main ispe step-by-step explain kar dunga.",
-   "⚡ " + boss + ", main ready hoon! Next question bolo.",
-   "🤖 " + boss + ", main offline AI hoon, lekin main smart reply dene ki try karta hoon 😄"
- ];
- return smartReplies[Math.floor(Math.random()*smartReplies.length)];
-}
-
-function askAI(){
- let input=document.getElementById("aiInput");
- let q=input.value.trim();
- if(!q) return;
-
- document.getElementById("typingAI").style.display="block";
- addMsg("You: "+q,"user");
- input.value="";
-
- setTimeout(()=>{
-   document.getElementById("typingAI").style.display="none";
-   let reply=getAIReply(q);
-   addMsg("AI: "+reply,"bot");
- },700);
-}
-
-document.getElementById("aiInput").addEventListener("keypress",(e)=>{
- if(e.key==="Enter") askAI();
-});
 
 function clearChat(){
- if(confirm("Clear full chat?")){
-   chat.innerHTML="";
-   localStorage.removeItem("chatHistory");
- }
+    document.getElementById("chatBox").innerHTML = "";
 }
 
-function downloadChat(){
- let text=chat.innerText;
- let blob=new Blob([text],{type:"text/plain"});
- let a=document.createElement("a");
- a.href=URL.createObjectURL(blob);
- a.download="MR7_AI_CHAT.txt";
- a.click();
+function smartAI(msg){
+    msg = msg.toLowerCase().trim();
+
+    // calculator
+    if(msg.startsWith("calc")){
+        try{
+            let exp = msg.replace("calc","").trim();
+            let result = Function("return "+exp)();
+            return "🧮 Result: <b>"+result+"</b>";
+        }catch(e){
+            return "❌ Calculation error. Example: calc 50+20";
+        }
+    }
+
+    // weather
+    if(msg.includes("weather")){
+        return "🌦 Weather feature offline mode me limited hai.<br>लेकिन agar tum OpenAI API add karoge to real live weather info de dunga.";
+    }
+
+    // news
+    if(msg.includes("news")){
+        return "📰 Offline mode me live news nahi aa sakta.<br>लेकिन main suggest kar sakta hu:<br>1️⃣ India Politics<br>2️⃣ Sports Updates<br>3️⃣ Tech Updates<br><br>API add karoge to main daily top 3 news real de dunga.";
+    }
+
+    // jokes
+    if(msg.includes("joke")){
+        let jokes = [
+            "😂 Teacher: Tum late kyu aaye? Student: Sir, sapne me coding kar raha tha!",
+            "🤣 Programmer ka favorite place? Ctrl + Alt + Delete!",
+            "😆 GF: Tum mujhe time nahi dete. BF: Wait... loading..."
+        ];
+        return jokes[Math.floor(Math.random()*jokes.length)];
+    }
+
+    // greetings
+    if(msg.includes("hello") || msg.includes("hi") || msg.includes("hey")){
+        return "😎🔥 Hello Boss! MR7 AI ready hai. Batao kya help chahiye?";
+    }
+
+    // motivation
+    if(msg.includes("motivation") || msg.includes("sad")){
+        return "🔥 Boss, tu ekdin bada developer banega. Bas daily practice kar. MR7 never stops 😎⚡";
+    }
+
+    // coding help
+    if(msg.includes("python")){
+        return "🐍 Python help ready boss!<br>Tu mujhe topic bol: if-else, loop, function, list, string, OOP.";
+    }
+
+    if(msg.includes("html")){
+        return "🌐 HTML help ready! Tum website ka design, buttons, layout, CSS effects kuch bhi puch sakte ho.";
+    }
+
+    // quiz mode
+    if(msg.includes("quiz")){
+        return "🧠 Quiz Mode ON! Home page me Quiz Game open karo aur start karo 😎🔥";
+    }
+
+    // fallback smart reply
+    return "🤖 MR7 AI: Boss main samajh gaya 😎🔥<br>Tu thoda clear bol, main full answer de dunga!";
 }
 
-/* =====================
-   CALCULATOR MODE
-===================== */
-function calculate(){
- let exp=document.getElementById("calcInput").value.trim();
- let result=document.getElementById("calcResult");
+function sendMsg(){
+    let input = document.getElementById("userInput");
+    let text = input.value.trim();
+    if(text==="") return;
 
- if(!exp){
-   result.innerText="⚠ Enter calculation!";
-   return;
- }
- try{
-   result.innerText="✅ Result: " + eval(exp);
- }catch{
-   result.innerText="❌ Invalid Expression!";
- }
+    addMsg("You: "+text,"user");
+    playBeep(700,0.08);
+
+    setTimeout(()=>{
+        let reply = smartAI(text);
+        addMsg("AI: "+reply,"ai");
+        playBeep(400,0.09);
+    },400);
+
+    input.value="";
 }
 
-/* =====================
-   SNAKE GAME (MOBILE FIX)
-===================== */
-const snakeCanvas=document.getElementById("snakeCanvas");
-const sctx=snakeCanvas.getContext("2d");
+document.getElementById("userInput").addEventListener("keydown", function(e){
+    if(e.key==="Enter") sendMsg();
+});
 
-let snake,food,dir,snakeLoop,snakeScore=0,snakeRunning=false;
+/* ===============================
+   QUIZ GAME
+================================ */
+let quizData = [
+    {q:"HTML ka full form kya hai?", a:["Hyper Text Markup Language","High Text Machine Language","Hyper Tool Markup"], c:0},
+    {q:"Python kis type ki language hai?", a:["Low Level","High Level","Machine"], c:1},
+    {q:"CSS use hota hai?", a:["Design ke liye","Database ke liye","Game banane"], c:0},
+    {q:"JavaScript use hota hai?", a:["Web interactivity","Cooking","Photoshop"], c:0},
+    {q:"CPU ka full form?", a:["Central Processing Unit","Computer Power Unit","Control Process Unit"], c:0}
+];
+let quizIndex = 0;
 
-function initSnake(){
- snake=[{x:200,y:200}];
- dir={x:20,y:0};
- food=randomFood();
- snakeScore=0;
- updateSnakeScore();
- drawSnake();
+function loadQuiz(){
+    let q = quizData[quizIndex];
+    document.getElementById("quizQ").innerText = "Q: " + q.q;
+    let optBox = document.getElementById("quizOptions");
+    optBox.innerHTML = "";
+
+    q.a.forEach((opt,i)=>{
+        let btn = document.createElement("button");
+        btn.className="bigBtn";
+        btn.style.margin="6px";
+        btn.innerText = opt;
+        btn.onclick = ()=>checkQuiz(i);
+        optBox.appendChild(btn);
+    });
+
+    document.getElementById("quizResult").innerText="";
 }
 
-function randomFood(){
- return {
-   x:Math.floor(Math.random()*20)*20,
-   y:Math.floor(Math.random()*20)*20
- };
+function checkQuiz(i){
+    let q = quizData[quizIndex];
+    if(i === q.c){
+        document.getElementById("quizResult").innerText="✅ Correct!";
+        playBeep(900,0.12);
+    }else{
+        document.getElementById("quizResult").innerText="❌ Wrong!";
+        playBeep(200,0.2);
+    }
 }
 
-function updateSnakeScore(){
- document.getElementById("snakeScore").innerText="Score: "+snakeScore;
+function nextQuiz(){
+    quizIndex++;
+    if(quizIndex >= quizData.length) quizIndex = 0;
+    loadQuiz();
 }
+loadQuiz();
 
-function drawSnake(){
- sctx.clearRect(0,0,400,400);
-
- sctx.fillStyle="red";
- sctx.fillRect(food.x,food.y,20,20);
-
- sctx.fillStyle="lime";
- snake.forEach(p=>sctx.fillRect(p.x,p.y,20,20));
-}
-
-function updateSnake(){
- let head={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
-
- if(head.x<0||head.y<0||head.x>=400||head.y>=400){
-   snakeGameOver();
-   return;
- }
-
- for(let i=1;i<snake.length;i++){
-   if(head.x===snake[i].x && head.y===snake[i].y){
-     snakeGameOver();
-     return;
-   }
- }
-
- snake.unshift(head);
-
- if(head.x===food.x && head.y===food.y){
-   snakeScore++;
-   updateSnakeScore();
-   food=randomFood();
- }else{
-   snake.pop();
- }
-
- drawSnake();
-}
-
-function snakeGameOver(){
- clearInterval(snakeLoop);
- snakeRunning=false;
- alert("Game Over 😅 Score: "+snakeScore);
-}
-
+/* ===============================
+   SNAKE GAME (REAL)
+================================ */
+let snakeInterval;
 function startSnake(){
- if(snakeRunning) return;
- snakeRunning=true;
- snakeLoop=setInterval(updateSnake,120);
+    clearInterval(snakeInterval);
+    let canvas = document.getElementById("snakeCanvas");
+    let ctx = canvas.getContext("2d");
+
+    let grid = 20;
+    let snake = [{x:160,y:160}];
+    let dir = {x:grid,y:0};
+    let food = {x:100,y:100};
+    let score = 0;
+
+    document.getElementById("snakeScore").innerText=0;
+
+    function randomFood(){
+        food.x = Math.floor(Math.random()*(canvas.width/grid))*grid;
+        food.y = Math.floor(Math.random()*(canvas.height/grid))*grid;
+    }
+    randomFood();
+
+    document.onkeydown = (e)=>{
+        if(e.key==="ArrowUp" && dir.y===0) dir={x:0,y:-grid};
+        if(e.key==="ArrowDown" && dir.y===0) dir={x:0,y:grid};
+        if(e.key==="ArrowLeft" && dir.x===0) dir={x:-grid,y:0};
+        if(e.key==="ArrowRight" && dir.x===0) dir={x:grid,y:0};
+    };
+
+    // mobile swipe
+    let startX=0,startY=0;
+    canvas.ontouchstart=(e)=>{
+        startX=e.touches[0].clientX;
+        startY=e.touches[0].clientY;
+    };
+    canvas.ontouchend=(e)=>{
+        let endX=e.changedTouches[0].clientX;
+        let endY=e.changedTouches[0].clientY;
+        let dx=endX-startX;
+        let dy=endY-startY;
+
+        if(Math.abs(dx)>Math.abs(dy)){
+            if(dx>20 && dir.x===0) dir={x:grid,y:0};
+            if(dx<-20 && dir.x===0) dir={x:-grid,y:0};
+        }else{
+            if(dy>20 && dir.y===0) dir={x:0,y:grid};
+            if(dy<-20 && dir.y===0) dir={x:0,y:-grid};
+        }
+    };
+
+    snakeInterval = setInterval(()=>{
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+
+        let head = {x:snake[0].x + dir.x, y:snake[0].y + dir.y};
+
+        // wall wrap
+        if(head.x<0) head.x=canvas.width-grid;
+        if(head.x>=canvas.width) head.x=0;
+        if(head.y<0) head.y=canvas.height-grid;
+        if(head.y>=canvas.height) head.y=0;
+
+        // collision
+        for(let i=1;i<snake.length;i++){
+            if(head.x===snake[i].x && head.y===snake[i].y){
+                playBeep(150,0.3);
+                clearInterval(snakeInterval);
+                alert("Game Over! Score: "+score);
+                let high = parseInt(localStorage.getItem("snakeHigh")||0);
+                if(score>high) localStorage.setItem("snakeHigh",score);
+                updateLeaderboard();
+                return;
+            }
+        }
+
+        snake.unshift(head);
+
+        // food eat
+        if(head.x===food.x && head.y===food.y){
+            score++;
+            playBeep(900,0.12);
+            document.getElementById("snakeScore").innerText=score;
+            randomFood();
+        }else{
+            snake.pop();
+        }
+
+        // draw food
+        ctx.fillStyle="red";
+        ctx.fillRect(food.x,food.y,grid,grid);
+
+        // draw snake
+        snake.forEach((p,idx)=>{
+            ctx.fillStyle = idx===0 ? "#00ff3c" : "#00aa2b";
+            ctx.fillRect(p.x,p.y,grid,grid);
+        });
+
+    },110);
 }
 
-function pauseSnake(){
- clearInterval(snakeLoop);
- snakeRunning=false;
+/* ===============================
+   CAR GAME (REAL CAR)
+================================ */
+let carInterval;
+function startCar(){
+    clearInterval(carInterval);
+    let canvas = document.getElementById("carCanvas");
+    let ctx = canvas.getContext("2d");
+
+    let car = {x:140,y:330,w:40,h:70};
+    let enemies = [];
+    let score = 0;
+    document.getElementById("carScore").innerText=0;
+
+    function spawnEnemy(){
+        let laneX = [60,140,220];
+        enemies.push({x:laneX[Math.floor(Math.random()*3)], y:-80, w:40, h:70});
+    }
+
+    function drawRoad(){
+        ctx.fillStyle="#333";
+        ctx.fillRect(40,0,240,420);
+
+        ctx.strokeStyle="white";
+        ctx.lineWidth=4;
+        ctx.setLineDash([20,20]);
+        ctx.beginPath();
+        ctx.moveTo(160,0);
+        ctx.lineTo(160,420);
+        ctx.stroke();
+        ctx.setLineDash([]);
+    }
+
+    function drawCar(obj,color){
+        ctx.fillStyle=color;
+        ctx.fillRect(obj.x,obj.y,obj.w,obj.h);
+
+        // windows
+        ctx.fillStyle="black";
+        ctx.fillRect(obj.x+8,obj.y+10,obj.w-16,18);
+
+        // wheels
+        ctx.fillStyle="#111";
+        ctx.fillRect(obj.x-6,obj.y+10,6,18);
+        ctx.fillRect(obj.x+obj.w,obj.y+10,6,18);
+        ctx.fillRect(obj.x-6,obj.y+45,6,18);
+        ctx.fillRect(obj.x+obj.w,obj.y+45,6,18);
+    }
+
+    document.onkeydown=(e)=>{
+        if(e.key==="ArrowLeft") car.x -= 80;
+        if(e.key==="ArrowRight") car.x += 80;
+        if(car.x<60) car.x=60;
+        if(car.x>220) car.x=220;
+    };
+
+    // mobile swipe
+    let sx=0;
+    canvas.ontouchstart=(e)=>{ sx=e.touches[0].clientX; };
+    canvas.ontouchend=(e)=>{
+        let ex=e.changedTouches[0].clientX;
+        if(ex-sx>30) car.x+=80;
+        if(ex-sx<-30) car.x-=80;
+        if(car.x<60) car.x=60;
+        if(car.x>220) car.x=220;
+    };
+
+    spawnEnemy();
+
+    carInterval = setInterval(()=>{
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+
+        drawRoad();
+        drawCar(car,"#00ff3c");
+
+        if(Math.random()<0.04) spawnEnemy();
+
+        enemies.forEach(en=>{
+            en.y += 6;
+
+            drawCar(en,"red");
+
+            // collision
+            if(car.x < en.x+en.w && car.x+car.w > en.x && car.y < en.y+en.h && car.y+car.h > en.y){
+                playBeep(120,0.4);
+                clearInterval(carInterval);
+                alert("CRASH! Score: "+score);
+                let high = parseInt(localStorage.getItem("carHigh")||0);
+                if(score>high) localStorage.setItem("carHigh",score);
+                updateLeaderboard();
+            }
+        });
+
+        enemies = enemies.filter(e=>e.y<450);
+
+        score++;
+        document.getElementById("carScore").innerText=score;
+
+    },50);
 }
 
-function resetSnake(){
- clearInterval(snakeLoop);
- snakeRunning=false;
- initSnake();
+/* ===============================
+   DINO GAME
+================================ */
+let dinoInterval;
+function startDino(){
+    clearInterval(dinoInterval);
+
+    let canvas = document.getElementById("dinoCanvas");
+    let ctx = canvas.getContext("2d");
+
+    let dino = {x:40,y:150,w:30,h:40,vy:0};
+    let gravity=1.2;
+    let obstacle={x:320,y:170,w:20,h:30};
+    let score=0;
+
+    document.getElementById("dinoScore").innerText=0;
+
+    function jump(){
+        if(dino.y>=150){
+            dino.vy=-14;
+            playBeep(700,0.08);
+        }
+    }
+
+    document.onkeydown=(e)=>{ if(e.key===" ") jump(); };
+    canvas.onclick=jump;
+
+    dinoInterval=setInterval(()=>{
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+
+        // ground
+        ctx.fillStyle="#444";
+        ctx.fillRect(0,190,320,30);
+
+        // dino physics
+        dino.vy+=gravity;
+        dino.y+=dino.vy;
+        if(dino.y>150){ dino.y=150; dino.vy=0; }
+
+        // obstacle move
+        obstacle.x-=6;
+        if(obstacle.x<-20){
+            obstacle.x=320;
+            score++;
+            document.getElementById("dinoScore").innerText=score;
+        }
+
+        // draw dino
+        ctx.fillStyle="#00ff3c";
+        ctx.fillRect(dino.x,dino.y,dino.w,dino.h);
+
+        // draw obstacle
+        ctx.fillStyle="red";
+        ctx.fillRect(obstacle.x,obstacle.y,obstacle.w,obstacle.h);
+
+        // collision
+        if(dino.x < obstacle.x+obstacle.w && dino.x+dino.w > obstacle.x && dino.y < obstacle.y+obstacle.h && dino.y+dino.h > obstacle.y){
+            playBeep(150,0.3);
+            clearInterval(dinoInterval);
+            alert("Game Over! Score: "+score);
+            let high=parseInt(localStorage.getItem("dinoHigh")||0);
+            if(score>high) localStorage.setItem("dinoHigh",score);
+            updateLeaderboard();
+        }
+
+    },40);
 }
 
-function setDir(d){
- if(d==="up" && dir.y===0) dir={x:0,y:-20};
- if(d==="down" && dir.y===0) dir={x:0,y:20};
- if(d==="left" && dir.x===0) dir={x:-20,y:0};
- if(d==="right" && dir.x===0) dir={x:20,y:0};
-}
+/* ===============================
+   FLAPPY BIRD
+================================ */
+let flappyInterval;
+function startFlappy(){
+    clearInterval(flappyInterval);
 
-document.addEventListener("keydown",(e)=>{
- if(e.key==="ArrowUp") setDir("up");
- if(e.key==="ArrowDown") setDir("down");
- if(e.key==="ArrowLeft") setDir("left");
- if(e.key==="ArrowRight") setDir("right");
-});
+    let canvas=document.getElementById("flappyCanvas");
+    let ctx=canvas.getContext("2d");
 
-// swipe mobile
-let touchStartX=0,touchStartY=0;
+    let bird={x:60,y:200,vy:0};
+    let gravity=0.7;
+    let pipes=[{x:320, gapY:200}];
+    let score=0;
 
-snakeCanvas.addEventListener("touchstart",(e)=>{
- let t=e.touches[0];
- touchStartX=t.clientX;
- touchStartY=t.clientY;
-});
+    document.getElementById("flappyScore").innerText=0;
 
-snakeCanvas.addEventListener("touchmove",(e)=>{
- e.preventDefault();
- let t=e.touches[0];
- let dx=t.clientX-touchStartX;
- let dy=t.clientY-touchStartY;
+    function flap(){
+        bird.vy=-10;
+        playBeep(800,0.06);
+    }
+    canvas.onclick=flap;
+    document.onkeydown=(e)=>{ if(e.key===" ") flap(); };
 
- if(Math.abs(dx)>Math.abs(dy)){
-   if(dx>30) setDir("right");
-   if(dx<-30) setDir("left");
- }else{
-   if(dy>30) setDir("down");
-   if(dy<-30) setDir("up");
- }
-});
+    flappyInterval=setInterval(()=>{
+        ctx.clearRect(0,0,canvas.width,canvas.height);
 
-initSnake();
+        bird.vy+=gravity;
+        bird.y+=bird.vy;
 
-/* =====================
-   TIC TAC TOE
-===================== */
-let board=["","","","","","","","",""];
-let currentPlayer="X";
-let gameOverTTT=false;
+        // draw bird
+        ctx.fillStyle="#00ff3c";
+        ctx.beginPath();
+        ctx.arc(bird.x,bird.y,12,0,Math.PI*2);
+        ctx.fill();
 
-function createBoard(){
- let tttBoard=document.getElementById("tttBoard");
- tttBoard.innerHTML="";
- board.forEach((val,i)=>{
-   let cell=document.createElement("div");
-   cell.className="tttCell";
-   cell.innerText=val;
-   cell.onclick=()=>makeMove(i);
-   tttBoard.appendChild(cell);
- });
-}
+        // pipes
+        pipes.forEach(p=>{
+            p.x-=4;
 
-function makeMove(i){
- if(board[i]!=="" || gameOverTTT) return;
+            ctx.fillStyle="green";
+            ctx.fillRect(p.x,0,40,p.gapY-60);
+            ctx.fillRect(p.x,p.gapY+60,40,420);
 
- board[i]=currentPlayer;
- createBoard();
+            // collision
+            if(bird.x+12>p.x && bird.x-12<p.x+40){
+                if(bird.y-12<p.gapY-60 || bird.y+12>p.gapY+60){
+                    playBeep(120,0.4);
+                    clearInterval(flappyInterval);
+                    alert("Game Over! Score: "+score);
+                    let high=parseInt(localStorage.getItem("flappyHigh")||0);
+                    if(score>high) localStorage.setItem("flappyHigh",score);
+                    updateLeaderboard();
+                }
+            }
 
- if(checkWinner()){
-   document.getElementById("tttStatus").innerText="🏆 Player "+currentPlayer+" Wins!";
-   gameOverTTT=true;
-   return;
- }
+            if(p.x===60){
+                score++;
+                document.getElementById("flappyScore").innerText=score;
+            }
+        });
 
- if(board.every(x=>x!=="")){
-   document.getElementById("tttStatus").innerText="🤝 Draw Match!";
-   gameOverTTT=true;
-   return;
- }
+        pipes=pipes.filter(p=>p.x>-60);
 
- currentPlayer = currentPlayer==="X"?"O":"X";
- document.getElementById("tttStatus").innerText="Player "+currentPlayer+" Turn";
-}
+        if(pipes.length<3 && Math.random()<0.03){
+            pipes.push({x:320,gapY:120+Math.random()*200});
+        }
 
-function checkWinner(){
- let wins=[
-   [0,1,2],[3,4,5],[6,7,8],
-   [0,3,6],[1,4,7],[2,5,8],
-   [0,4,8],[2,4,6]
- ];
- return wins.some(w=>{
-   return board[w[0]] && board[w[0]]===board[w[1]] && board[w[1]]===board[w[2]];
- });
-}
+        // floor/ceiling
+        if(bird.y<0 || bird.y>420){
+            playBeep(150,0.3);
+            clearInterval(flappyInterval);
+            alert("Game Over! Score: "+score);
+        }
 
-function resetTTT(){
- board=["","","","","","","","",""];
- currentPlayer="X";
- gameOverTTT=false;
- document.getElementById("tttStatus").innerText="Player X Turn";
- createBoard();
-}
-
-createBoard();
-
-/* =====================
-   CAR RACING GAME
-===================== */
-const raceCanvas=document.getElementById("raceCanvas");
-const rctx=raceCanvas.getContext("2d");
-
-let car={x:180,y:420,w:40,h:60};
-let obstacles=[];
-let raceScore=0;
-let raceLoop;
-let raceRunning=false;
-
-function drawRace(){
- rctx.clearRect(0,0,400,500);
-
- rctx.fillStyle="#222";
- rctx.fillRect(0,0,400,500);
-
- // road lines
- rctx.strokeStyle="lime";
- rctx.lineWidth=2;
- rctx.strokeRect(5,5,390,490);
-
- rctx.fillStyle="lime";
- rctx.fillRect(car.x,car.y,car.w,car.h);
-
- rctx.fillStyle="red";
- obstacles.forEach(o=>{
-   rctx.fillRect(o.x,o.y,o.w,o.h);
- });
-}
-
-function spawnObstacle(){
- let x=Math.floor(Math.random()*7)*55;
- obstacles.push({x:x,y:-60,w:50,h:60});
-}
-
-function updateRace(){
- if(Math.random()<0.06) spawnObstacle();
-
- obstacles.forEach(o=>o.y+=7);
-
- obstacles.forEach(o=>{
-   if(car.x < o.x+o.w && car.x+car.w > o.x && car.y < o.y+o.h && car.y+car.h > o.y){
-     endRace();
-   }
- });
-
- obstacles = obstacles.filter(o=>o.y<520);
-
- raceScore++;
- document.getElementById("raceScore").innerText="Score: "+raceScore;
-
- drawRace();
-}
-
-function startRace(){
- if(raceRunning) return;
- raceRunning=true;
- raceLoop=setInterval(updateRace,50);
-}
-
-function resetRace(){
- clearInterval(raceLoop);
- raceRunning=false;
- obstacles=[];
- raceScore=0;
- car.x=180;
- document.getElementById("raceScore").innerText="Score: 0";
- drawRace();
-}
-
-function endRace(){
- clearInterval(raceLoop);
- raceRunning=false;
- alert("Crash 😅 Score: "+raceScore);
-}
-
-function moveLeft(){
- car.x-=20;
- if(car.x<0) car.x=0;
-}
-function moveRight(){
- car.x+=20;
- if(car.x>360) car.x=360;
-}
-
-document.addEventListener("keydown",(e)=>{
- if(e.key==="ArrowLeft") moveLeft();
- if(e.key==="ArrowRight") moveRight();
-});
-
-drawRace();
-
-/* =====================
-   CONTACT EMAIL
-===================== */
-function sendMail(){
- let n=document.getElementById("name").value.trim();
- let m=document.getElementById("mobile").value.trim();
- let msg=document.getElementById("message").value.trim();
-
- if(!n || !msg){
-   alert("Enter Name and Message 😅");
-   return;
- }
-
- let subject=encodeURIComponent("MR7 Contact from "+n);
- let body=encodeURIComponent("Name: "+n+"\nMobile: "+m+"\n\nMessage:\n"+msg);
-
- location.href="mailto:mrrehanofficial.1777@gmail.com?subject="+subject+"&body="+body;
+    },30);
 }
 </script>
 

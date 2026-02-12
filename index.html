@@ -9,7 +9,7 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 body{
   font-family:Segoe UI, Arial, sans-serif;
-  background:#0b0b0b;
+  background:#050505;
   color:#fff;
   overflow-x:hidden;
   transition:.4s;
@@ -35,16 +35,19 @@ body.light{
   z-index:-3;
 }
 
+/* NEW BACKGROUND (NO CIRCLE GOL GOL) */
 body::before{
   content:"";
   position:fixed;
   inset:0;
   z-index:-2;
-  background:radial-gradient(circle at 20% 20%, rgba(0,255,0,.15), transparent 50%),
-             radial-gradient(circle at 80% 40%, rgba(0,200,255,.10), transparent 55%),
-             radial-gradient(circle at 50% 80%, rgba(255,0,255,.08), transparent 60%),
-             linear-gradient(120deg,#050505,#001a0a,#050505);
-  opacity:.85;
+  background:
+    linear-gradient(120deg, rgba(0,255,0,.06), transparent 60%),
+    linear-gradient(300deg, rgba(0,170,255,.05), transparent 60%),
+    radial-gradient(circle at 50% 20%, rgba(0,255,170,.12), transparent 55%),
+    radial-gradient(circle at 20% 80%, rgba(255,0,255,.06), transparent 60%),
+    linear-gradient(120deg,#020202,#07100a,#020202);
+  opacity:1;
 }
 
 body.light::before{
@@ -523,12 +526,12 @@ body.light #chat{background:#f5f5f5;}
 <!-- AI PAGE -->
 <div id="aiPage" class="section">
   <div class="box">
-    <h2>🤖 MR7 AI (Smart Offline)</h2>
-    <p class="small">Enter press = Send | Username memory enabled</p>
+    <h2>🤖 MR7 AI (Smart Mode)</h2>
+    <p class="small">Enter = Send | Smart Answers + Memory Enabled</p>
 
     <div id="chat"></div>
 
-    <input id="aiInput" placeholder="Ask anything...">
+    <input id="aiInput" placeholder="Ask anything... (example: weather kolkata)">
     <button class="btn" onclick="askAI()">Send</button>
     <button class="btn gray" onclick="clearChat()">Clear</button>
   </div>
@@ -540,14 +543,16 @@ body.light #chat{background:#f5f5f5;}
 <div id="gamesPage" class="section">
   <div class="box">
     <h2>🎮 MR7 Games</h2>
-    <p class="small">Select a game (opens in full page mode)</p>
+    <p class="small">Select a game (open in full page mode)</p>
 
     <div class="grid">
       <button class="btn" onclick="openGamePage('snake')">🐍 Snake Pro</button>
       <button class="btn" onclick="openGamePage('car')">🚗 Nitro Racing</button>
       <button class="btn" onclick="openGamePage('space')">🚀 Space Shooter</button>
-      <button class="btn" onclick="openGamePage('ttt')">❌⭕ Tic Tac Toe</button>
+      <button class="btn" onclick="openGamePage('ttt')">❌⭕ Tic Tac Toe (Robot)</button>
       <button class="btn" onclick="openGamePage('brick')">🧱 Brick Breaker</button>
+      <button class="btn" onclick="openGamePage('runner')">🏃 Runner Rush (NEW)</button>
+      <button class="btn" onclick="openGamePage('zombie')">🧟 Zombie Survival (NEW)</button>
     </div>
   </div>
 
@@ -574,7 +579,6 @@ body.light #chat{background:#f5f5f5;}
 
     <div style="text-align:center;margin-top:10px;">
       <button class="btn" onclick="startSelectedGame()">▶ Start</button>
-      <button class="btn red" onclick="stopGame()">⛔ Stop</button>
       <button class="btn gray" onclick="openSection('gamesPage')">⬅ Back Games</button>
     </div>
 
@@ -597,6 +601,7 @@ body.light #chat{background:#f5f5f5;}
       <button class="btn" onclick="buySkin('Neon Lime', 50)">🎨 Neon Lime (50)</button>
       <button class="btn" onclick="buySkin('Cyber Blue', 80)">🎨 Cyber Blue (80)</button>
       <button class="btn" onclick="buySkin('Fire Red', 120)">🎨 Fire Red (120)</button>
+      <button class="btn" onclick="buySkin('Golden King', 200)">👑 Golden King (200)</button>
     </div>
   </div>
 
@@ -636,7 +641,7 @@ body.light #chat{background:#f5f5f5;}
 setTimeout(()=>{
   document.getElementById("preloader").style.display="none";
   showToast("🔥 Welcome to MR7 WORLD!");
-}, 1500);
+}, 1400);
 
 /* =======================
   PARTICLES
@@ -654,13 +659,14 @@ window.addEventListener("resize", resizeParticles);
 
 function initParticles(){
   particles=[];
-  for(let i=0;i<90;i++){
+  for(let i=0;i<100;i++){
     particles.push({
       x:Math.random()*pCanvas.width,
       y:Math.random()*pCanvas.height,
-      r:Math.random()*2.5+0.5,
-      dx:(Math.random()-0.5)*0.8,
-      dy:(Math.random()-0.5)*0.8
+      r:Math.random()*2.8+0.6,
+      dx:(Math.random()-0.5)*0.9,
+      dy:(Math.random()-0.5)*0.9,
+      a:Math.random()*0.7+0.3
     });
   }
 }
@@ -668,7 +674,6 @@ initParticles();
 
 function animateParticles(){
   pctx.clearRect(0,0,pCanvas.width,pCanvas.height);
-  pctx.fillStyle="rgba(0,255,0,0.7)";
   particles.forEach(pt=>{
     pt.x+=pt.dx;
     pt.y+=pt.dy;
@@ -676,6 +681,7 @@ function animateParticles(){
     if(pt.x<0||pt.x>pCanvas.width) pt.dx*=-1;
     if(pt.y<0||pt.y>pCanvas.height) pt.dy*=-1;
 
+    pctx.fillStyle=`rgba(0,255,0,${pt.a})`;
     pctx.beginPath();
     pctx.arc(pt.x,pt.y,pt.r,0,Math.PI*2);
     pctx.fill();
@@ -974,7 +980,7 @@ function sendMail(){
 }
 
 /* =======================
-  MUSIC TOGGLE (NO SOUND BY DEFAULT)
+  MUSIC TOGGLE
 ======================= */
 let musicOn=false;
 let audioCtx=null;
@@ -987,7 +993,7 @@ function toggleMusic(){
       osc=audioCtx.createOscillator();
       let gain=audioCtx.createGain();
       osc.type="sine";
-      osc.frequency.value=120;
+      osc.frequency.value=140;
       gain.gain.value=0.02;
       osc.connect(gain);
       gain.connect(audioCtx.destination);
@@ -1005,7 +1011,7 @@ function toggleMusic(){
 }
 
 /* =======================
-  MR7 AI (SMART OFFLINE)
+  MR7 AI (UPGRADED SMART)
 ======================= */
 let chat=document.getElementById("chat");
 let aiInput=document.getElementById("aiInput");
@@ -1021,7 +1027,7 @@ function addMsg(text,cls){
 function typingEffect(){
   let div=document.createElement("div");
   div.className="botMsg typing";
-  div.innerText="AI is typing...";
+  div.innerText="MR7 AI is thinking...";
   chat.appendChild(div);
   chat.scrollTop=chat.scrollHeight;
   return div;
@@ -1031,98 +1037,113 @@ function getUserName(){
   return localStorage.getItem("mr7User") || "Boss";
 }
 
-function smartAI(q){
+async function fetchWeather(city){
+  try{
+    const geo = await fetch("https://geocoding-api.open-meteo.com/v1/search?name="+encodeURIComponent(city)+"&count=1");
+    const geoData = await geo.json();
+    if(!geoData.results || geoData.results.length===0) return null;
+
+    const lat = geoData.results[0].latitude;
+    const lon = geoData.results[0].longitude;
+
+    const w = await fetch("https://api.open-meteo.com/v1/forecast?latitude="+lat+"&longitude="+lon+"&current_weather=true");
+    const wData = await w.json();
+    if(!wData.current_weather) return null;
+
+    return wData.current_weather;
+  }catch{
+    return null;
+  }
+}
+
+function localBrain(q){
   let text=q.toLowerCase().trim();
 
   if(text.startsWith("calc")){
     try{
       let exp=text.replace("calc","").trim();
       let result=eval(exp);
-      return "Result: "+result;
+      return "🧮 Result: "+result;
     }catch{
-      return "Calculator error. Example: calc 50+20";
+      return "❌ Calculator error. Example: calc 50+20";
     }
   }
 
-  if(text.includes("who are you") || text.includes("tum kaun") || text.includes("what are you")){
-    return "I am MR7 AI 😎 Built for MR7 WORLD. I can help in coding, games, youtube, study, motivation.";
+  if(text.includes("hello") || text.includes("hi") || text.includes("hey")){
+    return "Hello "+getUserName()+" 😎🔥 MR7 AI ready!";
   }
 
-  if(text.includes("my name") || text.includes("what is my name")){
+  if(text.includes("who are you") || text.includes("tum kaun")){
+    return "I am MR7 AI 🤖🔥 Smart assistant of MR7 WORLD. I can help in coding, games, study, youtube, tech, etc.";
+  }
+
+  if(text.includes("my name") || text.includes("mera naam")){
     return "Your username is: "+getUserName()+" ✔";
   }
 
   if(text.includes("time")){
-    return "Time: "+new Date().toLocaleTimeString();
+    return "⏰ Time: "+new Date().toLocaleTimeString();
   }
 
   if(text.includes("date")){
-    return "Date: "+new Date().toLocaleDateString();
-  }
-
-  if(text.includes("weather")){
-    return "Boss weather exact batane ke liye internet API chahiye. But you can use: open-meteo.com API for free.";
+    return "📅 Date: "+new Date().toLocaleDateString();
   }
 
   if(text.includes("html")){
-    return "HTML tip: Use proper structure (header, main, section, footer). Keep code clean and responsive.";
+    return "HTML Tip: Use <header>, <main>, <section>, <footer>. Keep SEO tags clean + responsive design.";
   }
 
   if(text.includes("css")){
-    return "CSS tip: Use flex/grid, consistent spacing, and avoid too many colors. Animations small rakho for premium feel.";
+    return "CSS Tip: Use flex/grid + consistent padding. Use fewer colors for premium look.";
   }
 
   if(text.includes("javascript") || text.includes("js")){
-    return "JavaScript tip: Use functions + events + localStorage for projects. Always debug with console.log().";
+    return "JS Tip: Use functions + events + localStorage. Always debug with console.log().";
   }
 
   if(text.includes("python")){
-    return "Python is best for automation, AI, backend. Practice loops, functions, lists, dict daily.";
+    return "Python Tip: Practice list, dict, loops, function daily. Build small projects like calculator, quiz app, game.";
   }
 
   if(text.includes("youtube") && (text.includes("grow") || text.includes("channel"))){
-    return "YouTube grow formula: 1) Consistency 2) Shorts daily 3) Good thumbnail 4) Title simple 5) Watch time improve.";
+    return "YouTube Growth: Shorts daily + good thumbnail + strong title + watch time focus. Consistency is king.";
   }
 
   if(text.includes("motivation")){
-    return "Discipline > Motivation 😈 Daily 1% improvement is real success.";
+    return "🔥 Discipline is real power. Motivation comes and goes, but discipline makes you unstoppable 😈";
   }
 
   if(text.includes("game") && text.includes("idea")){
-    return "Best game ideas: endless runner, space shooter, car racing with levels, zombie survival, football penalty.";
+    return "🔥 Game ideas: Zombie survival, endless runner, space war, car racing levels, shooting game, multiplayer local.";
   }
 
-  // Smart small knowledge database
-  const knowledge = [
-    {k:["india capital"], a:"India capital is New Delhi."},
-    {k:["usa capital"], a:"USA capital is Washington D.C."},
+  const facts=[
+    {k:["india capital","capital of india"], a:"India capital is New Delhi."},
+    {k:["usa capital","capital of usa"], a:"USA capital is Washington D.C."},
     {k:["earth"], a:"Earth is the 3rd planet from the Sun."},
     {k:["moon"], a:"Moon is Earth's natural satellite."},
-    {k:["sun"], a:"Sun is a star, not a planet."},
+    {k:["sun"], a:"Sun is a star (not a planet)."},
     {k:["speed of light"], a:"Speed of light is about 299,792,458 m/s."},
     {k:["gravity"], a:"Gravity is the force that attracts objects with mass toward each other."},
     {k:["elon musk"], a:"Elon Musk is CEO of Tesla and SpaceX."},
-    {k:["cricket"], a:"Cricket is played between 2 teams of 11 players."},
-    {k:["football"], a:"Football is played between 2 teams of 11 players. Goal is to score more goals."},
     {k:["cpu"], a:"CPU means Central Processing Unit. It is the brain of the computer."},
     {k:["ram"], a:"RAM is temporary memory used for fast performance."},
-    {k:["ai"], a:"AI means Artificial Intelligence. It is used to make machines think and solve problems."},
-    {k:["coding"], a:"Coding is writing instructions for computer to perform tasks."},
+    {k:["ai"], a:"AI means Artificial Intelligence. It is used to make machines smart and solve problems."},
+    {k:["coding"], a:"Coding means writing instructions for computer to perform tasks."},
   ];
 
-  for(let item of knowledge){
+  for(let item of facts){
     for(let key of item.k){
       if(text.includes(key)) return item.a;
     }
   }
 
-  // Fallback smart reply
-  if(text.length<3) return "Type full question boss 😄";
+  if(text.length<3) return "Boss full question likho 😄";
 
-  return "Boss I understand your question. But please give a little more detail so I can answer correctly 😎";
+  return "🤖 Boss mujhe samajh aa gaya. Thoda detail do, main best answer dunga 😎";
 }
 
-function askAI(){
+async function askAI(){
   let q=aiInput.value.trim();
   if(!q) return;
 
@@ -1131,15 +1152,34 @@ function askAI(){
 
   let typingDiv=typingEffect();
 
-  setTimeout(()=>{
+  setTimeout(async ()=>{
     typingDiv.remove();
-    let reply=smartAI(q);
+
+    let text=q.toLowerCase();
+
+    if(text.startsWith("weather")){
+      let city=q.replace("weather","").trim();
+      if(city.length<2) city="kolkata";
+      let w=await fetchWeather(city);
+      if(w){
+        addMsg("MR7 AI: 🌦 Weather in "+city.toUpperCase()+" => "+w.temperature+"°C | Wind "+w.windspeed+" km/h","botMsg");
+      }else{
+        addMsg("MR7 AI: ❌ Weather API not available right now.","botMsg");
+      }
+      return;
+    }
+
+    let reply=localBrain(q);
     addMsg("MR7 AI: "+reply,"botMsg");
-  }, 400);
+
+  }, 350);
 }
 
 aiInput.addEventListener("keydown",(e)=>{
-  if(e.key==="Enter") askAI();
+  if(e.key==="Enter"){
+    e.preventDefault();
+    askAI();
+  }
 });
 
 function clearChat(){
@@ -1149,7 +1189,7 @@ function clearChat(){
 }
 
 /* =======================
-  GAME SYSTEM (Separate Page)
+  GAME SYSTEM
 ======================= */
 const canvas=document.getElementById("gameCanvas");
 const ctx=canvas.getContext("2d");
@@ -1165,31 +1205,49 @@ function openGamePage(game){
   document.getElementById("gameScore").innerText=0;
   document.getElementById("gameCoins").innerText=getCoins();
 
+  let title="🎮 Game";
+  let desc="Enjoy";
+  let control="";
+
   if(game==="snake"){
-    document.getElementById("gameTitle").innerText="🐍 Snake Pro";
-    document.getElementById("gameDesc").innerText="Arrow keys / Swipe to move. Eat food to grow!";
-    document.getElementById("controlInfo").innerText="Controls: Arrow keys / Swipe";
+    title="🐍 Snake Pro";
+    desc="Smooth snake, eat food, grow bigger!";
+    control="Controls: Arrow keys / Swipe";
   }
   if(game==="car"){
-    document.getElementById("gameTitle").innerText="🚗 Nitro Racing";
-    document.getElementById("gameDesc").innerText="Avoid traffic. Nitro boost available!";
-    document.getElementById("controlInfo").innerText="Controls: Left/Right + Nitro Button (Space)";
+    title="🚗 Nitro Racing";
+    desc="Avoid traffic, use nitro boost!";
+    control="Controls: Left/Right + Space = Nitro";
   }
   if(game==="space"){
-    document.getElementById("gameTitle").innerText="🚀 Space Shooter";
-    document.getElementById("gameDesc").innerText="Shoot asteroids and enemies. Survive!";
-    document.getElementById("controlInfo").innerText="Controls: Left/Right + Shoot (Enter)";
+    title="🚀 Space Shooter";
+    desc="Rocket + enemies + stars + bullets!";
+    control="Controls: Left/Right + Enter = Shoot";
   }
   if(game==="ttt"){
-    document.getElementById("gameTitle").innerText="❌⭕ Tic Tac Toe";
-    document.getElementById("gameDesc").innerText="Single Player vs Robot available!";
-    document.getElementById("controlInfo").innerText="Tap cells to play.";
+    title="❌⭕ Tic Tac Toe";
+    desc="Single Player vs Robot!";
+    control="Tap cells to play.";
   }
   if(game==="brick"){
-    document.getElementById("gameTitle").innerText="🧱 Brick Breaker";
-    document.getElementById("gameDesc").innerText="Break bricks, don't drop the ball!";
-    document.getElementById("controlInfo").innerText="Controls: Left/Right";
+    title="🧱 Brick Breaker";
+    desc="Break bricks and survive!";
+    control="Controls: Left/Right";
   }
+  if(game==="runner"){
+    title="🏃 Runner Rush";
+    desc="Jump and dodge obstacles!";
+    control="Controls: Space = Jump / Tap screen";
+  }
+  if(game==="zombie"){
+    title="🧟 Zombie Survival";
+    desc="Shoot zombies, survive as long as possible!";
+    control="Controls: Arrow move + Enter shoot";
+  }
+
+  document.getElementById("gameTitle").innerText=title;
+  document.getElementById("gameDesc").innerText=desc;
+  document.getElementById("controlInfo").innerText=control;
 
   best=parseInt(localStorage.getItem("best_"+game) || "0");
   document.getElementById("gameBest").innerText=best;
@@ -1223,6 +1281,8 @@ function startSelectedGame(){
   if(selectedGame==="space") startSpace();
   if(selectedGame==="ttt") startTTT();
   if(selectedGame==="brick") startBrick();
+  if(selectedGame==="runner") startRunner();
+  if(selectedGame==="zombie") startZombie();
 }
 
 function stopGame(){
@@ -1231,7 +1291,7 @@ function stopGame(){
 }
 
 /* =======================
-  SNAKE PRO (UPGRADED)
+  SNAKE PRO (FIXED REAL SNAKE)
 ======================= */
 let snake=[], food={}, dir="RIGHT";
 
@@ -1249,20 +1309,25 @@ function spawnFood(){
 function drawSnake(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  // background glow
-  ctx.fillStyle="rgba(0,255,0,.05)";
+  ctx.fillStyle="rgba(0,255,0,.03)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  // food
   ctx.beginPath();
   ctx.fillStyle="red";
   ctx.arc(food.x+10,food.y+10,8,0,Math.PI*2);
   ctx.fill();
 
-  // snake
   snake.forEach((p,i)=>{
-    ctx.fillStyle = i===0 ? "lime" : "rgba(0,255,0,.6)";
-    ctx.fillRect(p.x,p.y,18,18);
+    if(i===0){
+      ctx.fillStyle="lime";
+      ctx.fillRect(p.x,p.y,18,18);
+      ctx.fillStyle="black";
+      ctx.fillRect(p.x+4,p.y+4,4,4);
+      ctx.fillRect(p.x+10,p.y+4,4,4);
+    }else{
+      ctx.fillStyle="rgba(0,255,0,.7)";
+      ctx.fillRect(p.x,p.y,18,18);
+    }
   });
 
   ctx.fillStyle="white";
@@ -1305,11 +1370,11 @@ function moveSnake(){
 function startSnake(){
   resetSnake();
   drawSnake();
-  gameInterval=setInterval(moveSnake, 120);
+  gameInterval=setInterval(moveSnake, 110);
 }
 
 /* =======================
-  CAR NITRO RACING (UPGRADED)
+  CAR NITRO RACING
 ======================= */
 let carX=160, carY=360, nitro=100;
 let traffic=[];
@@ -1324,48 +1389,6 @@ function resetCar(){
     {x:80,y:-200,s:5},
     {x:230,y:-500,s:6}
   ];
-}
-
-function drawCar(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  // road
-  ctx.fillStyle="#222";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  // road lines
-  ctx.strokeStyle="white";
-  ctx.lineWidth=4;
-  ctx.setLineDash([18,18]);
-  ctx.beginPath();
-  ctx.moveTo(canvas.width/2, roadOffset);
-  ctx.lineTo(canvas.width/2, canvas.height);
-  ctx.stroke();
-  ctx.setLineDash([]);
-
-  roadOffset+=8;
-  if(roadOffset>40) roadOffset=0;
-
-  // borders
-  ctx.fillStyle="#111";
-  ctx.fillRect(0,0,50,canvas.height);
-  ctx.fillRect(canvas.width-50,0,50,canvas.height);
-
-  // player car (real look)
-  drawCarSprite(carX,carY,"lime");
-
-  // traffic cars
-  traffic.forEach(t=>{
-    drawCarSprite(t.x,t.y,"red");
-  });
-
-  // HUD
-  ctx.fillStyle="yellow";
-  ctx.font="bold 16px Arial";
-  ctx.fillText("Score: "+score, 10, 20);
-
-  ctx.fillStyle="cyan";
-  ctx.fillText("Nitro: "+nitro+"%", 10, 42);
 }
 
 function drawCarSprite(x,y,color){
@@ -1389,6 +1412,42 @@ function drawCarSprite(x,y,color){
   ctx.fillRect(x+6,y+30,8,6);
 }
 
+function drawCar(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  ctx.fillStyle="#222";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  ctx.strokeStyle="white";
+  ctx.lineWidth=4;
+  ctx.setLineDash([18,18]);
+  ctx.beginPath();
+  ctx.moveTo(canvas.width/2, roadOffset);
+  ctx.lineTo(canvas.width/2, canvas.height);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  roadOffset+=8;
+  if(roadOffset>40) roadOffset=0;
+
+  ctx.fillStyle="#111";
+  ctx.fillRect(0,0,50,canvas.height);
+  ctx.fillRect(canvas.width-50,0,50,canvas.height);
+
+  drawCarSprite(carX,carY,"lime");
+
+  traffic.forEach(t=>{
+    drawCarSprite(t.x,t.y,"red");
+  });
+
+  ctx.fillStyle="yellow";
+  ctx.font="bold 16px Arial";
+  ctx.fillText("Score: "+score, 10, 20);
+
+  ctx.fillStyle="cyan";
+  ctx.fillText("Nitro: "+Math.floor(nitro)+"%", 10, 42);
+}
+
 function updateCar(){
   traffic.forEach(t=>{
     t.y += t.s + (score/60);
@@ -1407,7 +1466,7 @@ function updateCar(){
     }
   });
 
-  if(nitro<100) nitro+=0.5;
+  if(nitro<100) nitro+=0.4;
 
   document.getElementById("gameScore").innerText=score;
   drawCar();
@@ -1420,7 +1479,7 @@ function startCar(){
 }
 
 /* =======================
-  SPACE SHOOTER (UPGRADED)
+  SPACE SHOOTER
 ======================= */
 let shipX=180, bullets=[], asteroids=[], stars=[];
 
@@ -1430,7 +1489,7 @@ function resetSpace(){
   asteroids=[];
   score=0;
   stars=[];
-  for(let i=0;i<70;i++){
+  for(let i=0;i<80;i++){
     stars.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, s:Math.random()*2+1});
   }
 }
@@ -1456,11 +1515,9 @@ function drawRocket(x,y){
 function drawSpace(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  // space background
   ctx.fillStyle="black";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  // stars
   ctx.fillStyle="white";
   stars.forEach(st=>{
     ctx.fillRect(st.x, st.y, st.s, st.s);
@@ -1468,16 +1525,13 @@ function drawSpace(){
     if(st.y>canvas.height) st.y=0;
   });
 
-  // ship
   drawRocket(shipX, 410);
 
-  // bullets
   ctx.fillStyle="yellow";
   bullets.forEach(b=>{
     ctx.fillRect(b.x-2,b.y,4,12);
   });
 
-  // asteroids
   asteroids.forEach(a=>{
     ctx.fillStyle="gray";
     ctx.beginPath();
@@ -1500,7 +1554,6 @@ function updateSpace(){
 
   asteroids.forEach(a=>a.y+=a.s);
 
-  // collision bullet-asteroid
   asteroids.forEach((a,ai)=>{
     bullets.forEach((b,bi)=>{
       if(Math.abs(a.x-b.x)<a.r && Math.abs(a.y-b.y)<a.r){
@@ -1513,7 +1566,6 @@ function updateSpace(){
     });
   });
 
-  // collision ship
   asteroids.forEach(a=>{
     if(Math.abs(a.x-shipX)<a.r+15 && Math.abs(a.y-410)<a.r+20){
       gameOver("Space");
@@ -1537,12 +1589,9 @@ function startSpace(){
   TIC TAC TOE (ROBOT MODE)
 ======================= */
 let tttCells=[];
-let tttPlayer="X";
-let vsRobot=true;
 
 function startTTT(){
   tttCells=new Array(9).fill("");
-  tttPlayer="X";
   drawTTT();
 }
 
@@ -1579,8 +1628,8 @@ function drawTTT(){
 
   ctx.fillStyle="white";
   ctx.font="bold 16px Arial";
-  ctx.fillText("Mode: Single Player (Robot)", 70, 40);
-  ctx.fillText("Tap on board to play", 90, 65);
+  ctx.fillText("Mode: Single Player vs Robot", 70, 40);
+  ctx.fillText("Tap board to play", 110, 65);
 }
 
 function tttWinCheck(){
@@ -1598,17 +1647,15 @@ function tttWinCheck(){
 }
 
 function robotMove(){
-  // simple smart robot
   let empty=tttCells.map((v,i)=>v===""?i:null).filter(v=>v!==null);
   if(empty.length===0) return;
 
-  // win chance
   for(let i of empty){
     tttCells[i]="O";
     if(tttWinCheck()==="O") return;
     tttCells[i]="";
   }
-  // block chance
+
   for(let i of empty){
     tttCells[i]="X";
     if(tttWinCheck()==="X"){
@@ -1617,12 +1664,12 @@ function robotMove(){
     }
     tttCells[i]="";
   }
-  // center
+
   if(tttCells[4]===""){
     tttCells[4]="O";
     return;
   }
-  // random
+
   tttCells[empty[Math.floor(Math.random()*empty.length)]]="O";
 }
 
@@ -1697,18 +1744,15 @@ function drawBrick(){
   ctx.fillStyle="black";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  // bricks
   bricks.forEach(b=>{
     if(!b.alive) return;
     ctx.fillStyle="lime";
     ctx.fillRect(b.x,b.y,b.w,b.h);
   });
 
-  // paddle
   ctx.fillStyle="cyan";
   ctx.fillRect(paddleX, 430, 90, 12);
 
-  // ball
   ctx.fillStyle="yellow";
   ctx.beginPath();
   ctx.arc(ballX, ballY, 8, 0, Math.PI*2);
@@ -1726,12 +1770,10 @@ function updateBrick(){
   if(ballX<10 || ballX>canvas.width-10) ballDX*=-1;
   if(ballY<10) ballDY*=-1;
 
-  // paddle collision
   if(ballY>420 && ballX>paddleX && ballX<paddleX+90){
     ballDY*=-1;
   }
 
-  // brick collision
   bricks.forEach(b=>{
     if(!b.alive) return;
     if(ballX>b.x && ballX<b.x+b.w && ballY>b.y && ballY<b.y+b.h){
@@ -1763,6 +1805,166 @@ function startBrick(){
   resetBrick();
   drawBrick();
   gameInterval=setInterval(updateBrick, 30);
+}
+
+/* =======================
+  NEW GAME: RUNNER RUSH
+======================= */
+let runnerY=360;
+let runnerVel=0;
+let runnerGround=360;
+let obstacles=[];
+
+function resetRunner(){
+  score=0;
+  runnerY=runnerGround;
+  runnerVel=0;
+  obstacles=[];
+}
+
+function drawRunner(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  ctx.fillStyle="#111";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  ctx.fillStyle="white";
+  for(let i=0;i<50;i++){
+    ctx.fillRect(Math.random()*canvas.width, Math.random()*canvas.height, 1, 1);
+  }
+
+  ctx.fillStyle="#333";
+  ctx.fillRect(0, runnerGround+30, canvas.width, 80);
+
+  ctx.fillStyle="lime";
+  ctx.fillRect(60, runnerY, 30, 50);
+
+  obstacles.forEach(o=>{
+    ctx.fillStyle="red";
+    ctx.fillRect(o.x,o.y,o.w,o.h);
+  });
+
+  ctx.fillStyle="yellow";
+  ctx.font="bold 16px Arial";
+  ctx.fillText("Score: "+score, 10, 20);
+}
+
+function updateRunner(){
+  if(Math.random()<0.03){
+    obstacles.push({x:canvas.width+30, y:runnerGround+20, w:25, h:40});
+  }
+
+  runnerVel += 1.1;
+  runnerY += runnerVel;
+
+  if(runnerY>runnerGround){
+    runnerY=runnerGround;
+    runnerVel=0;
+  }
+
+  obstacles.forEach(o=>{
+    o.x -= 7;
+    if(o.x<-40){
+      score+=5;
+      addCoins(1);
+      o.x=-999;
+    }
+
+    if(60<o.x+o.w && 60+30>o.x && runnerY<o.y+o.h && runnerY+50>o.y){
+      gameOver("Runner");
+      return;
+    }
+  });
+
+  obstacles=obstacles.filter(o=>o.x>-200);
+
+  document.getElementById("gameScore").innerText=score;
+  drawRunner();
+}
+
+function startRunner(){
+  resetRunner();
+  drawRunner();
+  gameInterval=setInterval(updateRunner, 30);
+}
+
+/* =======================
+  NEW GAME: ZOMBIE SURVIVAL
+======================= */
+let playerX=170;
+let zBullets=[];
+let zombies=[];
+
+function resetZombie(){
+  score=0;
+  playerX=170;
+  zBullets=[];
+  zombies=[];
+}
+
+function drawZombie(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="black";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  ctx.fillStyle="lime";
+  ctx.fillRect(playerX, 400, 35, 45);
+
+  ctx.fillStyle="yellow";
+  zBullets.forEach(b=>{
+    ctx.fillRect(b.x,b.y,4,10);
+  });
+
+  zombies.forEach(z=>{
+    ctx.fillStyle="red";
+    ctx.fillRect(z.x,z.y,35,45);
+  });
+
+  ctx.fillStyle="white";
+  ctx.font="bold 16px Arial";
+  ctx.fillText("Score: "+score, 10, 20);
+}
+
+function updateZombie(){
+  if(Math.random()<0.04){
+    zombies.push({x:Math.random()*(canvas.width-40), y:-50, s:2+Math.random()*2});
+  }
+
+  zBullets.forEach(b=>b.y-=8);
+  zBullets=zBullets.filter(b=>b.y>-30);
+
+  zombies.forEach(z=>z.y+=z.s);
+
+  zombies.forEach((z,zi)=>{
+    zBullets.forEach((b,bi)=>{
+      if(b.x>z.x && b.x<z.x+35 && b.y>z.y && b.y<z.y+45){
+        zombies.splice(zi,1);
+        zBullets.splice(bi,1);
+        score+=10;
+        addCoins(2);
+      }
+    });
+  });
+
+  zombies.forEach(z=>{
+    if(z.y>380 && Math.abs(z.x-playerX)<35){
+      gameOver("Zombie");
+      return;
+    }
+    if(z.y>canvas.height+60){
+      gameOver("Zombie");
+      return;
+    }
+  });
+
+  document.getElementById("gameScore").innerText=score;
+  drawZombie();
+}
+
+function startZombie(){
+  resetZombie();
+  drawZombie();
+  gameInterval=setInterval(updateZombie, 30);
 }
 
 /* =======================
@@ -1810,13 +2012,15 @@ document.addEventListener("keydown",(e)=>{
   if(selectedGame==="car"){
     if(e.key==="ArrowLeft") carX-=carSpeed*3;
     if(e.key==="ArrowRight") carX+=carSpeed*3;
+
     if(e.key===" "){
-      if(nitro>5){
-        nitro-=8;
+      if(nitro>10){
+        nitro-=10;
         score+=2;
-        traffic.forEach(t=>t.y+=20);
+        traffic.forEach(t=>t.y+=25);
       }
     }
+
     if(carX<60) carX=60;
     if(carX>canvas.width-60) carX=canvas.width-60;
   }
@@ -1837,6 +2041,22 @@ document.addEventListener("keydown",(e)=>{
     if(paddleX<10) paddleX=10;
     if(paddleX>canvas.width-100) paddleX=canvas.width-100;
   }
+
+  if(selectedGame==="runner"){
+    if(e.key===" " && runnerY>=runnerGround){
+      runnerVel=-16;
+    }
+  }
+
+  if(selectedGame==="zombie"){
+    if(e.key==="ArrowLeft") playerX-=20;
+    if(e.key==="ArrowRight") playerX+=20;
+    if(e.key==="Enter"){
+      zBullets.push({x:playerX+18, y:390});
+    }
+    if(playerX<0) playerX=0;
+    if(playerX>canvas.width-35) playerX=canvas.width-35;
+  }
 });
 
 /* =======================
@@ -1851,7 +2071,6 @@ canvas.addEventListener("click",(e)=>{
   }
 });
 
-/* Mobile swipe for snake */
 let startX=0,startY=0;
 canvas.addEventListener("touchstart",(e)=>{
   startX=e.touches[0].clientX;
@@ -1879,16 +2098,20 @@ canvas.addEventListener("touchend",(e)=>{
     if(shipX<40) shipX=40;
     if(shipX>canvas.width-40) shipX=canvas.width-40;
   }
+
+  if(selectedGame==="runner"){
+    if(runnerY>=runnerGround){
+      runnerVel=-16;
+    }
+  }
 });
 
-/* Joystick for car */
+/* Joystick for car + brick */
 const joystick=document.getElementById("joystick");
 const stick=document.getElementById("stick");
 let joyActive=false;
 
-joystick.addEventListener("touchstart",(e)=>{
-  joyActive=true;
-});
+joystick.addEventListener("touchstart",()=>{joyActive=true;});
 joystick.addEventListener("touchmove",(e)=>{
   if(!joyActive) return;
   let touch=e.touches[0];
@@ -1909,6 +2132,12 @@ joystick.addEventListener("touchmove",(e)=>{
     paddleX += diff*0.06;
     if(paddleX<10) paddleX=10;
     if(paddleX>canvas.width-100) paddleX=canvas.width-100;
+  }
+
+  if(selectedGame==="zombie"){
+    playerX += diff*0.06;
+    if(playerX<0) playerX=0;
+    if(playerX>canvas.width-35) playerX=canvas.width-35;
   }
 });
 joystick.addEventListener("touchend",()=>{

@@ -35,7 +35,7 @@ body.light{
   z-index:-3;
 }
 
-/* NEW BACKGROUND (NO CIRCLE GOL GOL) */
+/* NEW BACKGROUND */
 body::before{
   content:"";
   position:fixed;
@@ -551,8 +551,8 @@ body.light #chat{background:#f5f5f5;}
       <button class="btn" onclick="openGamePage('space')">🚀 Space Shooter</button>
       <button class="btn" onclick="openGamePage('ttt')">❌⭕ Tic Tac Toe (Robot)</button>
       <button class="btn" onclick="openGamePage('brick')">🧱 Brick Breaker</button>
-      <button class="btn" onclick="openGamePage('runner')">🏃 Runner Rush (NEW)</button>
-      <button class="btn" onclick="openGamePage('zombie')">🧟 Zombie Survival (NEW)</button>
+      <button class="btn" onclick="openGamePage('runner')">🏃 Runner Rush</button>
+      <button class="btn" onclick="openGamePage('zombie')">🧟 Zombie Survival</button>
     </div>
   </div>
 
@@ -691,7 +691,7 @@ function animateParticles(){
 animateParticles();
 
 /* =======================
-  TOAST / ACHIEVEMENT POPUP
+  TOAST / ACHIEVEMENT
 ======================= */
 function showToast(msg){
   const t=document.getElementById("toast");
@@ -758,7 +758,6 @@ document.addEventListener("click",(e)=>{
   }
 });
 
-/* Search Menu */
 function searchMenu(){
   let q=document.getElementById("menuSearch").value.toLowerCase().trim();
   if(q.includes("ai")) openSection("aiPage");
@@ -809,6 +808,7 @@ function loginUser(){
 
   status.style.color="lime";
   status.innerText="✅ Login Successful!";
+
   setTimeout(()=>{
     openSection("mainMenu");
     startTypingTitle();
@@ -1011,7 +1011,7 @@ function toggleMusic(){
 }
 
 /* =======================
-  MR7 AI (UPGRADED SMART)
+  MR7 AI
 ======================= */
 let chat=document.getElementById("chat");
 let aiInput=document.getElementById("aiInput");
@@ -1074,7 +1074,7 @@ function localBrain(q){
   }
 
   if(text.includes("who are you") || text.includes("tum kaun")){
-    return "I am MR7 AI 🤖🔥 Smart assistant of MR7 WORLD. I can help in coding, games, study, youtube, tech, etc.";
+    return "I am MR7 AI 🤖🔥 Smart assistant of MR7 WORLD.";
   }
 
   if(text.includes("my name") || text.includes("mera naam")){
@@ -1087,55 +1087,6 @@ function localBrain(q){
 
   if(text.includes("date")){
     return "📅 Date: "+new Date().toLocaleDateString();
-  }
-
-  if(text.includes("html")){
-    return "HTML Tip: Use <header>, <main>, <section>, <footer>. Keep SEO tags clean + responsive design.";
-  }
-
-  if(text.includes("css")){
-    return "CSS Tip: Use flex/grid + consistent padding. Use fewer colors for premium look.";
-  }
-
-  if(text.includes("javascript") || text.includes("js")){
-    return "JS Tip: Use functions + events + localStorage. Always debug with console.log().";
-  }
-
-  if(text.includes("python")){
-    return "Python Tip: Practice list, dict, loops, function daily. Build small projects like calculator, quiz app, game.";
-  }
-
-  if(text.includes("youtube") && (text.includes("grow") || text.includes("channel"))){
-    return "YouTube Growth: Shorts daily + good thumbnail + strong title + watch time focus. Consistency is king.";
-  }
-
-  if(text.includes("motivation")){
-    return "🔥 Discipline is real power. Motivation comes and goes, but discipline makes you unstoppable 😈";
-  }
-
-  if(text.includes("game") && text.includes("idea")){
-    return "🔥 Game ideas: Zombie survival, endless runner, space war, car racing levels, shooting game, multiplayer local.";
-  }
-
-  const facts=[
-    {k:["india capital","capital of india"], a:"India capital is New Delhi."},
-    {k:["usa capital","capital of usa"], a:"USA capital is Washington D.C."},
-    {k:["earth"], a:"Earth is the 3rd planet from the Sun."},
-    {k:["moon"], a:"Moon is Earth's natural satellite."},
-    {k:["sun"], a:"Sun is a star (not a planet)."},
-    {k:["speed of light"], a:"Speed of light is about 299,792,458 m/s."},
-    {k:["gravity"], a:"Gravity is the force that attracts objects with mass toward each other."},
-    {k:["elon musk"], a:"Elon Musk is CEO of Tesla and SpaceX."},
-    {k:["cpu"], a:"CPU means Central Processing Unit. It is the brain of the computer."},
-    {k:["ram"], a:"RAM is temporary memory used for fast performance."},
-    {k:["ai"], a:"AI means Artificial Intelligence. It is used to make machines smart and solve problems."},
-    {k:["coding"], a:"Coding means writing instructions for computer to perform tasks."},
-  ];
-
-  for(let item of facts){
-    for(let key of item.k){
-      if(text.includes(key)) return item.a;
-    }
   }
 
   if(text.length<3) return "Boss full question likho 😄";
@@ -1237,11 +1188,11 @@ function openGamePage(game){
   if(game==="runner"){
     title="🏃 Runner Rush";
     desc="Jump and dodge obstacles!";
-    control="Controls: Space = Jump / Tap screen";
+    control="Controls: Space / Tap";
   }
   if(game==="zombie"){
     title="🧟 Zombie Survival";
-    desc="Shoot zombies, survive as long as possible!";
+    desc="Shoot zombies, survive!";
     control="Controls: Arrow move + Enter shoot";
   }
 
@@ -1291,7 +1242,7 @@ function stopGame(){
 }
 
 /* =======================
-  SNAKE PRO (FIXED REAL SNAKE)
+  SNAKE PRO
 ======================= */
 let snake=[], food={}, dir="RIGHT";
 
@@ -1358,7 +1309,6 @@ function moveSnake(){
   if(head.x===food.x && head.y===food.y){
     score+=5;
     addCoins(2);
-    if(score>=50) showAchievement("Snake Pro!");
     spawnFood();
   }else{
     snake.pop();
@@ -1374,11 +1324,10 @@ function startSnake(){
 }
 
 /* =======================
-  CAR NITRO RACING
+  CAR GAME
 ======================= */
 let carX=160, carY=360, nitro=100;
 let traffic=[];
-let carSpeed=6;
 let roadOffset=0;
 
 function resetCar(){
@@ -1406,10 +1355,6 @@ function drawCarSprite(x,y,color){
   ctx.fillRect(x+16,y-25,6,18);
   ctx.fillRect(x-22,y+10,6,18);
   ctx.fillRect(x+16,y+10,6,18);
-
-  ctx.fillStyle="yellow";
-  ctx.fillRect(x-14,y+30,8,6);
-  ctx.fillRect(x+6,y+30,8,6);
 }
 
 function drawCar(){
@@ -1429,10 +1374,6 @@ function drawCar(){
 
   roadOffset+=8;
   if(roadOffset>40) roadOffset=0;
-
-  ctx.fillStyle="#111";
-  ctx.fillRect(0,0,50,canvas.height);
-  ctx.fillRect(canvas.width-50,0,50,canvas.height);
 
   drawCarSprite(carX,carY,"lime");
 
@@ -1462,7 +1403,6 @@ function updateCar(){
       t.x=70+Math.random()*220;
       score+=5;
       addCoins(3);
-      if(score>=80) showAchievement("Racing Legend!");
     }
   });
 
@@ -1494,24 +1434,6 @@ function resetSpace(){
   }
 }
 
-function drawRocket(x,y){
-  ctx.fillStyle="lime";
-  ctx.beginPath();
-  ctx.moveTo(x, y-20);
-  ctx.lineTo(x-16, y+20);
-  ctx.lineTo(x+16, y+20);
-  ctx.closePath();
-  ctx.fill();
-
-  ctx.fillStyle="cyan";
-  ctx.fillRect(x-5,y,10,12);
-
-  ctx.fillStyle="orange";
-  ctx.beginPath();
-  ctx.arc(x,y+22,6,0,Math.PI*2);
-  ctx.fill();
-}
-
 function drawSpace(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
@@ -1525,7 +1447,8 @@ function drawSpace(){
     if(st.y>canvas.height) st.y=0;
   });
 
-  drawRocket(shipX, 410);
+  ctx.fillStyle="lime";
+  ctx.fillRect(shipX-15, 400, 30, 30);
 
   ctx.fillStyle="yellow";
   bullets.forEach(b=>{
@@ -1561,7 +1484,6 @@ function updateSpace(){
         bullets.splice(bi,1);
         score+=10;
         addCoins(2);
-        if(score>=100) showAchievement("Space Warrior!");
       }
     });
   });
@@ -1586,7 +1508,7 @@ function startSpace(){
 }
 
 /* =======================
-  TIC TAC TOE (ROBOT MODE)
+  TIC TAC TOE
 ======================= */
 let tttCells=[];
 
@@ -1625,11 +1547,6 @@ function drawTTT(){
     ctx.fillStyle=v==="X" ? "lime" : "cyan";
     ctx.fillText(v, x, y);
   });
-
-  ctx.fillStyle="white";
-  ctx.font="bold 16px Arial";
-  ctx.fillText("Mode: Single Player vs Robot", 70, 40);
-  ctx.fillText("Tap board to play", 110, 65);
 }
 
 function tttWinCheck(){
@@ -1650,26 +1567,6 @@ function robotMove(){
   let empty=tttCells.map((v,i)=>v===""?i:null).filter(v=>v!==null);
   if(empty.length===0) return;
 
-  for(let i of empty){
-    tttCells[i]="O";
-    if(tttWinCheck()==="O") return;
-    tttCells[i]="";
-  }
-
-  for(let i of empty){
-    tttCells[i]="X";
-    if(tttWinCheck()==="X"){
-      tttCells[i]="O";
-      return;
-    }
-    tttCells[i]="";
-  }
-
-  if(tttCells[4]===""){
-    tttCells[4]="O";
-    return;
-  }
-
   tttCells[empty[Math.floor(Math.random()*empty.length)]]="O";
 }
 
@@ -1686,33 +1583,19 @@ function handleTTTClick(mx,my){
   if(tttCells[idx] !== "") return;
 
   tttCells[idx]="X";
-  let w=tttWinCheck();
-  if(w){
-    showToast("🏆 You Win!");
-    score=50;
-    endGame("TTT");
-    return;
-  }
 
-  if(tttCells.every(x=>x!=="")){
-    showToast("😐 Draw!");
-    score=20;
+  if(tttWinCheck()==="X"){
+    score=50;
+    showToast("🏆 You Win!");
     endGame("TTT");
     return;
   }
 
   robotMove();
-  w=tttWinCheck();
-  if(w==="O"){
-    showToast("🤖 Robot Wins!");
-    score=10;
-    endGame("TTT");
-    return;
-  }
 
-  if(tttCells.every(x=>x!=="")){
-    showToast("😐 Draw!");
-    score=20;
+  if(tttWinCheck()==="O"){
+    score=10;
+    showToast("🤖 Robot Wins!");
     endGame("TTT");
     return;
   }
@@ -1781,19 +1664,11 @@ function updateBrick(){
       ballDY*=-1;
       score+=5;
       addCoins(1);
-      if(score>=60) showAchievement("Brick Master!");
     }
   });
 
   if(ballY>canvas.height){
     gameOver("Brick");
-    return;
-  }
-
-  if(bricks.every(b=>!b.alive)){
-    showToast("🏆 Level Clear!");
-    score+=50;
-    endGame("Brick");
     return;
   }
 
@@ -1808,7 +1683,7 @@ function startBrick(){
 }
 
 /* =======================
-  NEW GAME: RUNNER RUSH
+  RUNNER RUSH
 ======================= */
 let runnerY=360;
 let runnerVel=0;
@@ -1827,11 +1702,6 @@ function drawRunner(){
 
   ctx.fillStyle="#111";
   ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  ctx.fillStyle="white";
-  for(let i=0;i<50;i++){
-    ctx.fillRect(Math.random()*canvas.width, Math.random()*canvas.height, 1, 1);
-  }
 
   ctx.fillStyle="#333";
   ctx.fillRect(0, runnerGround+30, canvas.width, 80);
@@ -1889,7 +1759,7 @@ function startRunner(){
 }
 
 /* =======================
-  NEW GAME: ZOMBIE SURVIVAL
+  ZOMBIE SURVIVAL
 ======================= */
 let playerX=170;
 let zBullets=[];
@@ -1951,10 +1821,6 @@ function updateZombie(){
       gameOver("Zombie");
       return;
     }
-    if(z.y>canvas.height+60){
-      gameOver("Zombie");
-      return;
-    }
   });
 
   document.getElementById("gameScore").innerText=score;
@@ -1968,7 +1834,7 @@ function startZombie(){
 }
 
 /* =======================
-  GAME OVER / END SAVE
+  GAME OVER / SAVE
 ======================= */
 function gameOver(gameName){
   stopGame();
@@ -2010,8 +1876,8 @@ document.addEventListener("keydown",(e)=>{
   }
 
   if(selectedGame==="car"){
-    if(e.key==="ArrowLeft") carX-=carSpeed*3;
-    if(e.key==="ArrowRight") carX+=carSpeed*3;
+    if(e.key==="ArrowLeft") carX-=20;
+    if(e.key==="ArrowRight") carX+=20;
 
     if(e.key===" "){
       if(nitro>10){
@@ -2060,7 +1926,7 @@ document.addEventListener("keydown",(e)=>{
 });
 
 /* =======================
-  TOUCH CONTROLS + TTT CLICK
+  TTT CLICK CONTROL
 ======================= */
 canvas.addEventListener("click",(e)=>{
   if(selectedGame==="ttt"){
@@ -2071,6 +1937,9 @@ canvas.addEventListener("click",(e)=>{
   }
 });
 
+/* =======================
+  MOBILE SWIPE CONTROL
+======================= */
 let startX=0,startY=0;
 canvas.addEventListener("touchstart",(e)=>{
   startX=e.touches[0].clientX;
@@ -2092,13 +1961,6 @@ canvas.addEventListener("touchend",(e)=>{
     }
   }
 
-  if(selectedGame==="space"){
-    if(dx>20) shipX+=20;
-    if(dx<-20) shipX-=20;
-    if(shipX<40) shipX=40;
-    if(shipX>canvas.width-40) shipX=canvas.width-40;
-  }
-
   if(selectedGame==="runner"){
     if(runnerY>=runnerGround){
       runnerVel=-16;
@@ -2106,49 +1968,68 @@ canvas.addEventListener("touchend",(e)=>{
   }
 });
 
-/* Joystick for car + brick */
-const joystick=document.getElementById("joystick");
-const stick=document.getElementById("stick");
-let joyActive=false;
-
-joystick.addEventListener("touchstart",()=>{joyActive=true;});
-joystick.addEventListener("touchmove",(e)=>{
-  if(!joyActive) return;
-  let touch=e.touches[0];
-  let rect=joystick.getBoundingClientRect();
-  let x=touch.clientX - rect.left;
-  let center=rect.width/2;
-  let diff=x-center;
-
-  stick.style.left = (center + diff*0.5) + "px";
-
-  if(selectedGame==="car"){
-    carX += diff*0.06;
-    if(carX<60) carX=60;
-    if(carX>canvas.width-60) carX=canvas.width-60;
-  }
-
-  if(selectedGame==="brick"){
-    paddleX += diff*0.06;
-    if(paddleX<10) paddleX=10;
-    if(paddleX>canvas.width-100) paddleX=canvas.width-100;
-  }
-
-  if(selectedGame==="zombie"){
-    playerX += diff*0.06;
-    if(playerX<0) playerX=0;
-    if(playerX>canvas.width-35) playerX=canvas.width-35;
-  }
-});
-joystick.addEventListener("touchend",()=>{
-  joyActive=false;
-  stick.style.left="50%";
-});
-
 /* =======================
-  DEFAULT SCREEN
+  JOYSTICK CONTROL FIXED
 ======================= */
-drawStartScreen();
+const joystick = document.getElementById("joystick");
+const stick = document.getElementById("stick");
+
+let joyActive = false;
+let joyCenterX = 0;
+let joyCenterY = 0;
+
+joystick.addEventListener("touchstart", (e) => {
+  joyActive = true;
+  const rect = joystick.getBoundingClientRect();
+  joyCenterX = rect.left + rect.width / 2;
+  joyCenterY = rect.top + rect.height / 2;
+});
+
+joystick.addEventListener("touchmove", (e) => {
+  if (!joyActive) return;
+
+  let touch = e.touches[0];
+  let dx = touch.clientX - joyCenterX;
+  let dy = touch.clientY - joyCenterY;
+
+  let maxDist = 50;
+  let dist = Math.sqrt(dx * dx + dy * dy);
+
+  if (dist > maxDist) {
+    dx = (dx / dist) * maxDist;
+    dy = (dy / dist) * maxDist;
+  }
+
+  stick.style.transform = `translate(${dx}px, ${dy}px)`;
+
+  if (selectedGame === "car") {
+    if (dx > 10) carX += 6;
+    if (dx < -10) carX -= 6;
+    if (carX < 60) carX = 60;
+    if (carX > canvas.width - 60) carX = canvas.width - 60;
+  }
+
+  if (selectedGame === "brick") {
+    if (dx > 10) paddleX += 7;
+    if (dx < -10) paddleX -= 7;
+    if (paddleX < 10) paddleX = 10;
+    if (paddleX > canvas.width - 100) paddleX = canvas.width - 100;
+  }
+
+  if (selectedGame === "zombie") {
+    if (dx > 10) playerX += 7;
+    if (dx < -10) playerX -= 7;
+    if (playerX < 0) playerX = 0;
+    if (playerX > canvas.width - 35) playerX = canvas.width - 35;
+  }
+
+  e.preventDefault();
+});
+
+joystick.addEventListener("touchend", () => {
+  joyActive = false;
+  stick.style.transform = "translate(-50%, -50%)";
+});
 </script>
 
 </body>

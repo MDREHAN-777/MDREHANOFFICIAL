@@ -22,7 +22,7 @@ body.theme-fire{--green:#ff6600;--green2:#ff8833;--green3:#cc4400;--border:rgba(
 body.theme-purple{--green:#cc55ff;--green2:#bb44ee;--green3:#9933cc;--border:rgba(200,80,255,0.35);--shadow:rgba(200,80,255,0.2);--glow:0 0 24px rgba(200,80,255,0.3);--bg:#08040f;--bg2:#0f0718;--card:rgba(12,4,24,0.75);}
 body.light{--bg:#f0f4f0;--bg2:#e8efe8;--card:rgba(255,255,255,0.92);--border:rgba(0,160,40,0.3);--text:#1a2e1a;--text2:#4a6a4a;--text3:#2a4e2a;--shadow:rgba(0,160,40,0.12);--glow:0 0 20px rgba(0,160,40,0.15);}
 
-html{scroll-behavior:smooth;}
+html{scroll-behavior:auto;}
 body{font-family:var(--font-body);background:var(--bg);color:var(--text);overflow-x:hidden;min-height:100vh;transition:background .4s,color .4s;}
 a{color:inherit;text-decoration:none;}
 button{font-family:var(--font-body);}
@@ -129,12 +129,6 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .grid-auto{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;}
 
-/* ═══ LOGIN PAGE ═══ */
-#loginPage{display:flex;align-items:center;justify-content:center;padding:20px;}
-.login-card{width:100%;max-width:420px;padding:32px 24px;border-radius:24px;background:var(--card);border:1px solid var(--border);box-shadow:var(--glow);backdrop-filter:blur(12px);}
-.login-logo{font-family:var(--font-display);font-size:clamp(30px,10vw,48px);font-weight:900;color:var(--green);text-shadow:0 0 30px var(--green);text-align:center;letter-spacing:4px;margin-bottom:4px;}
-.login-tagline{text-align:center;color:var(--text2);font-size:13px;margin-bottom:24px;}
-
 /* ═══ HOME PAGE ═══ */
 #mainMenu{padding-top:62px;}
 .hero{text-align:center;padding:20px 12px 16px;}
@@ -166,6 +160,11 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
 .avatar-grid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
 .av-btn{font-size:26px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:6px 10px;cursor:pointer;transition:var(--transition);}
 .av-btn:hover,.av-btn.active{background:rgba(0,255,80,.15);border-color:var(--green);}
+
+/* ═══ LOGIN CARD (inside profile) ═══ */
+.login-card-inner{padding:24px 18px;border-radius:20px;background:rgba(0,0,0,.4);border:1px solid var(--border);box-shadow:var(--glow);}
+.login-logo-sm{font-family:var(--font-display);font-size:clamp(22px,7vw,36px);font-weight:900;color:var(--green);text-shadow:0 0 24px var(--green);text-align:center;letter-spacing:4px;margin-bottom:4px;}
+.login-tagline{text-align:center;color:var(--text2);font-size:13px;margin-bottom:20px;}
 
 /* ═══ STATS DASHBOARD ═══ */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px;}
@@ -324,7 +323,7 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
 <!-- DOTS MENU -->
 <div class="dots-menu" id="dotsMenu">
   <input class="menu-search" id="menuSearch" placeholder="🔍 Search..." oninput="searchMenu()"/>
-  <button class="menu-item" onclick="nav('mainMenu')">🏠 Home</button>
+  <button class="menu-item" onclick="navHome()">🏠 Home</button>
   <button class="menu-item" onclick="nav('profilePage')">👤 Profile</button>
   <button class="menu-item" onclick="nav('statsPage')">📈 Stats Dashboard</button>
   <button class="menu-item" onclick="nav('achPage')">🏅 Achievements</button>
@@ -345,19 +344,7 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
   <button class="menu-item" onclick="logoutUser()" style="color:#ff6666;">🚪 Logout</button>
 </div>
 
-<!-- ═══════════════ LOGIN ═══════════════ -->
-<div id="loginPage" class="section active">
-  <div class="login-card">
-    <div class="login-logo">MR7<br>WORLD</div>
-    <div class="login-tagline">Gaming Hub + AI + Store + Rewards 🔥</div>
-    <div class="field-wrap"><label class="field-label">Username</label><input id="loginUser" placeholder="e.g. Rehan7"></div>
-    <div class="field-wrap"><label class="field-label">Display Name</label><input id="loginDisplayName" placeholder="e.g. MD Rehan"></div>
-    <button class="btn btn-primary btn-wide btn-xl" style="margin-top:18px;" onclick="loginUser()">🚀 Create Account & Enter</button>
-    <p id="loginStatus" style="margin-top:10px;font-weight:bold;text-align:center;font-size:14px;"></p>
-  </div>
-</div>
-
-<!-- ═══════════════ MAIN MENU ═══════════════ -->
+<!-- ═══════════════ MAIN MENU (Home) ═══════════════ -->
 <div id="mainMenu" class="section">
   <div class="hero">
     <div id="typingTitle"></div>
@@ -415,33 +402,55 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
 </div>
 
 <!-- ═══════════════ PROFILE ═══════════════ -->
+<!-- Shows login form if not logged in, otherwise shows profile -->
 <div id="profilePage" class="section">
-  <div class="box">
-    <div class="profile-hero">
-      <div class="profile-avatar-big" id="profileAvatar">🎮</div>
-      <div class="username-hero" id="profileName">Player</div>
-      <div class="profile-uid" id="profileIdShow"></div>
+
+  <!-- LOGIN SECTION (shown when not logged in) -->
+  <div id="profileLoginSection" style="display:none;">
+    <div class="box" style="max-width:440px;">
+      <div class="login-card-inner">
+        <div class="login-logo-sm">MR7<br>WORLD</div>
+        <div class="login-tagline">Gaming Hub + AI + Store + Rewards 🔥</div>
+        <div class="field-wrap"><label class="field-label">Username</label><input id="loginUser" placeholder="e.g. Rehan7"></div>
+        <div class="field-wrap"><label class="field-label">Display Name</label><input id="loginDisplayName" placeholder="e.g. MD Rehan"></div>
+        <button class="btn btn-primary btn-wide btn-xl" style="margin-top:18px;" onclick="loginUser()">🚀 Create Account & Enter</button>
+        <p id="loginStatus" style="margin-top:10px;font-weight:bold;text-align:center;font-size:14px;"></p>
+      </div>
     </div>
-    <div class="stat-grid">
-      <div class="stat-card"><div class="stat-val" id="pCoins">0</div><div class="stat-lbl">🪙 Coins</div></div>
-      <div class="stat-card"><div class="stat-val" id="pHigh">0</div><div class="stat-lbl">🏆 Best Score</div></div>
-      <div class="stat-card"><div class="stat-val" id="pLevel">1</div><div class="stat-lbl">📊 Level</div></div>
+    <button class="btn btn-secondary" onclick="navHome()">⬅ Back to Home</button>
+  </div>
+
+  <!-- PROFILE DATA SECTION (shown when logged in) -->
+  <div id="profileDataSection" style="display:none;">
+    <div class="box">
+      <div class="profile-hero">
+        <div class="profile-avatar-big" id="profileAvatar">🎮</div>
+        <div class="username-hero" id="profileName">Player</div>
+        <div class="profile-uid" id="profileIdShow"></div>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-val" id="pCoins">0</div><div class="stat-lbl">🪙 Coins</div></div>
+        <div class="stat-card"><div class="stat-val" id="pHigh">0</div><div class="stat-lbl">🏆 Best Score</div></div>
+        <div class="stat-card"><div class="stat-val" id="pLevel">1</div><div class="stat-lbl">📊 Level</div></div>
+      </div>
+      <div class="badge-shelf" id="profileBadges"></div>
+      <div style="font-size:11px;color:var(--text2);text-align:center;margin-top:10px;" id="joinDate"></div>
     </div>
-    <div class="badge-shelf" id="profileBadges"></div>
-    <div style="font-size:11px;color:var(--text2);text-align:center;margin-top:10px;" id="joinDate"></div>
+
+    <div class="box">
+      <div class="section-label">🎨 Change Avatar</div>
+      <div class="avatar-grid" id="av_list"></div>
+    </div>
+
+    <div class="box">
+      <div class="section-label">🎮 Game Records</div>
+      <div id="gameRecords"></div>
+    </div>
+
+    <button class="btn btn-secondary" onclick="navHome()">⬅ Back</button>
+    <button class="btn btn-danger" onclick="logoutUser()" style="margin-top:4px;">🚪 Logout</button>
   </div>
 
-  <div class="box">
-    <div class="section-label">🎨 Change Avatar</div>
-    <div class="avatar-grid" id="av_list"></div>
-  </div>
-
-  <div class="box">
-    <div class="section-label">🎮 Game Records</div>
-    <div id="gameRecords"></div>
-  </div>
-
-  <button class="btn btn-secondary" onclick="nav('mainMenu')">⬅ Back</button>
 </div>
 
 <!-- ═══════════════ STATS DASHBOARD ═══════════════ -->
@@ -477,7 +486,7 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
     </div>
   </div>
 
-  <button class="btn btn-secondary" onclick="nav('mainMenu')">⬅ Back</button>
+  <button class="btn btn-secondary" onclick="navHome()">⬅ Back</button>
 </div>
 
 <!-- ═══════════════ ACHIEVEMENTS ═══════════════ -->
@@ -487,7 +496,7 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
     <div style="text-align:center;color:var(--text2);font-size:13px;margin-bottom:10px;"><span id="achUnlocked">0</span> / <span id="achTotal">0</span> Unlocked</div>
     <div class="ach-grid" id="achGrid"></div>
   </div>
-  <button class="btn btn-secondary" onclick="nav('mainMenu')">⬅ Back</button>
+  <button class="btn btn-secondary" onclick="navHome()">⬅ Back</button>
 </div>
 
 <!-- ═══════════════ AI PAGE ═══════════════ -->
@@ -512,7 +521,7 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
       <button class="qa-btn" onclick="quickAsk('Coins fast kaise earn karu?')">🪙 Earn Coins</button>
     </div>
   </div>
-  <button class="btn btn-secondary" onclick="nav('mainMenu')">⬅ Back</button>
+  <button class="btn btn-secondary" onclick="navHome()">⬅ Back</button>
 </div>
 
 <!-- ═══════════════ GAMES PAGE ═══════════════ -->
@@ -522,7 +531,7 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
     <div class="page-sub">Play games, earn coins & climb leaderboard!</div>
     <div class="grid-auto" style="margin-top:14px;" id="gameCards"></div>
   </div>
-  <button class="btn btn-secondary" onclick="nav('mainMenu')">⬅ Back</button>
+  <button class="btn btn-secondary" onclick="navHome()">⬅ Back</button>
 </div>
 
 <!-- ═══════════════ GAME PLAY ═══════════════ -->
@@ -558,7 +567,7 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
     </div>
     <div class="grid-auto" style="margin-top:12px;" id="storeGrid"></div>
   </div>
-  <button class="btn btn-secondary" onclick="nav('mainMenu')">⬅ Back</button>
+  <button class="btn btn-secondary" onclick="navHome()">⬅ Back</button>
 </div>
 
 <!-- ═══════════════ LEADERBOARD ═══════════════ -->
@@ -568,7 +577,7 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
     <div id="leaderList" style="margin-top:12px;"></div>
     <button class="btn btn-danger" style="margin-top:10px;" onclick="resetLeaderboard()">🗑 Reset</button>
   </div>
-  <button class="btn btn-secondary" onclick="nav('mainMenu')">⬅ Back</button>
+  <button class="btn btn-secondary" onclick="navHome()">⬅ Back</button>
 </div>
 
 <!-- ═══════════════ NOTIFICATIONS ═══════════════ -->
@@ -580,7 +589,7 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
     </div>
     <div id="notifList"></div>
   </div>
-  <button class="btn btn-secondary" onclick="nav('mainMenu')">⬅ Back</button>
+  <button class="btn btn-secondary" onclick="navHome()">⬅ Back</button>
 </div>
 
 <!-- ═══════════════ HELP ═══════════════ -->
@@ -597,7 +606,7 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
     <button class="send-btn" id="sendBtn" onclick="sendHelp()">📤 Send Message</button>
     <div id="helpStatus" style="margin-top:12px;text-align:center;font-weight:bold;font-size:14px;"></div>
   </div>
-  <button class="btn btn-secondary" onclick="nav('mainMenu')">⬅ Back</button>
+  <button class="btn btn-secondary" onclick="navHome()">⬅ Back</button>
 </div>
 
 <script>
@@ -628,18 +637,15 @@ function animBg(){
     p.x+=p.dx;p.y+=p.dy;
     if(p.x<0||p.x>bgCv.width)p.dx*=-1;
     if(p.y<0||p.y>bgCv.height)p.dy*=-1;
-    const col=getComputedStyle(document.documentElement).getPropertyValue('--green').trim()||'lime';
     bgCtx.fillStyle=`rgba(0,255,80,${p.a})`;
     bgCtx.beginPath();bgCtx.arc(p.x,p.y,p.r,0,Math.PI*2);bgCtx.fill();
   });
-  // connect nearby pts
   pts.forEach((p,i)=>{pts.slice(i+1).forEach(q=>{const d=Math.hypot(p.x-q.x,p.y-q.y);if(d<90){bgCtx.strokeStyle=`rgba(0,255,80,${.08*(1-d/90)})`;bgCtx.lineWidth=.5;bgCtx.beginPath();bgCtx.moveTo(p.x,p.y);bgCtx.lineTo(q.x,q.y);bgCtx.stroke();}});});
   requestAnimationFrame(animBg);
 }animBg();
 
 // TOAST
-let toastTimer={};
-function showToast(msg,type=''){
+function showToast(msg){
   const c=document.getElementById('toastContainer');
   const t=document.createElement('div');
   t.className='toast-item';t.innerText=msg;
@@ -678,11 +684,15 @@ function searchMenu(){
   for(const k in map){if(q.includes(k)){nav(map[k]);closeDots();break;}}
 }
 
-// SECTION NAV
+/* ═══════════════════════════════════════════════
+   SECTION NAV — FIXED: instant scroll to top
+═══════════════════════════════════════════════ */
 function nav(id){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  window.scrollTo(0,0);
+  // Instant scroll to top — no smooth scroll needed here
+  document.documentElement.scrollTop=0;
+  document.body.scrollTop=0;
   closeDots();
   if(id==='profilePage')renderProfile();
   if(id==='leaderboardPage')renderLB();
@@ -691,6 +701,15 @@ function nav(id){
   if(id==='notifsPage')renderNotifs();
   if(id==='storePage')renderStore();
   if(id==='gamesPage')renderGameCards();
+}
+
+// navHome — dedicated home nav, always scrolls to absolute top
+function navHome(){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('mainMenu').classList.add('active');
+  document.documentElement.scrollTop=0;
+  document.body.scrollTop=0;
+  closeDots();
 }
 
 // TYPING TITLE
@@ -715,11 +734,12 @@ function getSkin(){return localStorage.getItem('mr7Skin')||'Default';}
 function getLevel(){return Math.floor(getCoins()/100)+1;}
 function getGamesPlayed(){return parseInt(localStorage.getItem('mr7GamesPlayed')||'0');}
 function incGamesPlayed(){localStorage.setItem('mr7GamesPlayed',getGamesPlayed()+1);}
+function isLoggedIn(){return localStorage.getItem('mr7Login')==='true';}
 
 function genUID(){return 'MR7-'+Math.random().toString(36).substr(2,5).toUpperCase()+'-'+Date.now().toString(36).toUpperCase().substr(-4);}
 
 /* ═══════════════════════════════════════════════
-   LOGIN
+   LOGIN — now lives inside Profile page
 ═══════════════════════════════════════════════ */
 function loginUser(){
   const uname=document.getElementById('loginUser').value.trim();
@@ -732,21 +752,66 @@ function loginUser(){
   saveUD(userData);localStorage.setItem('mr7Login','true');
   st.style.color='lime';st.innerText='✅ Account Created!';
   addNotif('🎉 Welcome to MR7 WORLD!','Account banaya gaya: '+uid);
-  setTimeout(()=>{nav('mainMenu');startTypingTitle();refreshHUD();showToast('🔥 Welcome '+dname+'!');},700);
+  setTimeout(()=>{
+    startTypingTitle();refreshHUD();showToast('🔥 Welcome '+dname+'!');
+    navHome(); // go home after login
+  },700);
 }
 
 function logoutUser(){
   if(!confirm('Logout karna chahte ho?'))return;
   localStorage.removeItem('mr7Login');
-  nav('loginPage');
+  showToast('👋 Logged out!');
+  navHome();
 }
 
+/* ═══════════════════════════════════════════════
+   PROFILE — show login or data based on login state
+═══════════════════════════════════════════════ */
+function renderProfile(){
+  const loginSec=document.getElementById('profileLoginSection');
+  const dataSec=document.getElementById('profileDataSection');
+  if(!isLoggedIn()){
+    loginSec.style.display='block';
+    dataSec.style.display='none';
+    return;
+  }
+  loginSec.style.display='none';
+  dataSec.style.display='block';
+
+  const ud=getUD(),coins=getCoins(),high=parseInt(localStorage.getItem('mr7High')||'0'),lv=getLevel();
+  document.getElementById('profileAvatar').innerText=ud.avatar||'🎮';
+  document.getElementById('profileName').innerHTML=(ud.displayName||'Player')+'<span class="verified">✔</span>';
+  document.getElementById('profileIdShow').innerText='🆔 '+(ud.uid||'—')+' | @'+(ud.username||'');
+  document.getElementById('pCoins').innerText=coins;document.getElementById('pHigh').innerText=high;document.getElementById('pLevel').innerText=lv;
+  document.getElementById('joinDate').innerText='📅 Joined: '+(ud.joinDate||'Unknown');
+  const badges=[];
+  if(coins>=50)badges.push({t:'🪙 Earner',c:''});if(coins>=200)badges.push({t:'💰 Rich',c:'gold'});if(coins>=500)badges.push({t:'👑 Whale',c:'gold'});
+  if(high>=50)badges.push({t:'⭐ Gamer',c:'blue'});if(high>=200)badges.push({t:'🏆 Pro',c:'gold'});if(high>=500)badges.push({t:'💎 Legend',c:'purple'});
+  if(lv>=5)badges.push({t:'📊 Lv '+lv,c:'blue'});if(getSkin()!=='Default')badges.push({t:'🎨 Stylist',c:''});
+  badges.push({t:'✔ Verified',c:''});
+  document.getElementById('profileBadges').innerHTML=badges.map(b=>`<span class="pbadge ${b.c}">${b.t}</span>`).join('');
+  const AVATARS=['🎮','🔥','⚡','🚀','🐍','👑','🦊','🐉','🏆','🤖','💀','🎯','🧠','🎸','🌟','⚔️','🛡','🌈','🦁','🐺'];
+  const cur=ud.avatar||'🎮';
+  document.getElementById('av_list').innerHTML=AVATARS.map(a=>`<button onclick="setAvatar('${a}')" class="av-btn${a===cur?' active':''}">${a}</button>`).join('');
+  const games=['snake','car','space','ttt','brick','memory','math','reflex'];
+  const gnames={snake:'🐍 Snake',car:'🚗 Car',space:'🚀 Space',ttt:'❌ TTT',brick:'🧱 Brick',memory:'🃏 Memory',math:'🔢 Math',reflex:'⚡ Reflex'};
+  document.getElementById('gameRecords').innerHTML='<div class="grid2">'+games.map(g=>{const b=localStorage.getItem('best_'+g)||0;return`<div class="badge" style="padding:10px;border-radius:12px;font-size:12px;display:block;">${gnames[g]}: <span style="color:var(--green);font-weight:900;">${b}</span></div>`;}).join('')+'</div>';
+}
+function setAvatar(a){const ud=getUD();ud.avatar=a;saveUD(ud);showToast('Avatar: '+a);renderProfile();}
+
+/* ═══════════════════════════════════════════════
+   APP INIT
+═══════════════════════════════════════════════ */
 window.onload=()=>{
-  if(localStorage.getItem('mr7Login')==='true'){
+  if(isLoggedIn()){
     const ud=getUD();
     if(!ud.uid){const old=localStorage.getItem('mr7User')||'Player';const nu={username:old,displayName:old,uid:genUID(),avatar:'🎮',joinDate:new Date().toLocaleDateString('en-IN',{year:'numeric',month:'long',day:'numeric'}),createdAt:Date.now()};saveUD(nu);}
-    nav('mainMenu');startTypingTitle();refreshHUD();updateStreak();
-  }else nav('loginPage');
+    navHome();startTypingTitle();refreshHUD();updateStreak();
+  }else{
+    // Not logged in — show home page but profile will prompt login
+    navHome();startTypingTitle();
+  }
   renderGameCards();renderStore();
 };
 
@@ -756,7 +821,7 @@ window.onload=()=>{
 function refreshHUD(){
   const ud=getUD(),name=ud.displayName||ud.username||'Guest',coins=getCoins(),high=parseInt(localStorage.getItem('mr7High')||'0'),lv=getLevel();
   document.getElementById('userShowName').innerText=name;
-  document.getElementById('mainUserId').innerText='ID: '+(ud.uid||'—');
+  document.getElementById('mainUserId').innerText=ud.uid?'ID: '+ud.uid:'';
   document.getElementById('coinShow').innerText=coins;
   document.getElementById('highShow').innerText=high;
   document.getElementById('levelShow').innerText=lv;
@@ -788,6 +853,7 @@ function updateStreak(){
    DAILY / SPIN
 ═══════════════════════════════════════════════ */
 function dailyReward(){
+  if(!isLoggedIn()){showToast('❌ Pehle profile mein login karo!');nav('profilePage');return;}
   const now=new Date().toDateString();
   if(localStorage.getItem('mr7Daily')===now){showToast('❌ Already claimed today!');return;}
   localStorage.setItem('mr7Daily',now);
@@ -801,6 +867,7 @@ function dailyReward(){
 }
 
 function spinWheel(){
+  if(!isLoggedIn()){showToast('❌ Pehle profile mein login karo!');nav('profilePage');return;}
   const prizes=[10,20,30,50,100,150,5,75];
   const win=prizes[Math.floor(Math.random()*prizes.length)];
   addCoins(win);
@@ -816,36 +883,10 @@ function trackActivity(val){
   const data=JSON.parse(localStorage.getItem('mr7Activity')||'{}');
   const today=new Date().toDateString();
   data[today]=(data[today]||0)+val;
-  // keep only last 14 days
   const keys=Object.keys(data).sort((a,b)=>new Date(b)-new Date(a)).slice(0,14);
   const trimmed={};keys.forEach(k=>trimmed[k]=data[k]);
   localStorage.setItem('mr7Activity',JSON.stringify(trimmed));
 }
-
-/* ═══════════════════════════════════════════════
-   PROFILE
-═══════════════════════════════════════════════ */
-const AVATARS=['🎮','🔥','⚡','🚀','🐍','👑','🦊','🐉','🏆','🤖','💀','🎯','🧠','🎸','🌟','⚔️','🛡','🌈','🦁','🐺'];
-function renderProfile(){
-  const ud=getUD(),coins=getCoins(),high=parseInt(localStorage.getItem('mr7High')||'0'),lv=getLevel();
-  document.getElementById('profileAvatar').innerText=ud.avatar||'🎮';
-  document.getElementById('profileName').innerHTML=(ud.displayName||'Player')+'<span class="verified">✔</span>';
-  document.getElementById('profileIdShow').innerText='🆔 '+(ud.uid||'—')+' | @'+(ud.username||'');
-  document.getElementById('pCoins').innerText=coins;document.getElementById('pHigh').innerText=high;document.getElementById('pLevel').innerText=lv;
-  document.getElementById('joinDate').innerText='📅 Joined: '+(ud.joinDate||'Unknown');
-  const badges=[];
-  if(coins>=50)badges.push({t:'🪙 Earner',c:''});if(coins>=200)badges.push({t:'💰 Rich',c:'gold'});if(coins>=500)badges.push({t:'👑 Whale',c:'gold'});
-  if(high>=50)badges.push({t:'⭐ Gamer',c:'blue'});if(high>=200)badges.push({t:'🏆 Pro',c:'gold'});if(high>=500)badges.push({t:'💎 Legend',c:'purple'});
-  if(lv>=5)badges.push({t:'📊 Lv '+lv,c:'blue'});if(getSkin()!=='Default')badges.push({t:'🎨 Stylist',c:''});
-  badges.push({t:'✔ Verified',c:''});
-  document.getElementById('profileBadges').innerHTML=badges.map(b=>`<span class="pbadge ${b.c}">${b.t}</span>`).join('');
-  const cur=ud.avatar||'🎮';
-  document.getElementById('av_list').innerHTML=AVATARS.map(a=>`<button onclick="setAvatar('${a}')" class="av-btn${a===cur?' active':''}">${a}</button>`).join('');
-  const games=['snake','car','space','ttt','brick','memory','math','reflex'];
-  const gnames={snake:'🐍 Snake',car:'🚗 Car',space:'🚀 Space',ttt:'❌ TTT',brick:'🧱 Brick',memory:'🃏 Memory',math:'🔢 Math',reflex:'⚡ Reflex'};
-  document.getElementById('gameRecords').innerHTML='<div class="grid2">'+games.map(g=>{const b=localStorage.getItem('best_'+g)||0;return`<div class="badge" style="padding:10px;border-radius:12px;font-size:12px;display:block;">${gnames[g]}: <span style="color:var(--green);font-weight:900;">${b}</span></div>`;}).join('')+'</div>';
-}
-function setAvatar(a){const ud=getUD();ud.avatar=a;saveUD(ud);showToast('Avatar: '+a);renderProfile();}
 
 /* ═══════════════════════════════════════════════
    STATS DASHBOARD
@@ -853,31 +894,18 @@ function setAvatar(a){const ud=getUD();ud.avatar=a;saveUD(ud);showToast('Avatar:
 function renderStats(){
   const coins=getCoins(),lv=getLevel(),high=parseInt(localStorage.getItem('mr7High')||'0'),gp=getGamesPlayed();
   document.getElementById('sd-coins').innerText=coins;document.getElementById('sd-games').innerText=gp;document.getElementById('sd-best').innerText=high;document.getElementById('sd-level').innerText=lv;
-
-  // Level progress
-  const coinsForNext=lv*100,coinsCur=coins%(100);const pct=Math.min(100,(coinsCur/100)*100);
-  document.getElementById('lvl-progress').innerHTML=`
-    <div class="progress-row"><div class="prog-label"><span>Level ${lv}</span><span style="color:var(--green)">${coinsCur}/100 coins to Lv ${lv+1}</span></div><div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div></div>`;
-
-  // Game scores bar
+  const coinsCur=coins%100;const pct=Math.min(100,(coinsCur/100)*100);
+  document.getElementById('lvl-progress').innerHTML=`<div class="progress-row"><div class="prog-label"><span>Level ${lv}</span><span style="color:var(--green)">${coinsCur}/100 coins to Lv ${lv+1}</span></div><div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div></div>`;
   const games=['snake','car','space','ttt','brick','memory','math','reflex'];
   const gn={snake:'Snake',car:'Car',space:'Space',ttt:'TTT',brick:'Brick',memory:'Mem',math:'Math',reflex:'Rfx'};
   const maxScore=Math.max(...games.map(g=>parseInt(localStorage.getItem('best_'+g)||0)),1);
   let barsHtml='',labelsHtml='';
-  games.forEach(g=>{
-    const v=parseInt(localStorage.getItem('best_'+g)||0),h=Math.max(8,Math.floor((v/maxScore)*70));
-    barsHtml+=`<div class="bar" style="height:${h}px;" data-val="${v}"></div>`;
-    labelsHtml+=`<div class="bar-label">${gn[g]}</div>`;
-  });
+  games.forEach(g=>{const v=parseInt(localStorage.getItem('best_'+g)||0),h=Math.max(8,Math.floor((v/maxScore)*70));barsHtml+=`<div class="bar" style="height:${h}px;" data-val="${v}"></div>`;labelsHtml+=`<div class="bar-label">${gn[g]}</div>`;});
   document.getElementById('game-score-bars').innerHTML=`<div class="chart-wrap"><div class="bar-chart">${barsHtml}</div><div class="bar-labels">${labelsHtml}</div></div>`;
-
-  // 7-day activity
   const actData=JSON.parse(localStorage.getItem('mr7Activity')||'{}');
   const days=[];for(let i=6;i>=0;i--){const d=new Date(Date.now()-i*86400000);days.push({key:d.toDateString(),label:d.toLocaleDateString('en',{weekday:'short'})});}
   const maxAct=Math.max(...days.map(d=>actData[d.key]||0),1);
   document.getElementById('activityRow').innerHTML=days.map(d=>{const v=actData[d.key]||0;const op=0.08+0.92*(v/maxAct);return`<div class="act-day" style="background:rgba(0,255,80,${op});" data-tip="${d.label}: ${v}"></div>`;}).join('');
-
-  // Coin chart
   const weekCoins=[];for(let i=6;i>=0;i--){const d=new Date(Date.now()-i*86400000);weekCoins.push({label:d.toLocaleDateString('en',{weekday:'short'}),val:actData[d.toDateString()]||0});}
   const mc=Math.max(...weekCoins.map(d=>d.val),1);
   document.getElementById('coinChart').innerHTML=weekCoins.map(d=>`<div class="bar" style="height:${Math.max(6,Math.floor(d.val/mc*70))}px;" data-val="${d.val}"></div>`).join('');
@@ -901,32 +929,12 @@ const ACHIEVEMENTS=[
   {id:'streak_3',icon:'🔥',name:'On Fire',desc:'3-day login streak',check:()=>parseInt(localStorage.getItem('mr7Streak')||0)>=3,prog:()=>Math.min(parseInt(localStorage.getItem('mr7Streak')||0),3)+'/3'},
   {id:'level_5',icon:'📊',name:'Leveled Up!',desc:'Reach level 5',check:()=>getLevel()>=5,prog:()=>Math.min(getLevel(),5)+'/5'},
 ];
-
 function checkAchievements(){
-  ACHIEVEMENTS.forEach(a=>{
-    const already=localStorage.getItem('ach_'+a.id);
-    if(!already&&a.check()){
-      localStorage.setItem('ach_'+a.id,'1');
-      showAch(a.name+' — '+a.icon);
-    }
-  });
+  ACHIEVEMENTS.forEach(a=>{const already=localStorage.getItem('ach_'+a.id);if(!already&&a.check()){localStorage.setItem('ach_'+a.id,'1');showAch(a.name+' — '+a.icon);}});
 }
-
 function renderAch(){
   const total=ACHIEVEMENTS.length;let unlocked=0;
-  const html=ACHIEVEMENTS.map(a=>{
-    const done=localStorage.getItem('ach_'+a.id)||a.check();
-    if(done)unlocked++;
-    const pct=done?100:0;
-    return`<div class="ach-card${done?' unlocked':''}">
-      <div class="ach-icon">${a.icon}</div>
-      <div class="ach-name">${a.name}</div>
-      <div class="ach-desc">${a.desc}</div>
-      <div class="ach-prog">${a.prog()}</div>
-      <div class="ach-prog-bar"><div class="ach-prog-fill" style="width:${done?100:Math.min(99,Math.round((parseInt(a.prog())||0)/(parseInt(a.prog().split('/')[1])||1)*100))}%"></div></div>
-      <div class="ach-lock">${done?'✅':'🔒'}</div>
-    </div>`;
-  }).join('');
+  const html=ACHIEVEMENTS.map(a=>{const done=localStorage.getItem('ach_'+a.id)||a.check();if(done)unlocked++;return`<div class="ach-card${done?' unlocked':''}"><div class="ach-icon">${a.icon}</div><div class="ach-name">${a.name}</div><div class="ach-desc">${a.desc}</div><div class="ach-prog">${a.prog()}</div><div class="ach-prog-bar"><div class="ach-prog-fill" style="width:${done?100:Math.min(99,Math.round((parseInt(a.prog())||0)/(parseInt(a.prog().split('/')[1])||1)*100))}%"></div></div><div class="ach-lock">${done?'✅':'🔒'}</div></div>`;}).join('');
   document.getElementById('achGrid').innerHTML=html;
   document.getElementById('achUnlocked').innerText=unlocked;
   document.getElementById('achTotal').innerText=total;
@@ -938,24 +946,16 @@ function renderAch(){
 function getNotifs(){return JSON.parse(localStorage.getItem('mr7Notifs')||'[]');}
 function saveNotifs(n){localStorage.setItem('mr7Notifs',JSON.stringify(n));}
 function addNotif(title,msg){
-  const notifs=getNotifs();
-  notifs.unshift({title,msg,time:Date.now(),read:false});
-  saveNotifs(notifs.slice(0,30));
-  const dot=document.getElementById('notifDot');
-  if(dot)dot.style.display='block';
+  const notifs=getNotifs();notifs.unshift({title,msg,time:Date.now(),read:false});saveNotifs(notifs.slice(0,30));
+  const dot=document.getElementById('notifDot');if(dot)dot.style.display='block';
 }
 function renderNotifs(){
-  const notifs=getNotifs();
   document.getElementById('notifDot').style.display='none';
-  const html=notifs.length===0?'<div style="text-align:center;color:var(--text2);padding:30px;">No notifications yet!</div>':
-    notifs.map(n=>`<div class="notif-item${n.read?'':' unread'}">
-      <div class="notif-dot${n.read?' read':''}"></div>
-      <div><div class="notif-text"><b>${escH(n.title)}</b></div><div class="notif-text">${escH(n.msg)}</div><div class="notif-time">${new Date(n.time).toLocaleString('en-IN')}</div></div>
-    </div>`).join('');
-  document.getElementById('notifList').innerHTML=html;
+  const notifs=getNotifs();
+  document.getElementById('notifList').innerHTML=notifs.length===0?'<div style="text-align:center;color:var(--text2);padding:30px;">No notifications yet!</div>':
+    notifs.map(n=>`<div class="notif-item${n.read?'':' unread'}"><div class="notif-dot${n.read?' read':''}"></div><div><div class="notif-text"><b>${escH(n.title)}</b></div><div class="notif-text">${escH(n.msg)}</div><div class="notif-time">${new Date(n.time).toLocaleString('en-IN')}</div></div></div>`).join('');
 }
-function clearNotifs(){
-  const notifs=getNotifs().map(n=>({...n,read:true}));saveNotifs(notifs);renderNotifs();showToast('✅ All read!');}
+function clearNotifs(){const notifs=getNotifs().map(n=>({...n,read:true}));saveNotifs(notifs);renderNotifs();showToast('✅ All read!');}
 
 /* ═══════════════════════════════════════════════
    STORE
@@ -973,28 +973,21 @@ const STORE_ITEMS=[
 function renderStore(){
   const coins=getCoins(),cur=getSkin();
   const el=document.getElementById('storeGrid');if(!el)return;
-  el.innerHTML=STORE_ITEMS.map(item=>`
-    <div class="store-item">
-      <div class="store-icon">${item.icon}</div>
-      <div class="store-name" style="color:${item.color}">${item.name}</div>
-      <div class="store-price">🪙 ${item.price}</div>
-      ${cur===item.name?'<div class="store-owned">✅ Equipped</div>':''}
-      <button class="btn btn-primary" style="margin-top:8px;font-size:11px;" onclick="buySkin('${item.name}',${item.price})">${cur===item.name?'Equipped':'Buy'}</button>
-    </div>`).join('');
+  el.innerHTML=STORE_ITEMS.map(item=>`<div class="store-item"><div class="store-icon">${item.icon}</div><div class="store-name" style="color:${item.color}">${item.name}</div><div class="store-price">🪙 ${item.price}</div>${cur===item.name?'<div class="store-owned">✅ Equipped</div>':''}<button class="btn btn-primary" style="margin-top:8px;font-size:11px;" onclick="buySkin('${item.name}',${item.price})">${cur===item.name?'Equipped':'Buy'}</button></div>`).join('');
   document.getElementById('storeCoins').innerText=coins;
 }
-function buySkin(name,cost){if(getCoins()<cost){showToast('❌ Not enough coins!');return;}setCoins(getCoins()-cost);localStorage.setItem('mr7Skin',name);refreshHUD();showToast('✅ Bought: '+name);showAch('New Skin: '+name+'!');addNotif('🎨 Skin Bought','Equipped: '+name);renderStore();}
+function buySkin(name,cost){
+  if(!isLoggedIn()){showToast('❌ Pehle login karo!');nav('profilePage');return;}
+  if(getCoins()<cost){showToast('❌ Not enough coins!');return;}
+  setCoins(getCoins()-cost);localStorage.setItem('mr7Skin',name);refreshHUD();showToast('✅ Bought: '+name);showAch('New Skin: '+name+'!');addNotif('🎨 Skin Bought','Equipped: '+name);renderStore();
+}
 
 /* ═══════════════════════════════════════════════
    LEADERBOARD
 ═══════════════════════════════════════════════ */
 function getLB(){return JSON.parse(localStorage.getItem('mr7Leaderboard')||'[]');}
 function saveLB(a){localStorage.setItem('mr7Leaderboard',JSON.stringify(a));}
-function addLBScore(game,sc){
-  const ud=getUD();let lb=getLB();
-  lb.push({u:ud.displayName||'Guest',game,sc,uid:ud.uid||''});
-  lb.sort((a,b)=>b.sc-a.sc);lb=lb.slice(0,20);saveLB(lb);
-}
+function addLBScore(game,sc){const ud=getUD();let lb=getLB();lb.push({u:ud.displayName||'Guest',game,sc,uid:ud.uid||''});lb.sort((a,b)=>b.sc-a.sc);lb=lb.slice(0,20);saveLB(lb);}
 function renderLB(){
   const lb=getLB();const medals=['🥇','🥈','🥉'];
   document.getElementById('leaderList').innerHTML=lb.length===0?`<div style="text-align:center;color:var(--text2);padding:30px;">No scores yet! Play to appear here!</div>`:
@@ -1043,7 +1036,7 @@ function toggleMusic(){
 }
 
 /* ═══════════════════════════════════════════════
-   MR7 AI — ULTRA SMART
+   MR7 AI
 ═══════════════════════════════════════════════ */
 const chatEl=document.getElementById('chat'),aiIn=document.getElementById('aiInput');
 let chatHist=[];
@@ -1090,7 +1083,7 @@ async function askAI(){
 
 🎮 MR7 WORLD GAMES: Snake Pro, Nitro Racing, Space Shooter, Tic Tac Toe, Brick Breaker, Memory Match, Math Blitz, Reflex Rush
 
-Coins earn karne ke tips: Daily reward lo, Spin karo, Games khelo (har score pe coins milte hain), Store mein spend karo to flex karo.`;
+Coins earn karne ke tips: Daily reward lo, Spin karo, Games khelo, Store mein spend karo to flex karo.`;
 
     const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1500,system:sys,messages:chatHist})});
     const data=await res.json();remTy();
@@ -1118,7 +1111,7 @@ aiIn.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();askAI
 function clearChat(){if(confirm('Chat clear karein?')){chatEl.innerHTML='';chatHist=[];showToast('Chat cleared ✅');}}
 
 /* ═══════════════════════════════════════════════
-   GAME CARDS RENDER
+   GAME CARDS
 ═══════════════════════════════════════════════ */
 const GAMES_LIST=[
   {id:'snake',icon:'🐍',name:'Snake Pro',desc:'Khana khao, bado!',tag:'HOT',tagClass:'hot'},
@@ -1132,13 +1125,7 @@ const GAMES_LIST=[
 ];
 function renderGameCards(){
   const el=document.getElementById('gameCards');if(!el)return;
-  el.innerHTML=GAMES_LIST.map(g=>`
-    <div class="game-card" onclick="openGamePage('${g.id}')">
-      <div class="game-icon">${g.icon}</div>
-      <div class="game-name">${g.name}</div>
-      <div class="game-best" style="font-size:11px;color:var(--text2);">Best: <span style="color:var(--green);font-weight:700;">${localStorage.getItem('best_'+g.id)||0}</span></div>
-      ${g.tag?`<div class="game-tag ${g.tagClass}">${g.tag}</div>`:''}
-    </div>`).join('');
+  el.innerHTML=GAMES_LIST.map(g=>`<div class="game-card" onclick="openGamePage('${g.id}')"><div class="game-icon">${g.icon}</div><div class="game-name">${g.name}</div><div class="game-best" style="font-size:11px;color:var(--text2);">Best: <span style="color:var(--green);font-weight:700;">${localStorage.getItem('best_'+g.id)||0}</span></div>${g.tag?`<div class="game-tag ${g.tagClass}">${g.tag}</div>`:''}</div>`).join('');
 }
 
 /* ═══════════════════════════════════════════════
@@ -1154,7 +1141,7 @@ function openGamePage(g){
   document.getElementById('gameDesc').innerText=info.desc;
   document.getElementById('gameBest').innerText=localStorage.getItem('best_'+g)||0;
   const controls={snake:'← → ↑ ↓ / WASD / Swipe',car:'← → Keys | Space=Nitro',space:'← → Keys | Space=Shoot',ttt:'Tap cells',brick:'← → Keys',memory:'Tap cards to match',math:'Type & Enter answer',reflex:'Tap SPACE / Screen when green!'};
-  document.getElementById('controlInfo').innerText='🎮 '+( controls[g]||'');
+  document.getElementById('controlInfo').innerText='🎮 '+(controls[g]||'');
   stopGame();nav('gamePlayPage');drawStart();
 }
 function drawStart(){
@@ -1298,7 +1285,7 @@ function updateBrick(){
 }
 function startBrick(){resetBrick();drawBrick();gIv=setInterval(updateBrick,18);}
 
-/* ══ MEMORY MATCH (NEW!) ══ */
+/* ══ MEMORY MATCH ══ */
 let memCards=[],memFlipped=[],memMatched=0,memLock=false,memMoves=0;
 const MEM_EMOJIS=['🎮','🔥','⚡','🚀','🐍','👑','🦊','🐉'];
 function startMemory(){
@@ -1334,26 +1321,27 @@ function handleMemClick(mx,my){
   }
 }
 
-/* ══ MATH BLITZ (NEW!) ══ */
-let mathQ='',mathA=0,mathTime=15,mathInput='',mathTimer=null;
-function startMath(){
-  score=0;mathInput='';genMathQ();stopGame();
-  gIv=setInterval(updateMath,100);
-}
+/* ══ MATH BLITZ ══ */
+let mathQ='',mathA=0,mathTime=15,mathInput='';
+function startMath(){score=0;mathInput='';genMathQ();stopGame();gIv=setInterval(updateMath,100);}
 function genMathQ(){
-  mathTime=15;const ops=['+','-','×'];const op=ops[Math.floor(Math.random()*ops.length)];let a,b;if(op==='+'){a=Math.floor(Math.random()*50)+1;b=Math.floor(Math.random()*50)+1;mathA=a+b;}else if(op==='-'){a=Math.floor(Math.random()*50)+20;b=Math.floor(Math.random()*a);mathA=a-b;}else{a=Math.floor(Math.random()*12)+1;b=Math.floor(Math.random()*12)+1;mathA=a*b;}mathQ=`${a} ${op} ${b} = ?`;mathInput='';
+  mathTime=15;const ops=['+','-','×'];const op=ops[Math.floor(Math.random()*ops.length)];let a,b;
+  if(op==='+'){a=Math.floor(Math.random()*50)+1;b=Math.floor(Math.random()*50)+1;mathA=a+b;}
+  else if(op==='-'){a=Math.floor(Math.random()*50)+20;b=Math.floor(Math.random()*a);mathA=a-b;}
+  else{a=Math.floor(Math.random()*12)+1;b=Math.floor(Math.random()*12)+1;mathA=a*b;}
+  mathQ=`${a} ${op} ${b} = ?`;mathInput='';
 }
 function drawMath(){
   const W=cv.width,H=cv.height;ctx.fillStyle='#040810';ctx.fillRect(0,0,W,H);
   for(let i=0;i<30;i++){ctx.fillStyle=`rgba(0,100,255,${Math.random()*.08})`;ctx.fillRect(Math.random()*W,Math.random()*H,Math.random()*40+10,1);}
-  const tc=mathTime>8?'#00ff88':mathTime>4?'#ffaa00':'#ff3333';ctx.fillStyle=tc;ctx.font='bold 16px Orbitron,Arial';ctx.textAlign='center';ctx.fillText('⏱ '+mathTime,W/2,35);
+  const tc=mathTime>8?'#00ff88':mathTime>4?'#ffaa00':'#ff3333';ctx.fillStyle=tc;ctx.font='bold 16px Orbitron,Arial';ctx.textAlign='center';ctx.fillText('⏱ '+Math.ceil(mathTime),W/2,35);
   const progW=(mathTime/15)*(W-40);ctx.fillStyle='rgba(255,255,255,.1)';ctx.fillRect(20,42,W-40,6);ctx.fillStyle=tc;ctx.fillRect(20,42,progW,6);
   ctx.fillStyle='white';ctx.font='bold 32px Orbitron,Arial';ctx.fillText(mathQ,W/2,H/2-30);
   ctx.fillStyle='rgba(0,255,80,.15)';ctx.strokeStyle='rgba(0,255,80,.6)';ctx.lineWidth=2;if(ctx.roundRect)ctx.roundRect(W/2-80,H/2,160,50,12);else ctx.rect(W/2-80,H/2,160,50);ctx.fill();ctx.stroke();
   ctx.fillStyle='lime';ctx.font='bold 24px Orbitron,Arial';ctx.fillText(mathInput||'...',W/2,H/2+32);
   ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(0,0,W,28);ctx.fillStyle='white';ctx.font='bold 12px Arial';ctx.fillText('⭐'+score,6,18);ctx.textAlign='left';
 }
-function updateMath(){mathTime-=.1;if(mathTime<=0){showToast('⏱ Time up!');score=Math.max(0,score);endGame('Math');return;}drawMath();}
+function updateMath(){mathTime-=.1;if(mathTime<=0){showToast('⏱ Time up!');endGame('Math');return;}drawMath();}
 function handleMathKey(key){
   if(sg!=='math')return;
   if(/^\d$/.test(key)&&mathInput.length<6)mathInput+=key;
@@ -1365,7 +1353,7 @@ function handleMathKey(key){
   }
 }
 
-/* ══ REFLEX RUSH (NEW!) ══ */
+/* ══ REFLEX RUSH ══ */
 let reflexState='wait',reflexTimeout=null,reflexStart=0,reflexReacts=[],reflexRound=0;
 function startReflex(){score=0;reflexReacts=[];reflexRound=0;reflexState='wait';nextReflex();}
 function nextReflex(){
@@ -1379,7 +1367,7 @@ function drawReflex(state){
   const cols={wait:'#111010',go:'#001800',early:'#180000'};ctx.fillStyle=cols[state]||'#111';ctx.fillRect(0,0,W,H);
   if(state==='wait'){ctx.fillStyle='#ff4444';ctx.shadowBlur=30;ctx.shadowColor='#ff4444';ctx.beginPath();ctx.arc(W/2,H/2,80,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='white';ctx.font='bold 18px Orbitron,Arial';ctx.textAlign='center';ctx.fillText('WAIT...',W/2,H/2+7);}
   else if(state==='go'){ctx.fillStyle='lime';ctx.shadowBlur=40;ctx.shadowColor='lime';ctx.beginPath();ctx.arc(W/2,H/2,80,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#000';ctx.font='bold 20px Orbitron,Arial';ctx.textAlign='center';ctx.fillText('TAP NOW!',W/2,H/2+7);}
-  else if(state==='result'){const last=reflexReacts[reflexReacts.length-1];ctx.fillStyle='white';ctx.font='bold 20px Orbitron,Arial';ctx.textAlign='center';ctx.fillText(last+'ms',W/2,H/2-15);ctx.font='14px Arial';ctx.fillStyle='#aaa';ctx.fillText(last<200?'⚡ Lightning!':last<350?'✅ Good!':last<500?'👍 OK':' Slow',W/2,H/2+20);ctx.fillText('Round '+reflexRound+'/8',W/2,H/2+44);}
+  else if(state==='result'){const last=reflexReacts[reflexReacts.length-1];ctx.fillStyle='white';ctx.font='bold 20px Orbitron,Arial';ctx.textAlign='center';ctx.fillText(last+'ms',W/2,H/2-15);ctx.font='14px Arial';ctx.fillStyle='#aaa';ctx.fillText(last<200?'⚡ Lightning!':last<350?'✅ Good!':last<500?'👍 OK':'Slow',W/2,H/2+20);ctx.fillText('Round '+reflexRound+'/8',W/2,H/2+44);}
   ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(0,0,W,28);ctx.fillStyle='white';ctx.font='bold 12px Arial';ctx.textAlign='left';ctx.fillText('⭐'+score,6,18);ctx.fillStyle='#aaa';ctx.font='11px Arial';ctx.fillText('Round '+reflexRound+'/8',W/2-25,18);
 }
 function handleReflexTap(){

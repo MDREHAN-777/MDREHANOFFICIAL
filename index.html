@@ -219,7 +219,7 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
 .theme-pill:hover{transform:scale(1.05);}
 .music-on{background:rgba(0,200,255,.15)!important;color:#00ccff!important;border-color:rgba(0,200,255,.4)!important;}
 
-/* ═══ AI CHAT — Enhanced ═══ */
+/* AI CHAT */
 #chat{height:420px;overflow-y:auto;border-radius:14px;padding:12px;background:rgba(0,0,0,.4);border:1px solid var(--border);}
 #chat::-webkit-scrollbar{width:4px;}
 #chat::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px;}
@@ -234,7 +234,6 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
 .quick-asks{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
 .qa-btn{padding:5px 10px;border:1px solid rgba(255,255,255,.1);border-radius:8px;background:rgba(255,255,255,.05);cursor:pointer;font-size:11px;font-weight:600;color:var(--text);font-family:var(--font-body);transition:.2s;}
 .qa-btn:hover{border-color:var(--green);color:var(--green);}
-/* AI model badge */
 .ai-model-badge{display:inline-block;background:rgba(0,200,255,.1);border:1px solid rgba(0,200,255,.3);color:#00ccff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-left:6px;letter-spacing:.5px;}
 
 .notif-item{display:flex;align-items:flex-start;gap:12px;padding:12px;border-radius:12px;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.05);margin:8px 0;transition:.2s;}
@@ -244,11 +243,7 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
 .notif-text{flex:1;font-size:13px;}
 .notif-time{font-size:10px;color:var(--text2);margin-top:2px;}
 
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9000;display:flex;align-items:center;justify-content:center;padding:16px;display:none;backdrop-filter:blur(6px);}
-.modal-overlay.show{display:flex;}
-.modal-box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:24px;max-width:380px;width:100%;box-shadow:var(--glow);animation:pgIn .3s ease;}
-
-/* Wordle Game Styles */
+/* Wordle */
 .wordle-grid{display:grid;grid-template-rows:repeat(6,1fr);gap:6px;margin:10px auto;width:fit-content;}
 .wordle-row{display:flex;gap:6px;}
 .wordle-cell{width:52px;height:52px;border:2px solid rgba(255,255,255,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:22px;font-weight:900;color:white;text-transform:uppercase;transition:.3s;}
@@ -266,13 +261,18 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
 .wkey.absent{background:#3a3a3c;color:#666;}
 .wkey.wide{min-width:56px;font-size:11px;}
 
-/* Color Tap Styles */
+/* Color Tap */
 .color-tap-area{display:flex;flex-direction:column;align-items:center;gap:16px;padding:20px;}
 .color-display{width:160px;height:160px;border-radius:50%;border:4px solid rgba(255,255,255,.2);transition:.3s;box-shadow:0 0 40px rgba(255,255,255,.2);}
 .color-options{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;width:100%;}
 .color-opt-btn{padding:18px;border:none;border-radius:14px;cursor:pointer;font-family:var(--font-display);font-size:14px;font-weight:700;color:white;transition:.2s;text-shadow:0 1px 3px rgba(0,0,0,.5);}
 .color-opt-btn:hover{transform:scale(1.05);}
 .color-opt-btn:active{transform:scale(.97);}
+
+/* LB filter tabs */
+.lb-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.lb-tab{padding:6px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);cursor:pointer;font-size:12px;font-weight:700;color:var(--text2);font-family:var(--font-body);transition:.2s;}
+.lb-tab.active,.lb-tab:hover{background:var(--green);color:#000;border-color:var(--green);}
 
 @media(max-width:480px){
   .grid2,.ach-grid{grid-template-columns:1fr;}
@@ -478,31 +478,31 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
   <button class="btn btn-secondary" onclick="navHome()">⬅ Back</button>
 </div>
 
-<!-- AI PAGE — Enhanced -->
+<!-- AI PAGE -->
 <div id="aiPage" class="section">
   <div class="box">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
       <div style="font-size:28px;">🤖</div>
       <div>
         <div style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--text3);">MR7 AI <span class="ai-model-badge">Claude Powered</span></div>
-        <div style="font-size:11px;color:var(--text2);">Hindi + English • Smart Answers • Games Help 🔥</div>
+        <div style="font-size:11px;color:var(--text2);">Ask anything — Games, Coding, Science, Math & more!</div>
       </div>
     </div>
     <div id="chat"></div>
     <div class="ai-row">
-      <input id="aiInput" placeholder="Kuch bhi pucho... English ya Hindi mein!">
+      <input id="aiInput" placeholder="Ask anything...">
       <button class="btn btn-primary" onclick="askAI()">Send</button>
       <button class="btn btn-secondary" onclick="clearChat()" title="Clear">🗑</button>
     </div>
     <div class="quick-asks">
-      <button class="qa-btn" onclick="quickAsk('Best gaming tips do MR7 games ke liye')">🎮 Game Tips</button>
-      <button class="qa-btn" onclick="quickAsk('Ek funny Hindi joke sunao')">😂 Joke</button>
-      <button class="qa-btn" onclick="quickAsk('Mera complete profile aur stats batao')">⭐ My Stats</button>
-      <button class="qa-btn" onclick="quickAsk('Aaj ka powerful motivation do')">💪 Motivation</button>
-      <button class="qa-btn" onclick="quickAsk('Kaun sa game sabse zyada coins deta hai?')">🪙 Earn Coins</button>
-      <button class="qa-btn" onclick="quickAsk('Snake game mein high score kaise karu?')">🐍 Snake Tips</button>
-      <button class="qa-btn" onclick="quickAsk('Wordle game tips do')">📝 Wordle Help</button>
-      <button class="qa-btn" onclick="quickAsk('Python programming sikhao basics')">💻 Coding</button>
+      <button class="qa-btn" onclick="quickAsk('Give me top tips for Snake and Flappy Bird games')">🎮 Game Tips</button>
+      <button class="qa-btn" onclick="quickAsk('Tell me a funny joke')">😂 Joke</button>
+      <button class="qa-btn" onclick="quickAsk('Show my complete profile and stats')">⭐ My Stats</button>
+      <button class="qa-btn" onclick="quickAsk('Give me a powerful motivational quote')">💪 Motivation</button>
+      <button class="qa-btn" onclick="quickAsk('Which game gives the most coins?')">🪙 Earn Coins</button>
+      <button class="qa-btn" onclick="quickAsk('How do I get a high score in Snake?')">🐍 Snake Tips</button>
+      <button class="qa-btn" onclick="quickAsk('Teach me Python basics')">💻 Python</button>
+      <button class="qa-btn" onclick="quickAsk('Explain how black holes work')">🔭 Science</button>
     </div>
   </div>
   <button class="btn btn-secondary" onclick="navHome()">⬅ Back</button>
@@ -512,13 +512,13 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
 <div id="gamesPage" class="section">
   <div class="box">
     <div class="page-title">🎮 MR7 Games</div>
-    <div class="page-sub">Play games, earn coins & climb leaderboard!</div>
+    <div class="page-sub">Play games, earn coins & climb the leaderboard!</div>
     <div class="grid-auto" style="margin-top:14px;" id="gameCards"></div>
   </div>
   <button class="btn btn-secondary" onclick="navHome()">⬅ Back</button>
 </div>
 
-<!-- GAME PLAY (canvas games) -->
+<!-- GAME PLAY (canvas) -->
 <div id="gamePlayPage" class="section">
   <div class="box">
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
@@ -541,7 +541,7 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
   </div>
 </div>
 
-<!-- FLAPPY BIRD PAGE -->
+<!-- FLAPPY BIRD -->
 <div id="flappyPage" class="section">
   <div class="box">
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
@@ -561,7 +561,7 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
   </div>
 </div>
 
-<!-- WORDLE PAGE -->
+<!-- WORDLE -->
 <div id="wordlePage" class="section">
   <div class="box">
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
@@ -579,7 +579,7 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
   </div>
 </div>
 
-<!-- COLOR TAP PAGE -->
+<!-- COLOR TAP -->
 <div id="colorTapPage" class="section">
   <div class="box">
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
@@ -622,8 +622,14 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
 <div id="leaderboardPage" class="section">
   <div class="box">
     <div class="page-title">🏆 Leaderboard</div>
-    <div id="leaderList" style="margin-top:12px;"></div>
-    <button class="btn btn-danger" style="margin-top:10px;" onclick="resetLeaderboard()">🗑 Reset</button>
+    <div class="page-sub" style="margin-bottom:12px;">Top players across all games</div>
+    <!-- Filter tabs for games -->
+    <div class="lb-tabs" id="lbTabs">
+      <button class="lb-tab active" onclick="filterLB('All')" id="tab-All">🌍 All Games</button>
+      <button class="lb-tab" onclick="filterLB('Snake')" id="tab-Snake">🐍 Snake</button>
+      <button class="lb-tab" onclick="filterLB('Flappy')" id="tab-Flappy">🐦 Flappy</button>
+    </div>
+    <div id="leaderList"></div>
   </div>
   <button class="btn btn-secondary" onclick="navHome()">⬅ Back</button>
 </div>
@@ -650,7 +656,7 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
     <div class="field-wrap"><label class="field-label">📋 Subject</label>
       <select id="hSubject"><option value="">— Select Subject —</option><option value="Bug Report">🐛 Bug Report</option><option value="Game Issue">🎮 Game Issue</option><option value="AI Problem">🤖 AI Problem</option><option value="Suggestion">💡 Suggestion</option><option value="Collaboration">🤝 Collaboration</option><option value="Other">📌 Other</option></select>
     </div>
-    <div class="field-wrap"><label class="field-label">💬 Message *</label><textarea id="hMessage" placeholder="Apna message yahan likho..."></textarea></div>
+    <div class="field-wrap"><label class="field-label">💬 Message *</label><textarea id="hMessage" placeholder="Write your message here..."></textarea></div>
     <button class="send-btn" id="sendBtn" onclick="sendHelp()">📤 Send Message</button>
     <div id="helpStatus" style="margin-top:12px;text-align:center;font-weight:bold;font-size:14px;"></div>
   </div>
@@ -658,9 +664,9 @@ body.light input,body.light textarea,body.light select{background:rgba(0,0,0,.06
 </div>
 
 <script>
-/* ════════════════════════════════
+/* ════════════════════════════
    CORE UTILITIES
-════════════════════════════════ */
+════════════════════════════ */
 window.addEventListener('load',()=>{
   setTimeout(()=>{
     const p=document.getElementById('preloader');
@@ -707,15 +713,16 @@ function searchMenu(){
   for(const k in map){if(q.includes(k)){nav(map[k]);closeDots();break;}}
 }
 
-/* ════════════════════════════════
+/* ════════════════════════════
    NAVIGATION
-════════════════════════════════ */
+════════════════════════════ */
+let currentLBFilter='All';
 function nav(id){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.documentElement.scrollTop=0;document.body.scrollTop=0;closeDots();
   if(id==='profilePage')renderProfile();
-  if(id==='leaderboardPage')renderLB();
+  if(id==='leaderboardPage'){currentLBFilter='All';renderLB('All');}
   if(id==='statsPage')renderStats();
   if(id==='achPage')renderAch();
   if(id==='notifsPage')renderNotifs();
@@ -730,15 +737,16 @@ function navHome(){
   document.getElementById('mainMenu').classList.add('active');
   document.documentElement.scrollTop=0;document.body.scrollTop=0;closeDots();
 }
+function openSection(id){nav(id);}
 function startTypingTitle(){
   const tx='MR7 WORLD',el=document.getElementById('typingTitle');el.innerHTML='';let i=0;
   const t=setInterval(()=>{el.innerHTML+=tx.charAt(i);i++;if(i>=tx.length)clearInterval(t);},100);
 }
 function openFullscreen(){const e=document.documentElement;if(e.requestFullscreen)e.requestFullscreen();else if(e.webkitRequestFullscreen)e.webkitRequestFullscreen();showToast('📱 Fullscreen!');}
 
-/* ════════════════════════════════
+/* ════════════════════════════
    USER DATA
-════════════════════════════════ */
+════════════════════════════ */
 function getUD(){return JSON.parse(localStorage.getItem('mr7UserData')||'{}');}
 function saveUD(d){localStorage.setItem('mr7UserData',JSON.stringify(d));}
 function getCoins(){return parseInt(localStorage.getItem('mr7Coins')||'0');}
@@ -761,11 +769,11 @@ function loginUser(){
   const userData={username:uname,displayName:dname,uid,avatar:'🎮',joinDate:new Date().toLocaleDateString('en-IN',{year:'numeric',month:'long',day:'numeric'}),createdAt:Date.now()};
   saveUD(userData);localStorage.setItem('mr7Login','true');
   st.style.color='lime';st.innerText='✅ Account Created!';
-  addNotif('🎉 Welcome to MR7 WORLD!','Account banaya gaya: '+uid);
+  addNotif('🎉 Welcome to MR7 WORLD!','Account created: '+uid);
   setTimeout(()=>{startTypingTitle();refreshHUD();showToast('🔥 Welcome '+dname+'!');navHome();},700);
 }
 function logoutUser(){
-  if(!confirm('Logout karna chahte ho?'))return;
+  if(!confirm('Are you sure you want to logout?'))return;
   localStorage.removeItem('mr7Login');showToast('👋 Logged out!');navHome();
 }
 
@@ -789,8 +797,8 @@ function renderProfile(){
   const AVATARS=['🎮','🔥','⚡','🚀','🐍','👑','🦊','🐉','🏆','🤖','💀','🎯','🧠','🎸','🌟','⚔️','🛡','🌈','🦁','🐺'];
   const cur=ud.avatar||'🎮';
   document.getElementById('av_list').innerHTML=AVATARS.map(a=>`<button onclick="setAvatar('${a}')" class="av-btn${a===cur?' active':''}">${a}</button>`).join('');
-  const games=['snake','car','space','ttt','brick','memory','math','reflex','flappy','wordle','colortap'];
-  const gnames={snake:'🐍 Snake',car:'🚗 Car',space:'🚀 Space',ttt:'❌ TTT',brick:'🧱 Brick',memory:'🃏 Memory',math:'🔢 Math',reflex:'⚡ Reflex',flappy:'🐦 Flappy',wordle:'📝 Wordle',colortap:'🎨 ColorTap'};
+  const games=['snake','flappy','car','space','ttt','brick','memory','math','reflex','wordle','colortap'];
+  const gnames={snake:'🐍 Snake',flappy:'🐦 Flappy',car:'🚗 Car',space:'🚀 Space',ttt:'❌ TTT',brick:'🧱 Brick',memory:'🃏 Memory',math:'🔢 Math',reflex:'⚡ Reflex',wordle:'📝 Wordle',colortap:'🎨 ColorTap'};
   document.getElementById('gameRecords').innerHTML='<div class="grid2">'+games.map(g=>{const b=localStorage.getItem('best_'+g)||0;return`<div class="badge" style="padding:10px;border-radius:12px;font-size:12px;display:block;">${gnames[g]}: <span style="color:var(--green);font-weight:900;">${b}</span></div>`;}).join('')+'</div>';
 }
 function setAvatar(a){const ud=getUD();ud.avatar=a;saveUD(ud);showToast('Avatar: '+a);renderProfile();}
@@ -829,7 +837,7 @@ function updateStreak(){
 }
 
 function dailyReward(){
-  if(!isLoggedIn()){showToast('❌ Pehle profile mein login karo!');nav('profilePage');return;}
+  if(!isLoggedIn()){showToast('❌ Please create a profile first!');nav('profilePage');return;}
   const now=new Date().toDateString();
   if(localStorage.getItem('mr7Daily')===now){showToast('❌ Already claimed today!');return;}
   localStorage.setItem('mr7Daily',now);const streak=updateStreak();const bonus=30+streak*5;
@@ -837,7 +845,7 @@ function dailyReward(){
   addNotif('🎁 Daily Reward: +'+bonus+' coins','Streak: '+streak+' days!');trackActivity(bonus);
 }
 function spinWheel(){
-  if(!isLoggedIn()){showToast('❌ Pehle profile mein login karo!');nav('profilePage');return;}
+  if(!isLoggedIn()){showToast('❌ Please create a profile first!');nav('profilePage');return;}
   const prizes=[10,20,30,50,100,150,5,75];const win=prizes[Math.floor(Math.random()*prizes.length)];
   addCoins(win);showToast('🎡 Spin: +'+win+' Coins!');if(win>=100)showAch('Jackpot! 🎰 +'+win+' Coins');trackActivity(win);
 }
@@ -854,8 +862,8 @@ function renderStats(){
   document.getElementById('sd-coins').innerText=coins;document.getElementById('sd-games').innerText=gp;document.getElementById('sd-best').innerText=high;document.getElementById('sd-level').innerText=lv;
   const coinsCur=coins%100;const pct=Math.min(100,(coinsCur/100)*100);
   document.getElementById('lvl-progress').innerHTML=`<div class="progress-row"><div class="prog-label"><span>Level ${lv}</span><span style="color:var(--green)">${coinsCur}/100 coins to Lv ${lv+1}</span></div><div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div></div>`;
-  const games=['snake','car','space','ttt','brick','memory','math','reflex','flappy','wordle','colortap'];
-  const gn={snake:'Snake',car:'Car',space:'Space',ttt:'TTT',brick:'Brick',memory:'Mem',math:'Math',reflex:'Rfx',flappy:'Flap',wordle:'Word',colortap:'Color'};
+  const games=['snake','flappy','car','space','ttt','brick','memory','math','reflex','wordle','colortap'];
+  const gn={snake:'Snake',flappy:'Flap',car:'Car',space:'Space',ttt:'TTT',brick:'Brick',memory:'Mem',math:'Math',reflex:'Rfx',wordle:'Word',colortap:'Color'};
   const maxScore=Math.max(...games.map(g=>parseInt(localStorage.getItem('best_'+g)||0)),1);
   let barsHtml='',labelsHtml='';
   games.forEach(g=>{const v=parseInt(localStorage.getItem('best_'+g)||0),h=Math.max(8,Math.floor((v/maxScore)*70));barsHtml+=`<div class="bar" style="height:${h}px;" data-val="${v}"></div>`;labelsHtml+=`<div class="bar-label">${gn[g]}</div>`;});
@@ -926,21 +934,33 @@ function renderStore(){
   document.getElementById('storeCoins').innerText=coins;
 }
 function buySkin(name,cost){
-  if(!isLoggedIn()){showToast('❌ Pehle login karo!');nav('profilePage');return;}
+  if(!isLoggedIn()){showToast('❌ Please login first!');nav('profilePage');return;}
   if(getCoins()<cost){showToast('❌ Not enough coins!');return;}
   setCoins(getCoins()-cost);localStorage.setItem('mr7Skin',name);refreshHUD();showToast('✅ Bought: '+name);showAch('New Skin: '+name+'!');addNotif('🎨 Skin Bought','Equipped: '+name);renderStore();
 }
 
-/* LEADERBOARD */
+/* LEADERBOARD — with game filter, no reset button */
 function getLB(){return JSON.parse(localStorage.getItem('mr7Leaderboard')||'[]');}
 function saveLB(a){localStorage.setItem('mr7Leaderboard',JSON.stringify(a));}
-function addLBScore(game,sc){const ud=getUD();let lb=getLB();lb.push({u:ud.displayName||'Guest',game,sc,uid:ud.uid||''});lb.sort((a,b)=>b.sc-a.sc);lb=lb.slice(0,20);saveLB(lb);}
-function renderLB(){
-  const lb=getLB();const medals=['🥇','🥈','🥉'];
-  document.getElementById('leaderList').innerHTML=lb.length===0?`<div style="text-align:center;color:var(--text2);padding:30px;">No scores yet! Play to appear here!</div>`:
+function addLBScore(game,sc){const ud=getUD();let lb=getLB();lb.push({u:ud.displayName||'Guest',game,sc,uid:ud.uid||''});lb.sort((a,b)=>b.sc-a.sc);lb=lb.slice(0,50);saveLB(lb);}
+
+function filterLB(game){
+  currentLBFilter=game;
+  // Update tab styles
+  document.querySelectorAll('.lb-tab').forEach(t=>t.classList.remove('active'));
+  const tab=document.getElementById('tab-'+game);if(tab)tab.classList.add('active');
+  renderLB(game);
+}
+
+function renderLB(game){
+  game=game||currentLBFilter||'All';
+  let lb=getLB();
+  if(game!=='All')lb=lb.filter(x=>x.game===game);
+  const medals=['🥇','🥈','🥉'];
+  document.getElementById('leaderList').innerHTML=lb.length===0?
+    `<div style="text-align:center;color:var(--text2);padding:30px;">No scores yet! Play to appear here!</div>`:
     lb.map((x,i)=>`<div class="lb-row"><div class="lb-rank" style="color:${i<3?'var(--gold)':'var(--text2)'}">${medals[i]||'#'+(i+1)}</div><div><div class="lb-name">${escH(x.u)}</div><div class="lb-game">🎮 ${escH(x.game)}</div></div><div class="lb-score">${x.sc}</div></div>`).join('');
 }
-function resetLeaderboard(){if(confirm('Reset leaderboard?')){saveLB([]);renderLB();}}
 
 /* HELP */
 function sendHelp(){
@@ -953,8 +973,8 @@ function sendHelp(){
   const subj=(subject?'['+subject+'] ':'')+' Message from MR7 WORLD';
   const body=`Hi MR7 Team,\n\nFrom: ${name}\nEmail: ${email}\nMobile: ${mobile}\nSubject: ${subject||'General'}\n\nMessage:\n${message}`;
   const btn=document.getElementById('sendBtn');btn.disabled=true;btn.innerText='⏳ Opening...';
-  st.style.color='lime';st.innerText='✅ Email client open ho raha hai!';
-  setTimeout(()=>{location.href='mailto:mrrehanofficial.1777@gmail.com?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);btn.disabled=false;btn.innerText='📤 Send Message';showToast('📧 Email sent!');},600);
+  st.style.color='lime';st.innerText='✅ Opening email client!';
+  setTimeout(()=>{location.href='mailto:mrrehanofficial.1777@gmail.com?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body);btn.disabled=false;btn.innerText='📤 Send Message';showToast('📧 Email client opened!');},600);
 }
 
 /* MUSIC */
@@ -978,12 +998,12 @@ function toggleMusic(){
   else{musicNodes.forEach(n=>{try{if(n.stop)n.stop();}catch{}});if(audioCtx){audioCtx.close();audioCtx=null;}musicNodes=[];musicOn=false;btn.classList.remove('music-on');btn.innerText='🎵 Music';showToast('🎵 Music OFF');}
 }
 
-/* ════════════════════════════════
-   MR7 AI — Enhanced & Smarter
-════════════════════════════════ */
+/* ════════════════════════════
+   MR7 AI — Smarter Claude Integration
+════════════════════════════ */
 const chatEl=document.getElementById('chat'),aiIn=document.getElementById('aiInput');
 let chatHist=[];
-function getUN(){const ud=getUD();return ud.displayName||ud.username||'Boss';}
+function getUN(){const ud=getUD();return ud.displayName||ud.username||'Player';}
 function addMsg(h,c){const d=document.createElement('div');d.className=c;d.innerHTML=h;chatEl.appendChild(d);chatEl.scrollTop=chatEl.scrollHeight;return d;}
 function showTy(){const d=document.createElement('div');d.className='botMsg';d.id='tyInd';d.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';chatEl.appendChild(d);chatEl.scrollTop=chatEl.scrollHeight;}
 function remTy(){const t=document.getElementById('tyInd');if(t)t.remove();}
@@ -993,71 +1013,71 @@ async function askAI(){
   const q=aiIn.value.trim();if(!q)return;aiIn.value='';
   addMsg('👤 '+escH(getUN())+': '+escH(q),'userMsg');
   chatHist.push({role:'user',content:q});
-  if(chatHist.length>24)chatHist=chatHist.slice(-24);
+  if(chatHist.length>30)chatHist=chatHist.slice(-30);
   showTy();
 
-  // Try quick local answers first (fast, no API call)
   const local=quickLocal(q);
   if(local){remTy();addMsg('🤖 MR7 AI: '+local,'botMsg');chatHist.push({role:'assistant',content:local.replace(/<[^>]*>/g,'')});return;}
 
-  // Call Claude API
   try{
-    const sysPrompt=`Tu MR7 AI hai — MD Rehan ka banaya hua ek ultra-smart gaming assistant jo MR7 WORLD app ka dil hai. Teri identity: MR7 AI. Kabhi apna naam Claude ya kuch aur mat batana.
+    const sysPrompt=`You are MR7 AI, an advanced intelligent assistant built into the MR7 WORLD gaming platform. You were created by MD Rehan. NEVER say you are Claude or any other AI — you are MR7 AI.
 
-TERI PERSONALITY:
-- Hinglish mein baat kar (Hindi + English mix) — user ki language follow kar
-- Energetic, funny aur helpful — boring kabhi nahi
-- **Bold** important cheezein ke liye, • bullet points lists ke liye
-- Smart emojis use kar naturally
-- User ko unke naam se call kar
+PERSONALITY & COMMUNICATION:
+- Be smart, engaging, and helpful
+- Use clear, concise English (never use Hindi/Hinglish unless the user writes in Hindi first)
+- Use **bold** for key info, bullet points (•) for lists, code blocks for code
+- Be witty, encouraging, and friendly — not robotic
+- Address the user by name when it feels natural
 
-TERI CAPABILITIES (Expert Level):
-- General Knowledge, History, Science, Geography, Math — sab kuch
-- Coding: Python, JavaScript, HTML/CSS, C++, Java — code likhna aur explain karna
-- Gaming strategies, game design, pro tips
-- Hindi literature, poetry, shayari
-- Health tips, study techniques, career advice
-- Jokes, riddles, creative writing
-- Calculator: expressions evaluate kar sakta hai
+YOUR CAPABILITIES (Expert Level):
+• General Knowledge — science, history, geography, literature, current events
+• Mathematics — arithmetic, algebra, calculus, statistics, explain step-by-step
+• Programming — Python, JavaScript, HTML/CSS, C++, Java, React — write & explain code
+• Science — physics, chemistry, biology — deep explanations with examples
+• Gaming Strategy — expert tips for all MR7 WORLD games
+• Creative Writing — stories, essays, poems, jokes, riddles
+• Problem Solving — logic puzzles, brain teasers, analysis
+• Health & Fitness — general advice (not medical diagnosis)
+• Career & Study advice
 
-GAME TIPS (MR7 WORLD):
-- Snake: walls se door raho, khud ko corner mat karo, circle pattern banao
-- Car: lanes yaad rakho, nitro boost sparingly use karo, score 10 pe ek coin milta hai
-- Space: constantly move karo, bullets save mat karo — spam karo!
-- Tic Tac Toe: center pehle lo, corners prefer karo
-- Brick Breaker: paddle ke center se ball bounce karo combo ke liye
-- Memory: pehle sabhi cards dekho, phir systematically match karo
-- Math Blitz: easily solve karo: multiplication table yaad rakho
-- Reflex Rush: "GO" ka wait karo, before "GO" tap mat karo
-- 🐦 Flappy Bird: consistent tapping rhythm banao, pipes ke center aim karo
-- 📝 Word Guess: CRANE ya SLATE se shuru karo (best starting words), common letters try karo
-- 🎨 Color Tap: color ka NAAM padho carefully, actual displayed color nahi
+GAME EXPERTISE (MR7 WORLD):
+🐍 **Snake**: Move in spiraling patterns, avoid cutting your own path. Farm food near walls. Score 10 per food + 3 coins each.
+🐦 **Flappy Bird**: Maintain a consistent tapping rhythm — tap every ~0.8 seconds. Aim for the center of pipes. Don't panic-tap. Each pipe = 2 coins.
+🚗 **Nitro Racing**: Stay in outer lanes when possible. Use nitro sparingly for emergency dodges. Coins appear on-track — grab them.
+🚀 **Space Shooter**: Always be moving. Fire constantly — spam shots. Prioritize large asteroids first for fewer collisions.
+❌ **Tic Tac Toe**: Take center first (index 4), then corners. Block opponent's winning line before building your own.
+🧱 **Brick Breaker**: Hit the ball from the paddle's center for straight returns; angled hits from paddle edges create better angles.
+🃏 **Memory Match**: Mentally map revealed cards by quadrant. Tackle corners first — they're easier to remember.
+🔢 **Math Blitz**: Faster answers = more time bonus. Use mental math shortcuts: multiply by 11 (e.g., 7×11: put 7s on edges, add middle = 77).
+⚡ **Reflex Rush**: Don't anticipate — just react. Keep your finger lightly over the screen/spacebar.
+📝 **Word Guess**: Best starting words: CRANE, SLATE, AUDIO. These cover the most common letters. Use process of elimination.
+🎨 **Color Tap**: Read the TEXT label carefully — NOT the color shown. Fast taps within 0.8s give 3x bonus points.
 
-COINS EARN KARNE KE TIPS:
-1. Daily Reward roz lo (streak se bonus badhta hai!)
-2. Spin Wheel daily karo
-3. Space Shooter sabse zyada coins deta hai
-4. Brick Breaker mein combo banao — x3 combo = 30 coins/second!
-5. Math Blitz fast answers = time bonus
+COINS EARNING GUIDE:
+1. Daily Reward (30+ coins, grows with streak)
+2. Spin Wheel (up to 150 coins free daily)
+3. Space Shooter — highest coin rate
+4. Brick Breaker combo chains = 30 coins/minute
+5. Color Tap fast-tap bonus = 3x multiplier
 
-USER KI INFO:
-- Naam: ${getUN()}
-- User ID: ${getUD().uid||'Guest'}
-- Coins: ${getCoins()} 🪙
-- Level: ${getLevel()} 📊
-- Best Score: ${localStorage.getItem('mr7High')||0} 🏆
-- Games Played: ${getGamesPlayed()} 🎮
-- Active Skin: ${getSkin()} 🎨
-- Login Streak: ${localStorage.getItem('mr7Streak')||0} 🔥 days
-- Current Time: ${new Date().toLocaleTimeString('en-IN')}
-- Date: ${new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'})}
+CURRENT USER CONTEXT:
+• Name: ${getUN()}
+• User ID: ${getUD().uid||'Guest'}
+• Coins: ${getCoins()} 🪙
+• Level: ${getLevel()} 📊
+• Best Score: ${localStorage.getItem('mr7High')||0} 🏆
+• Games Played: ${getGamesPlayed()} 🎮
+• Active Skin: ${getSkin()} 🎨
+• Login Streak: ${localStorage.getItem('mr7Streak')||0} 🔥 days
+• Date/Time: ${new Date().toLocaleString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'})}
 
-RESPONSE FORMAT:
-- Short questions = short answers (2-4 lines)
-- Complex topics = detailed with structure
-- Jokes/shayari = creative aur funny
-- Code = properly formatted with explanation
-- Always end with something helpful or encouraging`;
+RESPONSE STYLE:
+• Short/simple questions → 2-4 line answers, direct and punchy
+• Complex questions → structured with headers, bullets, code blocks
+• Math → show working step by step
+• Code → include working examples with brief explanation
+• Always be accurate — if unsure, say so and reason through it
+• Never make up facts; reason carefully`;
 
     const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
@@ -1070,7 +1090,7 @@ RESPONSE FORMAT:
       })
     });
 
-    if(!res.ok){const err=await res.text();throw new Error('API Error: '+res.status);}
+    if(!res.ok){throw new Error('API Error: '+res.status);}
     const data=await res.json();remTy();
 
     if(data.content&&data.content[0]&&data.content[0].text){
@@ -1078,12 +1098,12 @@ RESPONSE FORMAT:
       addMsg('🤖 MR7 AI: '+fmtAI(r),'botMsg');
       chatHist.push({role:'assistant',content:r});
     }else{
-      addMsg('🤖 MR7 AI: Kuch gadbad aayi! Dobara try karo 😅','botMsg');
+      addMsg('🤖 MR7 AI: Something went wrong. Please try again.','botMsg');
     }
   }catch(err){
     remTy();
     console.error('AI Error:',err);
-    addMsg('🤖 MR7 AI: Internet check karo Boss 🔴 Ya thodi der baad try karo!','botMsg');
+    addMsg('🤖 MR7 AI: Connection issue 🔴 — check your internet and try again!','botMsg');
   }
 }
 
@@ -1102,46 +1122,44 @@ function fmtAI(t){
 
 function quickLocal(q){
   const t=q.toLowerCase().trim();
-  if(/^(hi|hello|hey|hii|yo|hy|salaam|namaste|helo)(\s|$)/.test(t))return `Hello <strong>${getUN()}</strong> bhai! 😎🔥 Kya scene hai? Kuch chahiye toh bol!`;
-  if(t===''||t==='?')return 'Haan Boss, bol! Kya jaanna chahta hai? 😄';
-  if(t.includes('time')||t.includes('waqt'))return '⏰ Abhi: <strong>'+new Date().toLocaleTimeString('en-IN')+'</strong>';
-  if(t.includes('date')||t.includes('aaj ka din')||t.includes('aaj ka date'))return '📅 <strong>'+new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'})+'</strong>';
+  if(/^(hi|hello|hey|hii|yo|hy|helo)(\s|$)/.test(t))return `Hey <strong>${getUN()}</strong>! 👋 What's up? Ask me anything — games, coding, science, math, jokes — I've got you!`;
+  if(t===''||t==='?')return 'Go ahead! What do you want to know? 😄';
+  if(t.includes('what time')||t.includes('current time')||t==='time')return '⏰ Current time: <strong>'+new Date().toLocaleTimeString('en-IN')+'</strong>';
+  if(t.includes('what date')||t.includes('today\'s date')||t==='date')return '📅 <strong>'+new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'})+'</strong>';
   if(t.startsWith('calc')||t.startsWith('calculate')){
     try{const e=t.replace(/calc(ulate)?/i,'').trim();const r=Function('"use strict";return('+e+')')();return'🧮 <strong>'+escH(e)+' = '+r+'</strong>';}
-    catch{return'❌ Sahi format: <code>calc 50*3+10</code>';}
+    catch{return'❌ Format: <code>calc 50*3+10</code>';}
   }
-  if(/\d+[\+\-\*\/]\d+/.test(t)&&t.length<20){
+  if(/^\d[\d\+\-\*\/\.\(\)\s]+\d$/.test(t)&&t.length<25){
     try{const r=Function('"use strict";return('+t+')')();return'🧮 <strong>'+escH(t)+' = '+r+'</strong>';}catch{}
   }
-  if(t.includes('mera naam')||t.includes('main kaun hun'))return `Tu hai <strong>${getUN()}</strong> 😎 ID: ${getUD().uid||'N/A'}`;
-  if(t.includes('kitne coin')||t.includes('mere coins')||t.includes('my coins'))return `🪙 Tere paas <strong>${getCoins()} coins</strong> hain! Level <strong>${getLevel()}</strong> pe hai tu!`;
-  if(t.includes('mera level')||t.includes('my level'))return `📊 Tera level: <strong>${getLevel()}</strong> — ${getCoins()} coins se! Aur ${100-(getCoins()%100)} coins mein Level ${getLevel()+1}!`;
-  if(t.includes('best score')||t.includes('highscore')||t.includes('mera score'))return `🏆 Best score: <strong>${localStorage.getItem('mr7High')||0}</strong> | Games played: ${getGamesPlayed()}`;
-  if(t.includes('streak'))return `🔥 Tera streak: <strong>${localStorage.getItem('mr7Streak')||0} days</strong>! Roz daily reward lo streak badhega!`;
-  if(t.includes('skin')||t.includes('mere skin'))return `🎨 Current skin: <strong>${getSkin()}</strong>. Store mein aur bhi hain!`;
-  if(t.includes('mr7 ai kaun hai')||t.includes('tumhara naam'))return `Main hun <strong>MR7 AI</strong> — MD Rehan ka banaya hua super-smart assistant! 🤖🔥 Koi bhi sawaal puchh!`;
+  if(t.includes('my name')||t.includes('who am i'))return `You are <strong>${getUN()}</strong> 😎 | ID: ${getUD().uid||'N/A'}`;
+  if(t.includes('my coins')||t.includes('how many coins'))return `🪙 You have <strong>${getCoins()} coins</strong>! You're Level <strong>${getLevel()}</strong>. ${100-(getCoins()%100)} more coins to Level ${getLevel()+1}!`;
+  if(t.includes('my level'))return `📊 Level: <strong>${getLevel()}</strong> — earned from ${getCoins()} coins! ${100-(getCoins()%100)} coins to Level ${getLevel()+1}.`;
+  if(t.includes('best score')||t.includes('high score'))return `🏆 Your best score: <strong>${localStorage.getItem('mr7High')||0}</strong> across ${getGamesPlayed()} games played!`;
+  if(t.includes('streak'))return `🔥 Login streak: <strong>${localStorage.getItem('mr7Streak')||0} days</strong>! Claim your daily reward to keep it going!`;
+  if(t.includes('my skin'))return `🎨 Active skin: <strong>${getSkin()}</strong>. Check the Store for more!`;
+  if(t.includes('who are you')||t.includes('what are you'))return `I'm <strong>MR7 AI</strong> — the intelligent assistant built into MR7 WORLD! 🤖 I can help with gaming, coding, science, math, creative writing, and much more. What do you need?`;
   return null;
 }
 
 aiIn.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();askAI();}});
-// Auto-greet when page opens
-document.getElementById('aiPage').addEventListener('transitionend',()=>{});
-(function(){setTimeout(()=>{if(chatEl.children.length===0){addMsg(`🤖 MR7 AI: Oi <strong>${getUN()}</strong>! 😎🔥 Main hun MR7 AI. General knowledge, coding, gaming tips, jokes — kuch bhi puchh! Kya scene hai aaj?`,'botMsg');}},100);})();
-function clearChat(){if(confirm('Chat clear karein?')){chatEl.innerHTML='';chatHist=[];showToast('Chat cleared ✅');addMsg(`🤖 MR7 AI: Fresh start! 🔄 Kya help chahiye <strong>${getUN()}</strong>?`,'botMsg');}}
+(function(){setTimeout(()=>{if(chatEl.children.length===0){addMsg(`🤖 MR7 AI: Hey <strong>${getUN()}</strong>! 👋 I'm MR7 AI — your smart gaming companion. Ask me anything: game tips, coding help, science questions, math, jokes, or just chat. What's on your mind?`,'botMsg');}},100);})();
+function clearChat(){if(confirm('Clear chat history?')){chatEl.innerHTML='';chatHist=[];showToast('Chat cleared ✅');addMsg(`🤖 MR7 AI: Fresh start! 🔄 What can I help you with, <strong>${getUN()}</strong>?`,'botMsg');}}
 
-/* ════════════════════════════════
-   GAME CARDS (Updated with 3 new games)
-════════════════════════════════ */
+/* ════════════════════════════
+   GAME CARDS — 2 featured games
+════════════════════════════ */
 const GAMES_LIST=[
-  {id:'snake',icon:'🐍',name:'Snake Pro',desc:'Khana khao, bado!',tag:'HOT',tagClass:'hot',page:'gamePlayPage'},
-  {id:'car',icon:'🚗',name:'Nitro Racing',desc:'Traffic dodge karo!',tag:'HOT',tagClass:'hot',page:'gamePlayPage'},
-  {id:'space',icon:'🚀',name:'Space Shooter',desc:'Asteroids destroy karo!',tag:'HOT',tagClass:'hot',page:'gamePlayPage'},
-  {id:'flappy',icon:'🐦',name:'Flappy Bird',desc:'Pipes se bacho!',tag:'NEW',tagClass:'new',page:'flappyPage'},
-  {id:'wordle',icon:'📝',name:'Word Guess',desc:'5-letter word guess karo!',tag:'NEW',tagClass:'new',page:'wordlePage'},
-  {id:'colortap',icon:'🎨',name:'Color Tap',desc:'Sahi color tap karo!',tag:'NEW',tagClass:'new',page:'colorTapPage'},
-  {id:'ttt',icon:'❌',name:'Tic Tac Toe',desc:'Beat the AI robot!',tag:'',tagClass:'',page:'gamePlayPage'},
-  {id:'brick',icon:'🧱',name:'Brick Breaker',desc:'Sab bricks todo!',tag:'',tagClass:'',page:'gamePlayPage'},
-  {id:'memory',icon:'🃏',name:'Memory Match',desc:'Cards match karo!',tag:'',tagClass:'',page:'gamePlayPage'},
+  {id:'snake',icon:'🐍',name:'Snake Pro',desc:'Eat & grow!',tag:'HOT',tagClass:'hot',page:'gamePlayPage'},
+  {id:'flappy',icon:'🐦',name:'Flappy Bird',desc:'Dodge the pipes!',tag:'HOT',tagClass:'hot',page:'flappyPage'},
+  {id:'car',icon:'🚗',name:'Nitro Racing',desc:'Dodge traffic!',tag:'',tagClass:'',page:'gamePlayPage'},
+  {id:'space',icon:'🚀',name:'Space Shooter',desc:'Destroy asteroids!',tag:'',tagClass:'',page:'gamePlayPage'},
+  {id:'wordle',icon:'📝',name:'Word Guess',desc:'Guess the 5-letter word!',tag:'NEW',tagClass:'new',page:'wordlePage'},
+  {id:'colortap',icon:'🎨',name:'Color Tap',desc:'Tap the right color!',tag:'NEW',tagClass:'new',page:'colorTapPage'},
+  {id:'ttt',icon:'❌',name:'Tic Tac Toe',desc:'Beat the AI!',tag:'',tagClass:'',page:'gamePlayPage'},
+  {id:'brick',icon:'🧱',name:'Brick Breaker',desc:'Break all bricks!',tag:'',tagClass:'',page:'gamePlayPage'},
+  {id:'memory',icon:'🃏',name:'Memory Match',desc:'Match the cards!',tag:'',tagClass:'',page:'gamePlayPage'},
   {id:'math',icon:'🔢',name:'Math Blitz',desc:'Fast math answers!',tag:'',tagClass:'',page:'gamePlayPage'},
   {id:'reflex',icon:'⚡',name:'Reflex Rush',desc:'Test your reflexes!',tag:'',tagClass:'',page:'gamePlayPage'},
 ];
@@ -1164,14 +1182,14 @@ function openGamePage(g,page){
   document.getElementById('gameTitle').innerText=info.icon+' '+info.name;
   document.getElementById('gameDesc').innerText=info.desc;
   document.getElementById('gameBest').innerText=localStorage.getItem('best_'+g)||0;
-  const controls={snake:'← → ↑ ↓ / WASD / Swipe',car:'← → Keys | Space=Nitro',space:'← → Keys | Space=Shoot',ttt:'Tap cells',brick:'← → Keys',memory:'Tap cards to match',math:'Type & Enter answer',reflex:'Tap SPACE / Screen when green!'};
+  const controls={snake:'Arrow Keys / WASD / Swipe',car:'← → Keys | Space = Nitro',space:'← → Keys | Space = Shoot',ttt:'Tap cells to place',brick:'← → Keys',memory:'Tap cards to match',math:'Type answer & press Enter',reflex:'Hit SPACE or tap when green!'};
   document.getElementById('controlInfo').innerText='🎮 '+(controls[g]||'');
   stopGame();nav('gamePlayPage');drawStart();
 }
 
-/* ════════════════════════════════
-   CANVAS GAME ENGINE (original games)
-════════════════════════════════ */
+/* ════════════════════════════
+   CANVAS GAME ENGINE
+════════════════════════════ */
 const cv=document.getElementById('gameCanvas'),ctx=cv.getContext('2d');
 let sg='',gIv=null,score=0;
 
@@ -1188,7 +1206,7 @@ function gameOver(g){
   ctx.textAlign='center';ctx.fillStyle='#ff4444';ctx.font='bold 26px Orbitron,Arial';ctx.fillText('💀 GAME OVER',cv.width/2,cv.height/2-24);
   ctx.fillStyle='white';ctx.font='16px Arial';ctx.fillText('Score: '+score,cv.width/2,cv.height/2+8);
   ctx.fillStyle='#666';ctx.font='12px Arial';ctx.fillText('Press START to retry',cv.width/2,cv.height/2+34);ctx.textAlign='left';
-  showToast('💀 Game Over! '+score+' pts');endGame(g);trackActivity(score);
+  showToast('💀 Game Over! Score: '+score);endGame(g);trackActivity(score);
 }
 function endGame(g){
   stopGame();const bk='best_'+sg,bs=parseInt(localStorage.getItem(bk)||0);
@@ -1260,7 +1278,7 @@ function updateSpace(){
   if(Math.random()<.006)powerUps.push({x:20+Math.random()*320,y:-20,type:['shield','bomb','triple'][Math.floor(Math.random()*3)]});
   sBuls.forEach(b=>{b.y-=10;b.tr=b.tr||[];b.tr.push({x:b.x,y:b.y});if(b.tr.length>7)b.tr.shift();});sBuls=sBuls.filter(b=>b.y>-20);if(sCD>0)sCD--;
   asts.forEach(a=>{a.x+=a.vx;a.y+=a.vy;if(a.x<0||a.x>cv.width)a.vx*=-1;});
-  powerUps.forEach((pu,pi)=>{pu.y+=2;if(Math.abs(ship.x-pu.x)<20&&Math.abs(ship.y-pu.y)<25){if(pu.type==='shield'){shield=Math.min(100,shield+40);showToast('🛡 Shield +40!');}else if(pu.type==='bomb'){asts.forEach(a=>exps.push({x:a.x,y:a.y,r:a.r*2,f:0,mf:18}));score+=asts.length*5;asts=[];showToast('💣 BOMB!');}else if(pu.type==='triple'){for(let i=-2;i<=2;i+=2)sBuls.push({x:ship.x+i*12,y:ship.y-20,tr:[]});showToast('⚡ Triple!');}powerUps.splice(pi,1);}if(pu&&pu.y>cv.height+20)powerUps.splice(pi,1);});
+  powerUps.forEach((pu,pi)=>{pu.y+=2;if(Math.abs(ship.x-pu.x)<20&&Math.abs(ship.y-pu.y)<25){if(pu.type==='shield'){shield=Math.min(100,shield+40);showToast('🛡 Shield +40!');}else if(pu.type==='bomb'){asts.forEach(a=>exps.push({x:a.x,y:a.y,r:a.r*2,f:0,mf:18}));score+=asts.length*5;asts=[];showToast('💣 BOMB!');}else if(pu.type==='triple'){for(let i=-2;i<=2;i+=2)sBuls.push({x:ship.x+i*12,y:ship.y-20,tr:[]});showToast('⚡ Triple Shot!');}powerUps.splice(pi,1);}if(pu&&pu.y>cv.height+20)powerUps.splice(pi,1);});
   sBuls.forEach((b,bi)=>{asts.forEach((a,ai)=>{if(Math.abs(b.x-a.x)<a.r+5&&Math.abs(b.y-a.y)<a.r+5){a.hp--;sBuls.splice(bi,1);if(a.hp<=0){exps.push({x:a.x,y:a.y,r:a.r*1.8,f:0,mf:20});score+=a.pts;addCoins(Math.ceil(a.pts/3));asts.splice(ai,1);}else exps.push({x:b.x,y:b.y,r:6,f:0,mf:8});}});});
   asts.forEach((a,ai)=>{if(Math.abs(ship.x-a.x)<a.r+14&&Math.abs(ship.y-a.y)<a.r+18){shield-={s:10,m:22,l:35}[a.tp];exps.push({x:a.x,y:a.y,r:a.r*2,f:0,mf:22});asts.splice(ai,1);if(shield<=0){gameOver('Space');return;}}});
   asts=asts.filter(a=>a.y<cv.height+60);sLv=1+Math.floor(score/100);
@@ -1284,14 +1302,14 @@ function drawTTT(){
   ctx.shadowBlur=8;ctx.shadowColor='rgba(0,255,80,.5)';ctx.strokeStyle='rgba(0,255,80,.7)';ctx.lineWidth=2.5;
   for(let i=1;i<3;i++){ctx.beginPath();ctx.moveTo(sx+i*sz,sy);ctx.lineTo(sx+i*sz,sy+288);ctx.stroke();ctx.beginPath();ctx.moveTo(sx,sy+i*sz);ctx.lineTo(sx+288,sy+i*sz);ctx.stroke();}ctx.shadowBlur=0;
   tttB.forEach((v,i)=>{const x=sx+(i%3)*sz+sz/2,y=sy+Math.floor(i/3)*sz+sz/2;if(v==='X'){ctx.shadowBlur=18;ctx.shadowColor='lime';ctx.strokeStyle='lime';ctx.lineWidth=5.5;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x-28,y-28);ctx.lineTo(x+28,y+28);ctx.moveTo(x+28,y-28);ctx.lineTo(x-28,y+28);ctx.stroke();ctx.shadowBlur=0;}else if(v==='O'){ctx.shadowBlur=18;ctx.shadowColor='#ff4444';ctx.strokeStyle='#ff5555';ctx.lineWidth=5.5;ctx.beginPath();ctx.arc(x,y,30,0,Math.PI*2);ctx.stroke();ctx.shadowBlur=0;}});
-  ctx.fillStyle='rgba(0,0,0,.55)';ctx.fillRect(0,0,W,30);ctx.fillStyle='white';ctx.font='bold 13px Arial';ctx.textAlign='center';ctx.fillText(tttTurn==='X'?'Your Turn (X) 😎':'🤖 Robot thinking...',W/2,20);ctx.textAlign='left';ctx.lineWidth=1;ctx.lineCap='butt';
+  ctx.fillStyle='rgba(0,0,0,.55)';ctx.fillRect(0,0,W,30);ctx.fillStyle='white';ctx.font='bold 13px Arial';ctx.textAlign='center';ctx.fillText(tttTurn==='X'?'Your Turn (X) 😎':'🤖 AI thinking...',W/2,20);ctx.textAlign='left';ctx.lineWidth=1;ctx.lineCap='butt';
 }
 function handleTTTClick(mx,my){
   if(tttTurn!=='X')return;const sz=96,sx=(cv.width-288)/2,sy=96;if(mx<sx||mx>sx+288||my<sy||my>sy+288)return;
   const col=Math.floor((mx-sx)/sz),row=Math.floor((my-sy)/sz),idx=row*3+col;if(tttB[idx])return;tttB[idx]='X';tttTurn='O';
   if(tttW(tttB)==='X'){score=50;addCoins(20);showToast('🏆 You Win! +20 coins');drawTTT();setTimeout(()=>endGame('TTT'),800);return;}
   if(!tttB.includes('')){score=15;showToast('🤝 Draw!');drawTTT();setTimeout(()=>endGame('TTT'),600);return;}
-  drawTTT();setTimeout(()=>{robotMove();tttTurn='X';if(tttW(tttB)==='O'){score=5;showToast('🤖 Robot Wins!');drawTTT();setTimeout(()=>endGame('TTT'),800);return;}drawTTT();},480);
+  drawTTT();setTimeout(()=>{robotMove();tttTurn='X';if(tttW(tttB)==='O'){score=5;showToast('🤖 AI Wins!');drawTTT();setTimeout(()=>endGame('TTT'),800);return;}drawTTT();},480);
 }
 
 /* ══ BRICK ══ */
@@ -1395,9 +1413,9 @@ function handleReflexTap(){
   else if(reflexState==='wait'){clearTimeout(reflexTimeout);reflexState='early';drawReflex('early');showToast('❌ Too early!');setTimeout(nextReflex,1000);}
 }
 
-/* ════════════════════════════════
-   NEW GAME 1: FLAPPY BIRD
-════════════════════════════════ */
+/* ════════════════════════════
+   FLAPPY BIRD
+════════════════════════════ */
 const flCv=document.getElementById('flappyCanvas'),flCtx=flCv.getContext('2d');
 let flBird={x:80,y:250,vy:0},flPipes=[],flScore=0,flAlive=false,flFrame=0,flGravity=0.38,flJumpStr=-7.5,flIv=null,flStarted=false;
 
@@ -1409,34 +1427,25 @@ function flappyReset(){
 }
 function flDrawIdle(){
   const W=flCv.width,H=flCv.height;
-  flCtx.fillStyle='#1a3a1a';flCtx.fillRect(0,0,W,H);
-  // sky gradient
   const sky=flCtx.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#0a1a2a');sky.addColorStop(1,'#0a2a1a');flCtx.fillStyle=sky;flCtx.fillRect(0,0,W,H);
-  // ground
   flCtx.fillStyle='#2a5a1a';flCtx.fillRect(0,H-60,W,60);flCtx.fillStyle='#3a7a2a';flCtx.fillRect(0,H-60,W,8);
   flCtx.textAlign='center';flCtx.fillStyle='lime';flCtx.font='bold 16px Orbitron,Arial';flCtx.fillText('🐦 FLAPPY BIRD',W/2,H/2-30);flCtx.fillStyle='#aaa';flCtx.font='13px Arial';flCtx.fillText('Press START or Tap',W/2,H/2+10);flCtx.textAlign='left';
   flDrawBird(flBird.x,flBird.y,0);
 }
 function flDrawBird(x,y,rot){
   flCtx.save();flCtx.translate(x,y);flCtx.rotate(rot);
-  // body
   flCtx.fillStyle='#ffdd00';flCtx.beginPath();flCtx.arc(0,0,16,0,Math.PI*2);flCtx.fill();
-  // wing
   flCtx.fillStyle='#ffbb00';flCtx.beginPath();flCtx.ellipse(-6,2,10,6,0.3,0,Math.PI*2);flCtx.fill();
-  // eye
   flCtx.fillStyle='white';flCtx.beginPath();flCtx.arc(6,-4,5,0,Math.PI*2);flCtx.fill();
   flCtx.fillStyle='#333';flCtx.beginPath();flCtx.arc(8,-4,3,0,Math.PI*2);flCtx.fill();
-  // beak
   flCtx.fillStyle='#ff8800';flCtx.beginPath();flCtx.moveTo(12,-1);flCtx.lineTo(20,0);flCtx.lineTo(12,3);flCtx.closePath();flCtx.fill();
   flCtx.restore();
 }
 function flDrawPipe(x,topH,gap){
   const W=flCv.width,H=flCv.height,pw=52;
-  // top pipe
   const tg=flCtx.createLinearGradient(x,0,x+pw,0);tg.addColorStop(0,'#2a8a2a');tg.addColorStop(.5,'#4aca4a');tg.addColorStop(1,'#1a6a1a');
   flCtx.fillStyle=tg;flCtx.fillRect(x,0,pw,topH);
   flCtx.fillStyle='#5ada5a';flCtx.fillRect(x-4,topH-20,pw+8,20);
-  // bottom pipe
   const bY=topH+gap;
   flCtx.fillStyle=tg;flCtx.fillRect(x,bY,pw,H-bY-60);
   flCtx.fillStyle='#5ada5a';flCtx.fillRect(x-4,bY,pw+8,20);
@@ -1449,37 +1458,28 @@ function startFlappy(){
     flIv=setInterval(updateFlappy,20);
     incGamesPlayed();refreshHUD();
   }
-  // Flap!
   if(flAlive)flBird.vy=flJumpStr;
 }
 function updateFlappy(){
   if(!flAlive)return;
   flFrame++;flBird.vy+=flGravity;flBird.y+=flBird.vy;
   const W=flCv.width,H=flCv.height,gap=130,pw=52;
-  // spawn pipes
   if(flFrame%90===0||flPipes.length===0){
     const topH=40+Math.random()*(H-gap-100-60);
     flPipes.push({x:W,topH,scored:false});
   }
-  // move pipes
   const spd=3+flScore*0.08;
-  flPipes.forEach(p=>{p.x-=spd;if(!p.scored&&p.x+pw<flBird.x){p.scored=true;flScore++;document.getElementById('flappyScore').innerText=flScore;addCoins(2);if(flScore%5===0)showToast('🎉 '+flScore+' pipes! 🐦');}});
+  flPipes.forEach(p=>{p.x-=spd;if(!p.scored&&p.x+pw<flBird.x){p.scored=true;flScore++;document.getElementById('flappyScore').innerText=flScore;addCoins(2);if(flScore%5===0)showToast('🎉 '+flScore+' pipes!');}});
   flPipes=flPipes.filter(p=>p.x>-pw);
-  // collision
   if(flBird.y>H-60-16||flBird.y<16){flAlive=false;flGameOver();return;}
   for(const p of flPipes){if(flBird.x+12>p.x&&flBird.x-12<p.x+pw){if(flBird.y-14<p.topH||flBird.y+14>p.topH+gap){flAlive=false;flGameOver();return;}}}
-  // draw
   const sky=flCtx.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#0a1a2a');sky.addColorStop(1,'#0a2a1a');flCtx.fillStyle=sky;flCtx.fillRect(0,0,W,H);
-  // bg stars
   for(let i=0;i<30;i++){flCtx.fillStyle=`rgba(255,255,255,${0.1+Math.sin(flFrame*0.05+i)*0.05})`;flCtx.beginPath();flCtx.arc(((i*137+flFrame*0.3)%W),((i*97)%H*0.7),1,0,Math.PI*2);flCtx.fill();}
   flPipes.forEach(p=>flDrawPipe(p.x,p.topH,gap));
-  // ground
   flCtx.fillStyle='#2a5a1a';flCtx.fillRect(0,H-60,W,60);
   for(let gx=(-(flFrame*spd*0.5)%40);gx<W;gx+=40){flCtx.fillStyle='#3a7a2a';flCtx.fillRect(gx,H-60,20,8);}
-  // bird rotation
   const rot=Math.min(Math.max(flBird.vy*0.06,-0.5),1.2);
   flDrawBird(flBird.x,flBird.y,rot);
-  // HUD
   flCtx.fillStyle='rgba(0,0,0,.5)';flCtx.fillRect(0,0,W,30);flCtx.fillStyle='white';flCtx.font='bold 14px Orbitron,Arial';flCtx.textAlign='center';flCtx.fillText('🐦 '+flScore,W/2,20);flCtx.textAlign='left';
 }
 function flGameOver(){
@@ -1490,7 +1490,6 @@ function flGameOver(){
   addLBScore('Flappy',flScore);refreshHUD();
   document.getElementById('flappyBestBadge').innerText='🏆 Best: '+Math.max(flScore,best);
   document.getElementById('flappyCoins').innerText=getCoins();
-  // game over screen
   flCtx.fillStyle='rgba(0,0,0,.75)';flCtx.fillRect(0,0,flCv.width,flCv.height);
   flCtx.textAlign='center';flCtx.fillStyle='#ff4444';flCtx.font='bold 24px Orbitron,Arial';flCtx.fillText('💀 GAME OVER!',flCv.width/2,flCv.height/2-30);
   flCtx.fillStyle='white';flCtx.font='18px Arial';flCtx.fillText('Score: '+flScore,flCv.width/2,flCv.height/2+5);
@@ -1498,16 +1497,15 @@ function flGameOver(){
   flCtx.textAlign='left';trackActivity(flScore);
 }
 
-// Flappy touch/key
 document.addEventListener('keydown',e=>{
   if(document.getElementById('flappyPage').classList.contains('active')){if(e.key===' '||e.key==='Enter'){e.preventDefault();startFlappy();}}
 });
 flCv.addEventListener('click',()=>{if(document.getElementById('flappyPage').classList.contains('active'))startFlappy();});
 flCv.addEventListener('touchstart',e=>{if(document.getElementById('flappyPage').classList.contains('active')){e.preventDefault();startFlappy();}},{passive:false});
 
-/* ════════════════════════════════
-   NEW GAME 2: WORD GUESS (Wordle)
-════════════════════════════════ */
+/* ════════════════════════════
+   WORD GUESS (Wordle)
+════════════════════════════ */
 const WORDS=['CRANE','SLATE','FLASH','SMOKE','PRIZE','BLEND','STORM','CRISP','PLUMB','FLINT','GRAZE','SHONE','BRAVE','CLAMP','DRAFT','EXCEL','FROST','GLOBE','HONEY','JUICE','KNIFE','LEMON','MUSIC','NIGHT','OCEAN','PEARL','QUEEN','RIVER','SHELF','TIGER','ULTRA','VALVE','WHEAT','YACHT','ZEBRA','APPLE','BRAVE','CLOUD','DWARF','EIGHT','FEVER','GRAFT','HIPPO','INDEX','JEWEL','KAYAK','LATCH','MAGIC','NERVE','OPTIC','PIANO','QUIRK','ROBIN','SWAMP','TRUNK','UPSET','VICAR','WRONG','XYLEM','YODEL','ZONAL','PLANK','KNACK','TROUT','BLAZE','FJORD','CRYPT','WHIFF','SPOOK'];
 let wTarget='',wGuess='',wRow=0,wGameOver=false,wKeyMap={};
 
@@ -1541,34 +1539,29 @@ function wUpdate(){
   for(let c=0;c<5;c++){const cell=document.getElementById('wc-'+wRow+'-'+c);if(cell){cell.textContent=wGuess[c]||'';cell.classList.toggle('active',c===wGuess.length-1&&wGuess.length>0);}}
 }
 function wSubmit(){
-  if(wGuess.length<5){document.getElementById('wordleMsg').innerText='5 letters chahiye! ✏️';return;}
+  if(wGuess.length<5){document.getElementById('wordleMsg').innerText='Need 5 letters! ✏️';return;}
   const guess=wGuess.toUpperCase(),target=wTarget.toUpperCase();
   const result=[];const targetArr=[...target],guessArr=[...guess];
   const used=new Array(5).fill(false);
-  // First pass: correct
   guessArr.forEach((l,i)=>{if(l===targetArr[i]){result[i]='correct';used[i]=true;}else result[i]='absent';});
-  // Second pass: present
   guessArr.forEach((l,i)=>{if(result[i]==='absent'){for(let j=0;j<5;j++){if(!used[j]&&targetArr[j]===l){result[i]='present';used[j]=true;break;}}}});
-  // Animate cells
   guessArr.forEach((l,i)=>{
     const cell=document.getElementById('wc-'+wRow+'-'+i);
     setTimeout(()=>{cell.classList.add(result[i]);cell.classList.remove('active');},i*120);
-    // update keyboard
     const kbtn=document.getElementById('wk-'+l);if(kbtn){if(result[i]==='correct'||(!kbtn.classList.contains('correct')&&result[i]==='present'))kbtn.classList.add(result[i]);else if(result[i]==='absent'&&!kbtn.classList.contains('correct')&&!kbtn.classList.contains('present'))kbtn.classList.add('absent');}
   });
   wRow++;
   setTimeout(()=>{
     if(result.every(r=>r==='correct')){
-      document.getElementById('wordleMsg').innerText='🏆 Sahi jawab! Word: '+target+' — +50 coins!';
+      document.getElementById('wordleMsg').innerText='🏆 Correct! Word: '+target+' — +50 coins!';
       addCoins(50);const w=parseInt(localStorage.getItem('wordleWins')||0)+1;localStorage.setItem('wordleWins',w);document.getElementById('wordleWins').innerText=w;
-      showAch('Word Genius! Wordle Win #'+w);wGameOver=true;trackActivity(50);
+      showAch('Word Genius! Win #'+w);wGameOver=true;trackActivity(50);
     }else if(wRow>=6){
-      document.getElementById('wordleMsg').innerText='❌ Word tha: '+target+'. Agli baar! 💪';wGameOver=true;
+      document.getElementById('wordleMsg').innerText='❌ The word was: '+target+'. Better luck next time!';wGameOver=true;
     }
   },700);
   wGuess='';
 }
-// Keyboard for wordle
 document.addEventListener('keydown',e=>{
   if(document.getElementById('wordlePage').classList.contains('active')){
     if(e.key==='Enter')wHandleKey('ENTER');
@@ -1577,9 +1570,9 @@ document.addEventListener('keydown',e=>{
   }
 });
 
-/* ════════════════════════════════
-   NEW GAME 3: COLOR TAP
-════════════════════════════════ */
+/* ════════════════════════════
+   COLOR TAP
+════════════════════════════ */
 const COLORS=[
   {name:'RED',hex:'#ff3333'},{name:'BLUE',hex:'#3388ff'},{name:'GREEN',hex:'#33cc44'},
   {name:'YELLOW',hex:'#ffdd00'},{name:'PURPLE',hex:'#aa44ff'},{name:'ORANGE',hex:'#ff8833'},
@@ -1603,23 +1596,15 @@ function startColorTap(){
 }
 function colorNextRound(){
   if(!colorGameOn)return;
-  // Pick a target color (the color to find)
   colorTarget=COLORS[Math.floor(Math.random()*COLORS.length)];
-  // The displayed color box shows a RANDOM color (could be different from target)
   const displayColor=COLORS[Math.floor(Math.random()*COLORS.length)];
   document.getElementById('colorDisplay').style.background=displayColor.hex;
   document.getElementById('colorDisplay').style.boxShadow=`0 0 40px ${displayColor.hex}66`;
-  
-  // Options: 4 color names, one must be colorTarget.name
   const opts=[colorTarget];while(opts.length<4){const c=COLORS[Math.floor(Math.random()*COLORS.length)];if(!opts.find(o=>o.name===c.name))opts.push(c);}
-  opts.sort(()=>Math.random()-.5);
-  colorOptions=opts;
-  
+  opts.sort(()=>Math.random()-.5);colorOptions=opts;
   document.getElementById('colorTarget').innerText=colorTarget.name;
-  document.getElementById('colorQuestion').innerText='Tap the button: ';
-  
-  const oEl=document.getElementById('colorOptions');
-  oEl.innerHTML='';
+  document.getElementById('colorQuestion').innerText='Tap the button for: ';
+  const oEl=document.getElementById('colorOptions');oEl.innerHTML='';
   opts.forEach(c=>{
     const btn=document.createElement('button');btn.className='color-opt-btn';
     btn.style.background=c.hex;btn.style.boxShadow=`0 4px 16px ${c.hex}66`;
@@ -1655,9 +1640,9 @@ function colorEndGame(){
   addCoins(Math.ceil(colorScore/10));showToast('🎨 Game Over! Score: '+colorScore+' | +'+Math.ceil(colorScore/10)+' coins!');
 }
 
-/* ════════════════════════════════
-   KEYBOARD & TOUCH (existing games)
-════════════════════════════════ */
+/* ════════════════════════════
+   KEYBOARD & TOUCH
+════════════════════════════ */
 const keys={};
 document.addEventListener('keydown',e=>{
   keys[e.key]=true;
